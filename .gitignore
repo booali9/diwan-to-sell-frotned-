@@ -2,3 +2,5 @@ node_modules
 .vercel
 dist
 config.bat
+package-lock.json
+

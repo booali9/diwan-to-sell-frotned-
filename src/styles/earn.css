@@ -1,0 +1,361 @@
+.earn-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    color: #ffffff;
+}
+
+.earn-header-v2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.earn-title {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.earn-subtitle {
+    color: #94a3b8;
+    font-size: 16px;
+}
+
+.new-stake-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.new-stake-btn:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.earn-stats-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 60px;
+}
+
+.earn-stat-card {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.earn-stat-card.primary {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.earn-stat-card.secondary {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.stat-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3b82f6;
+}
+
+.earn-stat-card.secondary .stat-icon {
+    color: #10b981;
+}
+
+.stat-label {
+    display: block;
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.stat-value-group {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.stat-unit {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 700;
+}
+
+.stat-decoration {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    opacity: 0.1;
+    color: #3b82f6;
+    transform: rotate(-15deg);
+}
+
+.positions-section {
+    background: rgba(15, 23, 42, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 32px;
+    margin-bottom: 40px;
+}
+
+.positions-table-wrapper {
+    overflow-x: auto;
+    margin-top: 24px;
+}
+
+.positions-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.positions-table th {
+    text-align: left;
+    padding: 16px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.positions-table td {
+    padding: 24px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    vertical-align: middle;
+}
+
+.pool-cell {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.pool-mini-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pool-mini-icon.flexible {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.pool-mini-icon.locked {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+}
+
+.pool-cell-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.pool-type-name {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.pool-asset {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.weight-600 {
+    font-weight: 600;
+}
+
+.apy-badge {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.reward-value {
+    color: #10b981;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.reward-unit {
+    margin-left: 4px;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.status-tag {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-tag.active {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.status-tag.withdrawn {
+    background: rgba(255, 255, 255, 0.05);
+    color: #64748b;
+}
+
+.status-tag.completed {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.unstake-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.unstake-btn:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.empty-positions {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    color: #1e293b;
+    margin-bottom: 24px;
+}
+
+.empty-positions h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.empty-positions p {
+    color: #64748b;
+    margin-bottom: 32px;
+}
+
+.start-staking-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.earn-bottom-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.internal-link-card {
+    background: rgba(30, 41, 59, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.internal-link-card:hover {
+    background: rgba(59, 130, 246, 0.05);
+    border-color: rgba(59, 130, 246, 0.2);
+    transform: translateX(5px);
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3b82f6;
+}
+
+.card-info h4 {
+    margin-bottom: 4px;
+}
+
+.card-info p {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.card-arrow {
+    margin-left: auto;
+    color: #1e293b;
+    transition: all 0.3s;
+}
+
+.internal-link-card:hover .card-arrow {
+    color: #3b82f6;
+}
+
+@media (max-width: 992px) {
+    .earn-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .earn-bottom-actions {
+        grid-template-columns: 1fr;
+    }
+}

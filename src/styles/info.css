@@ -1,0 +1,160 @@
+/* Informational Pages Styles - DiwanFinance */
+.info-page-container {
+    background-color: #0A0A10;
+    min-height: 100vh;
+    color: #ffffff;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.info-content-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 24px;
+}
+
+.info-header {
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+.info-title {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    background: linear-gradient(90deg, #ffffff 0%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.info-last-updated {
+    font-size: 14px;
+    color: #71717A;
+}
+
+.info-section {
+    margin-bottom: 48px;
+    background: rgba(17, 17, 24, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s ease;
+}
+
+.info-section:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+}
+
+.info-section-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.info-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #A1A1AA;
+    margin-bottom: 16px;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+.info-list-item {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 12px;
+    color: #A1A1AA;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.info-list-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.info-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
+.info-card-text {
+    font-size: 14px;
+    color: #71717A;
+    line-height: 1.6;
+}
+
+.risk-alert {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.risk-alert-title {
+    color: #EF4444;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.risk-alert-text {
+    color: #A1A1AA;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .info-content-wrapper {
+        padding: 40px 16px;
+    }
+
+    .info-title {
+        font-size: 32px;
+    }
+
+    .info-section {
+        padding: 24px;
+        margin-bottom: 32px;
+    }
+
+    .info-section-title {
+        font-size: 20px;
+    }
+}

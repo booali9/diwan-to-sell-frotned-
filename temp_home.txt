@@ -1,0 +1,156 @@
+"use client"
+import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { Search, Bell, Menu, Home as HomeIcon, TrendingUp, Repeat, Wallet, Target, Grid3X3, GraduationCap, Megaphone } from 'lucide-react'
+import Layout from '../../components/Layout/Layout'
+import { useAuth } from '../../context/AuthContext'
+import '../../styles/dashboard.css'
+
+const mobileQuickActions = [
+    { icon: Target, label: 'Task center', path: '/dashboard/tasks' },
+    { icon: Bell, label: 'Announcement', path: '/dashboard/notifications' },
+    { icon: Wallet, label: 'Deposit', path: '/dashboard/deposit' },
+    { icon: TrendingUp, label: 'Market', path: '/dashboard/market' },
+    { icon: Repeat, label: 'Futures', path: '/dashboard/futures' },
+    { icon: Grid3X3, label: 'Grid', path: '/dashboard/grid' },
+    { icon: GraduationCap, label: 'Academy', path: '/dashboard/academy' },
+    { icon: Megaphone, label: 'Campaign', path: '/dashboard/campaign' },
+]
+
+const mobileCryptoData = [
+    { symbol: 'BTC', name: 'Bitcoin', logo: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png', price: '$84,057.84', change: '+5.79%', positive: true },
+    { symbol: 'SOL', name: 'Solana', logo: 'https://assets.coingecko.com/coins/images/4128/small/solana.png', price: '$157.84', change: '+5.79%', positive: true },
+    { symbol: 'ETH', name: 'Ethereum', logo: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png', price: '$2,657.84', change: '+5.79%', positive: true },
+    { symbol: 'DOGE', name: 'Dogecoin', logo: 'https://assets.coingecko.com/coins/images/5/small/dogecoin.png', price: '$0.293', change: '+5.79%', positive: true },
+    { symbol: 'SHIB', name: 'Shiba Inu', logo: 'https://assets.coingecko.com/coins/images/11939/small/shiba.png', price: '$0.000084', change: '+5.79%', positive: true },
+    { symbol: 'PEPE', name: 'Pepe', logo: 'https://assets.coingecko.com/coins/images/29850/small/pepe-token.jpeg', price: '$0.00001', change: '+5.79%', positive: true },
+    { symbol: 'AVAX', name: 'Avalanche', logo: 'https://assets.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png', price: '$7.84', change: '+3.21%', positive: true },
+    { symbol: 'ARB', name: 'Arbitrum', logo: 'https://assets.coingecko.com/coins/images/16547/small/photo_2023-03-29_21.47.00.jpeg', price: '$0.84', change: '+2.45%', positive: true },
+    { symbol: 'LINK', name: 'Chainlink', logo: 'https://assets.coingecko.com/coins/images/877/small/chainlink-new-logo.png', price: '$14.52', change: '+4.12%', positive: true },
+    { symbol: 'XRP', name: 'Ripple', logo: 'https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png', price: '$0.62', change: '+1.87%', positive: true },
+    { symbol: 'ADA', name: 'Cardano', logo: 'https://assets.coingecko.com/coins/images/975/small/cardano.png', price: '$0.45', change: '+2.93%', positive: true },
+    { symbol: 'MATIC', name: 'Polygon', logo: 'https://assets.coingecko.com/coins/images/4713/small/polygon.png', price: '$0.89', change: '+3.67%', positive: true },
+]
+
+export default function Home() {
+    const navigate = useNavigate()
+    const { isLoggedIn } = useAuth()
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+    return (
+        <Layout activePage="home" hideFooter={true}>
+            <div className="mobile-home-view">
+                <div className="mobile-header-bar">
+                    {isLoggedIn ? (
+                        <>
+                            <div className="mobile-header-left">
+                                <div className="mobile-balance-btn" onClick={() => navigate('/dashboard/assets')}>
+                                    <div className="mobile-balance-icon">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <rect x="2" y="5" width="20" height="14" rx="2" />
+                                            <line x1="2" y1="10" x2="22" y2="10" />
+                                        </svg>
+                                    </div>
+                                    <span className="mobile-balance-amount">$40,000</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6" /></svg>
+                                </div>
+                            </div>
+                            <div className="mobile-header-right">
+                                <div className="mobile-header-icon">
+                                    <Search size={20} />
+                                </div>
+                                <div className="mobile-header-icon">
+                                    <Bell size={20} />
+                                </div>
+                                <div className="mobile-header-avatar" onClick={() => navigate('/dashboard/profile')}>
+                                    B
+                                </div>
+                                <div className="mobile-header-icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                                    <Menu size={20} />
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="mobile-header-left">
+                                <img src="/logo.png" alt="Diwanfinance" className="mobile-header-logo" />
+                            </div>
+                            <div className="mobile-header-right">
+                                <button className="mobile-auth-btn mobile-signin-btn" onClick={() => navigate('/signin')}>
+                                    Sign In
+                                </button>
+                                <button className="mobile-auth-btn mobile-signup-btn" onClick={() => navigate('/signup')}>
+                                    Sign Up
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                <div className="mobile-promo-banner">
+                    <div className="mobile-promo-content">
+                        <div className="mobile-promo-text">
+                            <h3>Zero cost fees on <span className="highlight">Xmas</span></h3>
+                            <p>Enjoy trading without extra cost this holiday season!</p>
+                        </div>
+                        <div className="mobile-promo-image">
+                            <span className="promo-gift-emoji">🎁</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mobile-quick-actions">
+                    <div className="mobile-quick-actions-grid">
+                        {mobileQuickActions.map((action, index) => (
+                            <div
+                                key={index}
+                                className="mobile-quick-action"
+                                onClick={() => navigate(action.path)}
+                            >
+                                <div className="mobile-quick-action-icon">
+                                    <action.icon size={22} />
+                                </div>
+                                <span className="mobile-quick-action-label">{action.label}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="mobile-crypto-section">
+                    <div className="mobile-crypto-header">
+                        <h4>Top Cryptocurrencies</h4>
+                        <Link to="/dashboard/market">See all</Link>
+                    </div>
+                    <div className="mobile-crypto-list">
+                        {mobileCryptoData.map((coin, index) => (
+                            <div
+                                key={index}
+                                className="mobile-crypto-item"
+                                onClick={() => navigate('/dashboard/trade')}
+                            >
+                                <div className="mobile-crypto-info">
+                                    <img src={coin.logo} alt={coin.name} className="mobile-crypto-logo" />
+                                    <div className="mobile-crypto-details">
+                                        <span className="mobile-crypto-symbol">{coin.symbol}</span>
+                                        <span className="mobile-crypto-name">{coin.name}</span>
+                                    </div>
+                                </div>
+                                <div className="mobile-crypto-price-section">
+                                    <span className="mobile-crypto-price">{coin.price}</span>
+                                    <span className={`mobile-crypto-change ${coin.positive ? 'positive' : 'negative'}`}>
+                                        {coin.change}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <div className="desktop-only p-10 text-center">
+                <h1 className="text-3xl font-bold mb-4">Dashboard Home</h1>
+                <p className="text-zinc-500">Welcome back to your DiwanFinance dashboard.</p>
+            </div>
+        </Layout>
+    )
+}

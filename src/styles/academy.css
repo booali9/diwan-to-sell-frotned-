@@ -1,0 +1,239 @@
+.academy-container {
+    padding: 60px 100px;
+    max-width: 1600px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Tabs Styling */
+.academy-tabs {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 2px;
+}
+
+.academy-tab {
+    background: none;
+    border: none;
+    color: #71717A;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 0px;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.academy-tab.active {
+    color: #ffffff;
+}
+
+.academy-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 48px;
+    height: 2px;
+    background-color: #1B9B8C;
+}
+
+/* Grid Layout */
+.academy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.academy-card {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.academy-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1.5 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    position: relative;
+    background: linear-gradient(135deg, #4F55EE 0%, #303491 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Blueprint Grid Pattern */
+.academy-image-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: 1;
+}
+
+/* Cross pattern at grid intersections */
+.academy-image-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 1.5px 1.5px, rgba(255, 255, 255, 0.2) 1.5px, transparent 0);
+    background-size: 50px 50px;
+    top: -1.5px;
+    left: -1.5px;
+    z-index: 2;
+}
+
+.academy-img {
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
+    position: relative;
+    z-index: 3;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.academy-card:hover .academy-img {
+    transform: scale(1.08);
+}
+
+.academy-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.academy-date {
+    color: #1B9B8C;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.academy-card-title {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.academy-card-desc {
+    color: #A1A1AA;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .academy-container {
+        padding: 40px 60px;
+    }
+
+    .academy-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .academy-container {
+        padding: 20px 16px;
+        padding-bottom: 100px;
+    }
+
+    .academy-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .academy-card-title {
+        font-size: 18px;
+    }
+
+    .academy-card-desc {
+        font-size: 14px;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+    }
+
+    .academy-tabs {
+        gap: 16px;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding-bottom: 4px;
+    }
+
+    .academy-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .academy-tab {
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .academy-image-wrapper {
+        margin-bottom: 16px;
+    }
+
+    .academy-date {
+        font-size: 13px;
+    }
+
+    .academy-card-content {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .academy-container {
+        padding: 0 16px;
+        padding-bottom: 100px;
+        background-color: #0A0A10;
+    }
+
+    .academy-container .mob-page-header {
+        margin: 0 -16px;
+        padding: 16px;
+        margin-bottom: 8px;
+    }
+
+    .academy-tabs {
+        gap: 12px;
+        margin-bottom: 32px;
+    }
+
+    .academy-tab {
+        font-size: 13px;
+        padding: 10px 0;
+    }
+
+    .academy-card-title {
+        font-size: 16px;
+    }
+
+    .academy-card-desc {
+        font-size: 13px;
+    }
+
+    .academy-grid {
+        gap: 20px;
+    }
+}

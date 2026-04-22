@@ -1,0 +1,2049 @@
+/* Advance Trade Page Styles */
+
+.at-container {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 60px);
+    background: #0a0a0f;
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    .at-container {
+        display: none;
+    }
+}
+
+/* Top Bar */
+.at-top-bar {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    padding: 16px 24px;
+    border-bottom: 1px solid #1a1a24;
+    background: #0a0a0f;
+}
+
+.at-pair-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.at-pair-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f7931a, #ff9500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.at-pair-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.at-pair-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.at-pair-slash {
+    color: #52525b;
+}
+
+.at-pair-sub {
+    font-size: 12px;
+    color: #71717a;
+}
+
+.at-pair-price {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.at-pair-price.red {
+    color: #ef4444;
+}
+
+.at-pair-usd {
+    font-size: 13px;
+    color: #71717a;
+}
+
+.at-stats {
+    display: flex;
+    gap: 40px;
+}
+
+.at-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.at-stat-label {
+    font-size: 11px;
+    color: #52525b;
+}
+
+.at-stat-value {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Main Grid */
+.at-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px 240px;
+    flex: 1;
+    min-height: 500px;
+    overflow: hidden;
+}
+
+/* Chart Section */
+.at-chart-section {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #1a1a24;
+    overflow: hidden;
+    background: #0a0a0f;
+    height: 100%;
+}
+
+/* OHLC Info Row */
+.at-chart-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background: #0a0a0f;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.at-ohlc {
+    display: flex;
+    gap: 12px;
+    color: #71717a;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 12px;
+}
+
+.at-date-dot {
+    color: #10b981;
+    font-size: 8px;
+}
+
+.at-date {
+    color: #10b981;
+    margin-right: 4px;
+}
+
+.at-val-green {
+    color: #10b981;
+}
+
+.at-val-red {
+    color: #ef4444;
+}
+
+.at-chart-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.chart-icon {
+    color: #52525b;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.chart-icon:hover {
+    color: #71717a;
+}
+
+/* MA Info Row */
+.at-ma-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 16px;
+    font-size: 12px;
+    background: #0a0a0f;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.ma-dot {
+    font-size: 8px;
+    margin-right: 4px;
+}
+
+.ma-yellow {
+    color: #eab308;
+    display: flex;
+    align-items: center;
+}
+
+.ma-purple {
+    color: #a855f7;
+}
+
+.ma-cyan {
+    color: #06b6d4;
+}
+
+.ma-val {
+    color: #71717a;
+    margin-left: 2px;
+}
+
+.ma-icons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.ma-icon {
+    color: #52525b;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.ma-icon:hover {
+    color: #71717a;
+}
+
+/* Chart Wrapper */
+.at-chart-wrapper {
+    position: relative;
+    flex: 1;
+    min-height: 400px;
+    height: 100%;
+    background: #0a0a0f;
+}
+
+.at-chart-container {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    background: #0a0a0f;
+}
+
+/* Price Label */
+.at-price-label {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ef4444;
+    padding: 4px 8px;
+    border-radius: 2px 0 0 2px;
+    z-index: 10;
+}
+
+.price-value {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Volume Section */
+.at-volume-section {
+    background: #0a0a0f;
+    border-top: 1px solid #1a1a24;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.at-volume-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: #71717a;
+    background: #0a0a0f;
+}
+
+.vol-arrow {
+    color: #52525b;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.vol-label {
+    color: #71717a;
+}
+
+.vol-value {
+    color: #10b981;
+}
+
+.vol-icons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.vol-icon {
+    color: #52525b;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.vol-icon:hover {
+    color: #71717a;
+}
+
+.at-volume-chart {
+    width: 100%;
+    height: 120px;
+    min-height: 120px;
+    background: #0a0a0f;
+    position: relative;
+}
+
+.at-volume-scale {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: #52525b;
+    text-align: right;
+    min-width: 50px;
+}
+
+/* Orders Section */
+.at-orders-section {
+    background: #0a0a0f;
+    border-top: 1px solid #1a1a24;
+}
+
+.at-orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.at-orders-tabs-bar {
+    display: flex;
+    gap: 24px;
+    padding: 12px 16px 0 16px;
+}
+
+.at-orders-tab {
+    font-size: 14px;
+    color: #52525b;
+    cursor: pointer;
+    padding-bottom: 10px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.at-orders-tab:hover {
+    color: #a1a1aa;
+}
+
+.at-orders-tab.active {
+    color: #ffffff;
+    border-bottom-color: #10b981;
+}
+
+.at-orders-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 16px;
+}
+
+.at-hide-pairs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #71717a;
+    cursor: pointer;
+}
+
+.at-checkbox-circle {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #3a3a44;
+    border-radius: 50%;
+}
+
+.at-orders-table {
+    background: #0a0a0f;
+}
+
+.at-orders-columns {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 0.8fr 0.6fr 1fr 1fr 0.8fr 1fr 1.2fr auto;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #52525b;
+    border-bottom: 1px solid #1a1a24;
+    align-items: center;
+}
+
+.at-trade-row {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 0.8fr 0.6fr 1fr 1fr 0.8fr 1fr 1.2fr auto;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #ffffff;
+    border-bottom: 1px solid #11111a;
+    align-items: center;
+}
+
+.at-trade-row:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.at-trade-row span.green {
+    color: #10b981;
+}
+
+.at-trade-row span.red {
+    color: #ef4444;
+}
+
+.at-close-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+    width: fit-content;
+}
+
+.at-close-btn:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.at-col-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.at-cancel-all-btn {
+    padding: 6px 16px;
+    background: #1a1a24;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #71717a;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.at-cancel-all-btn:hover {
+    background: #2a2a34;
+    color: #ffffff;
+}
+
+.at-orders-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.at-empty-icon {
+    opacity: 0.8;
+}
+
+/* Orderbook Section */
+.at-orderbook-section {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #1a1a24;
+    overflow: hidden;
+}
+
+.at-ob-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.at-ob-tabs {
+    display: flex;
+    gap: 16px;
+}
+
+.at-ob-tab {
+    font-size: 13px;
+    color: #52525b;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.at-ob-tab.active {
+    color: #ffffff;
+}
+
+.at-ob-settings {
+    color: #71717a;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.at-ob-settings:hover {
+    color: #ffffff;
+}
+
+.at-ob-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.at-ob-view-btns {
+    display: flex;
+    gap: 6px;
+}
+
+.at-ob-view-btn {
+    width: 24px;
+    height: 18px;
+    background: #1a1a24;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    padding: 3px;
+}
+
+.at-ob-view-btn span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #3a3a44;
+    border-radius: 1px;
+}
+
+.at-ob-view-btn.both.active span:nth-child(1),
+.at-ob-view-btn.both.active span:nth-child(2) {
+    background: #10b981;
+}
+
+.at-ob-view-btn.both.active span:nth-child(3) {
+    background: #ef4444;
+}
+
+.at-ob-view-btn.bids.active span {
+    background: #10b981;
+}
+
+.at-ob-view-btn.asks.active span {
+    background: #ef4444;
+}
+
+.at-ob-precision {
+    font-size: 13px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.at-ob-more {
+    color: #52525b;
+    margin-left: 10px;
+}
+
+.at-ob-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #52525b;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.at-ob-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.at-ob-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 5px 16px;
+    font-size: 12px;
+    position: relative;
+}
+
+.at-ob-row.highlight {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+.at-ob-row.highlight-bid {
+    background: rgba(16, 185, 129, 0.15);
+}
+
+.at-ob-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+}
+
+.at-ob-bg.ask {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+.at-ob-bg.bid {
+    background: rgba(16, 185, 129, 0.15);
+}
+
+.at-ob-price {
+    font-weight: 500;
+}
+
+.at-ob-price.ask {
+    color: #ef4444;
+}
+
+.at-ob-price.bid {
+    color: #10b981;
+}
+
+.at-ob-amount {
+    color: #ffffff;
+    text-align: center;
+}
+
+.at-ob-total {
+    color: #ffffff;
+    text-align: right;
+}
+
+.at-ob-spread {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px;
+    border-top: 1px solid #1a1a24;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.at-spread-price {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.at-spread-price.green {
+    color: #10b981;
+}
+
+.at-spread-arrow {
+    color: #ef4444;
+    font-size: 14px;
+}
+
+/* Trade Section */
+.at-trade-section {
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.at-trade-tabs {
+    display: flex;
+    gap: 20px;
+}
+
+.at-trade-tab {
+    font-size: 14px;
+    color: #52525b;
+    cursor: pointer;
+}
+
+.at-trade-tab.active {
+    color: #ffffff;
+}
+
+.at-bs-tabs {
+    display: flex;
+    gap: 10px;
+}
+
+.at-bs-tab {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.at-bs-tab.buy {
+    background: #1a1a24;
+    color: #71717a;
+}
+
+.at-bs-tab.buy.active {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.at-bs-tab.sell {
+    background: #1a1a24;
+    color: #71717a;
+}
+
+.at-bs-tab.sell.active {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.at-order-types {
+    display: flex;
+    gap: 14px;
+}
+
+.at-order-type {
+    font-size: 13px;
+    color: #52525b;
+    cursor: pointer;
+}
+
+.at-order-type.active {
+    color: #ffffff;
+}
+
+.at-avbl-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.at-avbl-label {
+    color: #52525b;
+}
+
+.at-avbl-value {
+    color: #ffffff;
+}
+
+.at-avbl-icon {
+    color: #10b981;
+    font-size: 10px;
+}
+
+.at-input-group {
+    position: relative;
+}
+
+.at-input-label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #52525b;
+}
+
+.at-input {
+    width: 100%;
+    background: #1a1a24;
+    border: 1px solid #2a2a34;
+    border-radius: 6px;
+    padding: 12px 50px 12px 50px;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: right;
+    outline: none;
+}
+
+.at-input:focus {
+    border-color: #10b981;
+}
+
+.at-input-suffix {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.at-slider {
+    padding: 8px 0;
+}
+
+.at-slider-track {
+    height: 4px;
+    background: #2a2a34;
+    border-radius: 2px;
+    position: relative;
+}
+
+.at-slider-thumb {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    background: #10b981;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.at-slider-dots {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.at-slider-dot {
+    width: 8px;
+    height: 8px;
+    background: #2a2a34;
+    border-radius: 50%;
+}
+
+.at-slider-dot.active {
+    background: #10b981;
+}
+
+.at-advanced-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.at-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #3a3a44;
+    border-radius: 50%;
+}
+
+.at-max-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.at-max-label {
+    color: #52525b;
+}
+
+.at-max-value {
+    color: #ffffff;
+}
+
+.at-main-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.at-main-btn.buy {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.at-main-btn.sell {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.at-action-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.at-action-btn {
+    flex: 1;
+    padding: 10px 0;
+    background: transparent;
+    border: 1px solid #3a3a44;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #71717a;
+    cursor: pointer;
+}
+
+.at-action-btn:hover {
+    border-color: #52525b;
+    color: #ffffff;
+}
+
+/* Colors */
+.red {
+    color: #ef4444;
+}
+
+.green {
+    color: #10b981;
+}
+
+/* Desktop styles - hide mobile */
+.at-mobile-container {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+    .at-main-grid {
+        grid-template-columns: 1fr 280px 220px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .at-main-grid {
+        grid-template-columns: 1fr 260px 200px;
+    }
+}
+
+@media (max-width: 992px) {
+    .at-main-grid {
+        grid-template-columns: 1fr 220px;
+    }
+
+    .at-orderbook-section {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .at-container {
+        display: none;
+    }
+
+    .at-mobile-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: #000000;
+        padding-bottom: 80px;
+    }
+}
+
+/* ==========================================
+   MOBILE STYLES - EXACT CLONE
+   ========================================== */
+
+.at-mobile-container {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .at-mobile-container {
+        display: flex;
+        flex-direction: column;
+        background: #000000;
+        min-height: 100vh;
+        position: relative;
+    }
+}
+
+/* Mobile Header Tabs */
+.atm-header-tabs {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 16px 12px;
+}
+
+.atm-header-tab {
+    font-size: 16px;
+    font-weight: 500;
+    color: #52525b;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.atm-header-tab.active {
+    color: #ffffff;
+}
+
+/* Mobile Pair Row */
+.atm-pair-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px 16px;
+}
+
+.atm-pair-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.atm-pair-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    background: #1a1a24;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+.atm-pair-chevron {
+    color: #52525b;
+}
+
+.atm-pair-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.atm-pair-badge.green {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.atm-pair-badge.red {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.atm-pair-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.atm-action-icon {
+    color: #71717a;
+    cursor: pointer;
+}
+
+.atm-action-icon:hover {
+    color: #ffffff;
+}
+
+/* Main Two-Column Grid */
+.atm-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    flex: 1;
+}
+
+/* Left Column - Orderbook */
+.atm-orderbook-col {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #1a1a24;
+    padding: 0 8px;
+}
+
+.atm-ob-col-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 4px;
+    font-size: 10px;
+    color: #52525b;
+}
+
+.atm-ob-asks,
+.atm-ob-bids {
+    display: flex;
+    flex-direction: column;
+}
+
+.atm-ob-row-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 4px;
+    font-size: 11px;
+    position: relative;
+}
+
+.atm-price {
+    font-weight: 500;
+    z-index: 1;
+}
+
+.atm-price.red {
+    color: #ef4444;
+}
+
+.atm-price.green {
+    color: #10b981;
+}
+
+.atm-size {
+    color: #ffffff;
+    z-index: 1;
+}
+
+.atm-depth-bar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.15;
+}
+
+.atm-depth-bar.red {
+    background: #ef4444;
+}
+
+.atm-depth-bar.green {
+    background: #10b981;
+}
+
+/* Center Price Display */
+.atm-price-center {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 4px;
+    border-top: 1px solid #1a1a24;
+    border-bottom: 1px solid #1a1a24;
+    margin: 4px 0;
+}
+
+.atm-big-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.atm-mark-price {
+    font-size: 11px;
+    color: #52525b;
+}
+
+/* Precision Row */
+.atm-precision-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 4px;
+    margin-top: auto;
+}
+
+.atm-precision-value {
+    font-size: 12px;
+    color: #ffffff;
+    background: #1a1a24;
+    padding: 6px 10px;
+    border-radius: 4px;
+}
+
+.atm-precision-chevron {
+    color: #52525b;
+}
+
+.atm-grid-icon {
+    color: #10b981;
+    margin-left: auto;
+}
+
+/* Right Column - Trade Form */
+.atm-trade-col {
+    display: flex;
+    flex-direction: column;
+    padding: 0 8px;
+    gap: 10px;
+}
+
+/* Buy/Sell Toggle */
+.atm-bs-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.atm-bs-btn {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.atm-bs-btn.buy {
+    background: #1a1a24;
+    color: #52525b;
+}
+
+.atm-bs-btn.buy.active {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.atm-bs-btn.sell {
+    background: #1a1a24;
+    color: #52525b;
+}
+
+.atm-bs-btn.sell.active {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+/* Order Type Selector */
+.atm-order-type-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #1a1a24;
+    border-radius: 6px;
+}
+
+.atm-ot-bullet {
+    color: #52525b;
+    font-size: 8px;
+}
+
+.atm-ot-text {
+    flex: 1;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.atm-ot-chevron {
+    color: #52525b;
+}
+
+/* Input Rows */
+.atm-input-row {
+    display: flex;
+    align-items: center;
+    background: #1a1a24;
+    border-radius: 6px;
+    border: 1px solid #2a2a34;
+}
+
+.atm-input-btn {
+    width: 36px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    color: #52525b;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.atm-input-btn:active {
+    color: #ffffff;
+}
+
+.atm-input-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 0;
+}
+
+.atm-input-label {
+    font-size: 10px;
+    color: #52525b;
+}
+
+.atm-input-field {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    outline: none;
+}
+
+.atm-input-field::placeholder {
+    color: #3a3a44;
+}
+
+/* Slider Container */
+.atm-slider-container {
+    padding: 8px 4px;
+}
+
+.atm-slider-track-v2 {
+    position: relative;
+    height: 3px;
+    background: #2a2a34;
+    border-radius: 2px;
+}
+
+.atm-slider-thumb-v2 {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    background: #10b981;
+    border: 3px solid #000000;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.atm-slider-diamonds {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    padding: 0 2px;
+}
+
+.atm-diamond {
+    width: 8px;
+    height: 8px;
+    background: #2a2a34;
+    transform: rotate(45deg);
+}
+
+/* Total Row */
+.atm-total-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #1a1a24;
+    border-radius: 6px;
+    border: 1px solid #2a2a34;
+    padding: 8px 12px;
+}
+
+.atm-total-label {
+    font-size: 10px;
+    color: #52525b;
+}
+
+.atm-total-input {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    outline: none;
+}
+
+/* Info Rows */
+.atm-info-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 4px 0;
+}
+
+.atm-info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.atm-info-label {
+    color: #52525b;
+}
+
+.atm-info-value {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.atm-plus-icon {
+    color: #10b981;
+    vertical-align: middle;
+    margin-left: 2px;
+}
+
+/* Main Buy Button */
+.atm-main-buy-btn {
+    width: 100%;
+    padding: 12px;
+    background: #10b981;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: auto;
+}
+
+.atm-main-buy-btn:active {
+    background: #0d9668;
+}
+
+/* Orders Section */
+.atm-orders-section {
+    border-top: 1px solid #1a1a24;
+    margin-top: 16px;
+}
+
+.atm-orders-tabs-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.atm-orders-tabs {
+    display: flex;
+    gap: 16px;
+}
+
+.atm-orders-tab {
+    font-size: 13px;
+    color: #52525b;
+    cursor: pointer;
+}
+
+.atm-orders-tab.active {
+    color: #ffffff;
+}
+
+.atm-orders-menu-icon {
+    color: #71717a;
+}
+
+/* Toggle Row */
+.atm-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+}
+
+.atm-toggle {
+    width: 36px;
+    height: 20px;
+    background: #2a2a34;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.atm-toggle.active {
+    background: #10b981;
+}
+
+.atm-toggle-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: left 0.2s;
+}
+
+.atm-toggle.active .atm-toggle-knob {
+    left: 18px;
+}
+
+.atm-toggle-label {
+    font-size: 13px;
+    color: #71717a;
+}
+
+/* Quick Action Buttons */
+.atm-quick-actions {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 24px 16px;
+    border-top: 1px solid #1a1a24;
+}
+
+.atm-quick-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.atm-qa-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    background: #1a1a24;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.atm-qa-icon {
+    color: #10b981;
+}
+
+.atm-qa-label {
+    font-size: 12px;
+    color: #ffffff;
+}
+
+/* End of Mobile Styles */
+
+/* Mobile Price Display */
+.atm-price-display {
+    padding: 8px 16px 12px;
+}
+
+.atm-current-price {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Mobile Orderbook */
+.atm-orderbook {
+    display: flex;
+    flex-direction: column;
+}
+
+.atm-ob-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: #52525b;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.atm-ob-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.atm-ob-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.atm-ob-price {
+    font-weight: 500;
+}
+
+.atm-ob-price.ask {
+    color: #ef4444;
+}
+
+.atm-ob-price.bid {
+    color: #10b981;
+}
+
+.atm-ob-size {
+    color: #ffffff;
+    text-align: right;
+    position: relative;
+}
+
+.atm-ob-size.ask-bg {
+    background: linear-gradient(to left, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.2) 60%, transparent 60%);
+}
+
+.atm-ob-size.bid-bg {
+    background: linear-gradient(to left, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.2) 60%, transparent 60%);
+}
+
+/* Mobile Amount Section */
+.atm-amount-section {
+    padding: 12px 16px;
+    border-top: 1px solid #1a1a24;
+}
+
+.atm-amount-input {
+    display: flex;
+    align-items: center;
+    background: #1a1a24;
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.atm-amount-input input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.atm-amount-dropdown {
+    color: #52525b;
+}
+
+/* Mobile Buy/Sell Row */
+.atm-buy-sell-row {
+    display: flex;
+    gap: 12px;
+    padding: 0 16px 12px;
+}
+
+.atm-action-btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.atm-action-btn.buy {
+    background: #1a1a24;
+    color: #52525b;
+}
+
+.atm-action-btn.buy.active {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.atm-action-btn.sell {
+    background: #1a1a24;
+    color: #52525b;
+}
+
+.atm-action-btn.sell.active {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+/* Mobile Available Row */
+.atm-available-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 16px;
+    font-size: 13px;
+}
+
+.atm-available-label {
+    color: #52525b;
+}
+
+.atm-available-value {
+    color: #ffffff;
+}
+
+/* Mobile Order Type Row */
+.atm-order-type-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    border-top: 1px solid #1a1a24;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.atm-order-icon {
+    color: #52525b;
+}
+
+.atm-order-type-text {
+    flex: 1;
+}
+
+/* Mobile Limit Order Form */
+.atm-limit-form {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.atm-form-input-row {
+    display: flex;
+    align-items: center;
+    background: #1a1a24;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.atm-form-btn {
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    color: #52525b;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.atm-form-btn:active {
+    background: #2a2a34;
+}
+
+.atm-form-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    padding: 12px 0;
+    outline: none;
+}
+
+.atm-form-input::placeholder {
+    color: #52525b;
+}
+
+/* Mobile Slider */
+.atm-slider-row {
+    padding: 8px 0;
+}
+
+.atm-slider-track {
+    position: relative;
+    height: 4px;
+    background: #2a2a34;
+    border-radius: 2px;
+}
+
+.atm-slider-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: #10b981;
+    border-radius: 2px;
+}
+
+.atm-slider-thumb {
+    position: absolute;
+    left: 0%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: #10b981;
+    border: 3px solid #0a0a0f;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.atm-slider-marks {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4px;
+    margin-top: 8px;
+}
+
+.atm-slider-mark {
+    width: 8px;
+    height: 8px;
+    background: #2a2a34;
+    border-radius: 2px;
+    transform: rotate(45deg);
+}
+
+/* Mobile Form Info */
+.atm-form-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+.atm-form-info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.atm-form-info-label {
+    color: #52525b;
+}
+
+.atm-form-info-value {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.atm-circle-icon {
+    color: #10b981;
+    font-size: 10px;
+}
+
+/* Mobile Buy BTC Button */
+.atm-buy-btc-btn {
+    width: 100%;
+    padding: 14px;
+    background: #10b981;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.atm-buy-btc-btn:active {
+    background: #0d9668;
+}
+
+/* Mobile Orders Section */
+.atm-orders-section {
+    border-top: 1px solid #1a1a24;
+    margin-top: 8px;
+}
+
+.atm-orders-tabs-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #1a1a24;
+}
+
+.atm-orders-tabs {
+    display: flex;
+    gap: 16px;
+}
+
+.atm-orders-tab {
+    font-size: 13px;
+    color: #52525b;
+    cursor: pointer;
+}
+
+.atm-orders-tab.active {
+    color: #ffffff;
+}
+
+.atm-orders-menu {
+    color: #52525b;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Mobile Toggle */
+.atm-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+}
+
+.atm-toggle {
+    width: 36px;
+    height: 20px;
+    background: #2a2a34;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.atm-toggle.active {
+    background: #10b981;
+}
+
+.atm-toggle-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: left 0.2s;
+}
+
+.atm-toggle.active .atm-toggle-knob {
+    left: 18px;
+}
+
+.atm-toggle-label {
+    font-size: 13px;
+    color: #71717a;
+}
+
+/* Mobile Empty State */
+.atm-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px 60px;
+}
+
+.atm-empty-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+    opacity: 0.6;
+}
+
+.atm-empty-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.atm-empty-text {
+    font-size: 14px;
+    color: #52525b;
+}
+
+/* Mobile Bottom Sheet Overlay */
+.atm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Mobile Bottom Sheet */
+.atm-bottom-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 70px;
+    background: #1a1a24;
+    border-radius: 16px 16px 0 0;
+    z-index: 1000;
+    animation: slideUp 0.3s ease;
+    padding-bottom: 20px;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.atm-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 16px;
+}
+
+.atm-sheet-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.atm-sheet-close {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.atm-sheet-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px 24px;
+}
+
+.atm-sheet-option {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    background: #0f0f14;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 1px solid #2a2a34;
+}
+
+.atm-sheet-option:active {
+    background: #2a2a34;
+}
+
+.atm-option-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.atm-option-subtitle {
+    font-size: 13px;
+    color: #71717a;
+}
+
+/* End of mobile styles */

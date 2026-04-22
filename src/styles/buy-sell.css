@@ -1,0 +1,409 @@
+/* Buy/Sell Crypto Refined Styles */
+.buysell-refined-container {
+    padding-bottom: 40px;
+}
+
+.buysell-main-card {
+    background-color: #0C0C17;
+    border: 1px solid #1C1C2C;
+    border-radius: 20px;
+    display: flex;
+    margin-top: 24px;
+    overflow: hidden;
+    min-height: 480px;
+}
+
+/* Left Section - Info/Mascot */
+.buysell-info-col {
+    flex: 1;
+    padding: 40px;
+    border-right: 1px solid #1C1C2C;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.buysell-mascot-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mascot-svg-refined {
+    width: 140px;
+    height: 140px;
+}
+
+.how-it-works-refined {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.how-it-works-refined h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.refined-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.refined-check {
+    width: 20px;
+    height: 20px;
+    background-color: #1B9B8C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.refined-step-text {
+    color: #A1A1AA;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Right Section - Form */
+.buysell-form-col {
+    width: 440px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.buysell-form-tabs {
+    display: flex;
+    background-color: #111118;
+    border: 1px solid #1C1C2C;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.buysell-form-tab {
+    flex: 1;
+    height: 40px;
+    background: none;
+    border: none;
+    color: #71717A;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.buysell-form-tab.active {
+    background-color: #1C1C2C;
+    color: #ffffff;
+}
+
+.buysell-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.buysell-field-group label {
+    color: #71717A;
+    font-size: 14px;
+}
+
+.refined-input-box {
+    background-color: #111118;
+    border: 1px solid #1C1C2C;
+    border-radius: 8px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+}
+
+.refined-input-box input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    outline: none;
+}
+
+.currency-selector-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 12px;
+    border-left: 1px solid #1C1C2C;
+    cursor: pointer;
+}
+
+.mini-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.mini-icon.usdt {
+    background-color: #1B9B8C;
+    color: white;
+}
+
+.mini-icon.btc {
+    background-color: #F7931A;
+    color: white;
+}
+
+.currency-name-mini {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.buysell-submit-btn {
+    height: 52px;
+    background-color: #1B9B8C;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background-color 0.2s ease;
+}
+
+.buysell-submit-btn:hover {
+    background-color: #158a7d;
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+    .buysell-main-card {
+        flex-direction: column;
+    }
+
+    .buysell-info-col {
+        border-right: none;
+        border-bottom: 1px solid #1C1C2C;
+        padding: 32px;
+    }
+
+    .buysell-form-col {
+        width: 100%;
+        padding: 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .buysell-refined-container {
+        padding: 0 16px;
+        padding-bottom: 100px;
+    }
+
+    .buysell-main-card {
+        margin-top: 16px;
+        border-radius: 16px;
+    }
+
+    .buysell-info-col {
+        display: none;
+    }
+
+    .buysell-form-col {
+        padding: 24px 20px;
+        gap: 20px;
+    }
+
+    .buysell-form-tabs {
+        border-radius: 8px;
+    }
+
+    .buysell-form-tab {
+        height: 36px;
+        font-size: 13px;
+    }
+
+    .buysell-field-group label {
+        font-size: 13px;
+    }
+
+    .refined-input-box {
+        height: 48px;
+        padding: 0 14px;
+        gap: 10px;
+    }
+
+    .refined-input-box input {
+        font-size: 15px;
+    }
+
+    .currency-selector-mini {
+        gap: 6px;
+        padding-left: 10px;
+    }
+
+    .mini-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+    }
+
+    .currency-name-mini {
+        font-size: 13px;
+    }
+
+    .buysell-submit-btn {
+        height: 48px;
+        font-size: 15px;
+        margin-top: 8px;
+    }
+
+    .mobile-buysell-view {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background-color: #0A0A10;
+        padding: 0;
+    }
+
+    .mobile-buysell-view .mob-page-header {
+        padding: 16px 0;
+        margin-bottom: 0;
+    }
+
+    .mob-buysell-card {
+        background-color: #111118;
+        border: 1px solid #1C1C2C;
+        border-radius: 20px;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .mob-buysell-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        border-bottom: 1px solid #1C1C2C;
+        padding-bottom: 12px;
+    }
+
+    .mob-bs-tab {
+        background: none;
+        border: none;
+        color: #71717A;
+        font-size: 16px;
+        font-weight: 500;
+        position: relative;
+        padding-bottom: 8px;
+    }
+
+    .mob-bs-tab.active {
+        color: #ffffff;
+    }
+
+    .mob-bs-tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #1B9B8C;
+    }
+
+    .mob-bs-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .mob-bs-field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .mob-bs-label {
+        color: #71717A;
+        font-size: 14px;
+    }
+
+    .mob-bs-input-row {
+        background-color: #1C1C2C;
+        border-radius: 12px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        justify-content: space-between;
+    }
+
+    .mob-bs-input {
+        background: none;
+        border: none;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 500;
+        width: 120px;
+        outline: none;
+    }
+
+    .mob-bs-currency {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #ffffff;
+    }
+
+    .currency-mini-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .currency-mini-icon.usdt {
+        background-color: #1B9B8C;
+    }
+
+    .currency-mini-icon.btc {
+        background-color: #F7931A;
+    }
+
+    .currency-code {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .mob-bs-submit-btn {
+        height: 56px;
+        background-color: #1B9B8C;
+        color: #ffffff;
+        border: none;
+        border-radius: 12px;
+        font-size: 17px;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+}

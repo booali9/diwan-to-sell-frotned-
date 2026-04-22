@@ -1,0 +1,362 @@
+/* History Page Styles */
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .history-mobile-layout {
+        background-color: #0A0A10;
+        min-height: 100vh;
+        color: #FFFFFF;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .history-top-bar {
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        gap: 12px;
+        background-color: #0A0A10;
+    }
+
+    .history-back-btn {
+        background: none;
+        border: none;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .history-top-title {
+        font-size: 15px;
+        font-weight: 500;
+        color: #FFFFFF;
+    }
+
+    /* Main Tabs - Spot/Futures */
+    .history-main-tabs {
+        display: flex;
+        padding: 0 20px;
+        gap: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .history-main-tab {
+        background: none;
+        border: none;
+        color: #71717A;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 12px 0;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .history-main-tab.active {
+        color: #FFFFFF;
+    }
+
+    .history-main-tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #00C0A3;
+    }
+
+    /* Filter Row */
+    .history-filter-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+    }
+
+    .history-filters-left {
+        display: flex;
+        gap: 12px;
+    }
+
+    .history-filter-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: none;
+        border: none;
+        color: #FFFFFF;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .history-filter-icon {
+        background: none;
+        border: none;
+        color: #71717A;
+        cursor: pointer;
+        padding: 4px;
+    }
+
+    /* Empty State */
+    .history-empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        padding: 80px 20px;
+        gap: 16px;
+    }
+
+    .history-empty-icon {
+        opacity: 0.6;
+    }
+
+    .history-empty-text {
+        font-size: 14px;
+        color: #71717A;
+    }
+
+    /* Sub Tabs - Open orders/History */
+    .history-sub-tabs {
+        display: flex;
+        padding: 12px 20px;
+        gap: 12px;
+    }
+
+    .history-sub-tab {
+        background: transparent;
+        border: 1px solid #2A2A35;
+        color: #71717A;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .history-sub-tab.active {
+        background-color: #1E1E28;
+        border-color: #3A3A45;
+        color: #FFFFFF;
+    }
+
+    /* Trade List */
+    .history-trades-list {
+        display: flex;
+        flex-direction: column;
+        padding: 0 20px;
+        gap: 16px;
+    }
+
+    .history-trade-card {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .trade-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .trade-pair-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .trade-pair {
+        font-size: 16px;
+        font-weight: 600;
+        color: #FFFFFF;
+    }
+
+    .trade-type {
+        font-size: 13px;
+        color: #71717A;
+    }
+
+    .trade-pnl-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+    }
+
+    .trade-pnl {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .trade-pnl.profit {
+        color: #00C0A3;
+    }
+
+    .trade-pnl.loss {
+        color: #EF4444;
+    }
+
+    .trade-pnl-percent {
+        font-size: 12px;
+    }
+
+    .trade-pnl-percent.profit {
+        color: #00C0A3;
+    }
+
+    .trade-pnl-percent.loss {
+        color: #EF4444;
+    }
+
+    .trade-entry-price {
+        font-size: 13px;
+        color: #71717A;
+    }
+
+    .trade-close-btn {
+        width: 100%;
+        background-color: #00C0A3;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 8px;
+        cursor: pointer;
+    }
+}
+
+/* Desktop Styles */
+.history-desktop-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #0A0A10;
+    min-height: 100vh;
+}
+
+.history-desktop-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 32px;
+}
+
+.history-desktop-tabs {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.history-desktop-tab {
+    background: none;
+    border: none;
+    color: #71717A;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 0;
+    cursor: pointer;
+    position: relative;
+}
+
+.history-desktop-tab.active {
+    color: #FFFFFF;
+}
+
+.history-desktop-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #00C0A3;
+}
+
+.history-desktop-subtabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.history-desktop-subtab {
+    background: transparent;
+    border: 1px solid #2A2A35;
+    color: #71717A;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.history-desktop-subtab.active {
+    background-color: #1E1E28;
+    border-color: #00C0A3;
+    color: #FFFFFF;
+}
+
+.history-desktop-table {
+    background-color: #12121A;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.history-desktop-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-desktop-table th,
+.history-desktop-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.history-desktop-table th {
+    font-size: 13px;
+    font-weight: 600;
+    color: #71717A;
+    text-transform: uppercase;
+}
+
+.history-desktop-table td {
+    font-size: 14px;
+    color: #FFFFFF;
+}
+
+.history-desktop-table td.profit {
+    color: #00C0A3;
+}
+
+.history-desktop-table td.loss {
+    color: #EF4444;
+}
+
+.desktop-close-btn {
+    background-color: #00C0A3;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.desktop-close-btn:hover {
+    opacity: 0.9;
+}

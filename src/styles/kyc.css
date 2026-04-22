@@ -1,0 +1,571 @@
+.kyc-page-container {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0c0c17;
+    font-family: 'Inter', sans-serif;
+    padding: 20px;
+}
+
+.kyc-card {
+    width: 100%;
+    max-width: 680px;
+    background-color: #111118;
+    border: 1px solid #1C1C2C;
+    border-radius: 20px;
+    padding: 48px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.kyc-back-btn {
+    position: absolute;
+    left: 32px;
+    top: 32px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #1C1C2C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.kyc-back-btn:hover {
+    background-color: #2C2C3C;
+}
+
+.kyc-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    /* Add space for the absolute button */
+    text-align: center;
+    max-width: 500px;
+    /* Prevent over-extension */
+}
+
+.kyc-subtitle {
+    font-size: 16px;
+    color: #A1A1AA;
+    margin-bottom: 40px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Step 1: OTP */
+.otp-input-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.otp-digit-input {
+    width: 60px;
+    height: 72px;
+    background-color: #0c0c17;
+    border: 2px solid #1C1C2C;
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.otp-digit-input:focus {
+    border-color: #1B9B8C;
+    background-color: rgba(27, 155, 140, 0.05);
+}
+
+.otp-digit-input.filled {
+    border-color: #1B9B8C;
+}
+
+.resend-text {
+    font-size: 14px;
+    color: #A1A1AA;
+    margin-bottom: 40px;
+}
+
+.resend-link {
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Steps List (Step 2) */
+.kyc-steps-list {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 40px;
+}
+
+.kyc-step-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.kyc-step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 40px;
+    width: 1px;
+    height: 24px;
+    background-color: #1C1C2C;
+}
+
+.step-icon-bg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #1C1C2C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    z-index: 1;
+}
+
+.step-text-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-number-label {
+    font-size: 12px;
+    color: #71717A;
+    margin-bottom: 2px;
+}
+
+.step-label-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Forms & Selects */
+.kyc-form {
+    width: 100%;
+    max-width: 500px;
+}
+
+.kyc-label {
+    display: block;
+    font-size: 14px;
+    color: #A1A1AA;
+    margin-bottom: 12px;
+}
+
+.kyc-select-wrapper {
+    position: relative;
+    margin-bottom: 32px;
+}
+
+.kyc-select {
+    width: 100%;
+    background-color: #1C1C2C;
+    border: 1px solid #2C2C3C;
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: #ffffff;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.kyc-option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.kyc-radio-option {
+    background-color: #1C1C2C;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.kyc-radio-option.active {
+    background-color: rgba(27, 155, 140, 0.1);
+    border-color: #1B9B8C;
+}
+
+.radio-circle {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #71717A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.kyc-radio-option.active .radio-circle {
+    border-color: #1B9B8C;
+    background-color: #1B9B8C;
+}
+
+.radio-inner {
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.2s;
+}
+
+.kyc-radio-option.active .radio-inner {
+    transform: scale(1);
+}
+
+.option-label {
+    font-size: 15px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Upload Area */
+.upload-area {
+    width: 100%;
+    background-color: #0c0c17;
+    border: 1px dashed #1B9B8C;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    margin-bottom: 24px;
+}
+
+.upload-icon-bg {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background-color: #1C1C2C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #A1A1AA;
+}
+
+.upload-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.upload-action-text {
+    font-size: 14px;
+    color: #1B9B8C;
+}
+
+.upload-constraints {
+    font-size: 12px;
+    color: #71717A;
+    text-align: center;
+}
+
+/* Action Buttons */
+.kyc-actions {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+}
+
+.kyc-btn-primary {
+    flex: 1;
+    background-color: #1B9B8C;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.kyc-btn-primary:hover {
+    background-color: #148376;
+}
+
+.kyc-btn-primary:forbidden {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.kyc-btn-secondary {
+    flex: 1;
+    background-color: #1C1C2C;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.kyc-btn-secondary:hover {
+    background-color: #2C2C3C;
+}
+
+/* Phone QR Section */
+.qr-container {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+}
+
+.or-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.or-line {
+    flex: 1;
+    height: 1px;
+    background-color: #1C1C2C;
+}
+
+.or-text {
+    color: #71717A;
+    font-size: 14px;
+}
+
+.mobile-browser-text {
+    font-size: 14px;
+    color: #A1A1AA;
+    margin-bottom: 16px;
+}
+
+.copy-link-container {
+    width: 100%;
+    background-color: #0c0c17;
+    border: 1px solid #1C1C2C;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+}
+
+.link-input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #71717A;
+    font-size: 14px;
+    padding: 8px;
+    outline: none;
+}
+
+.copy-btn-teal {
+    background-color: #1B9B8C;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.copy-btn-teal:hover {
+    background-color: #148376;
+}
+
+/* Device Switch Illustration */
+.another-device-info {
+    text-align: center;
+    max-width: 440px;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .kyc-page-container {
+        padding: 16px;
+        padding-bottom: 100px;
+        min-height: auto;
+    }
+
+    .kyc-card {
+        padding: 24px 20px;
+        border-radius: 16px;
+    }
+
+    .kyc-back-btn {
+        left: 20px;
+        top: 20px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .kyc-title {
+        font-size: 22px;
+        margin-top: 40px;
+        max-width: 100%;
+    }
+
+    .kyc-subtitle {
+        font-size: 14px;
+        margin-bottom: 28px;
+    }
+
+    /* OTP Step */
+    .otp-input-container {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .otp-digit-input {
+        width: 44px;
+        height: 56px;
+        font-size: 20px;
+        border-radius: 10px;
+    }
+
+    .resend-text {
+        font-size: 13px;
+        margin-bottom: 28px;
+    }
+
+    /* Steps List */
+    .kyc-steps-list {
+        margin-bottom: 28px;
+    }
+
+    .step-label-title {
+        font-size: 14px;
+    }
+
+    /* Forms */
+    .kyc-form {
+        max-width: 100%;
+    }
+
+    .kyc-select {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .kyc-option-list {
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .kyc-radio-option {
+        padding: 14px;
+        border-radius: 10px;
+    }
+
+    .option-label {
+        font-size: 14px;
+    }
+
+    /* Upload Area */
+    .upload-area {
+        padding: 24px 16px;
+    }
+
+    .upload-title {
+        font-size: 14px;
+    }
+
+    /* Action Buttons */
+    .kyc-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .kyc-btn-primary,
+    .kyc-btn-secondary {
+        padding: 14px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+
+    /* QR Section */
+    .qr-container {
+        padding: 16px;
+    }
+
+    .qr-image {
+        width: 160px;
+        height: 160px;
+    }
+
+    .copy-link-container {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .link-input {
+        width: 100%;
+        text-align: center;
+    }
+
+    .copy-btn-teal {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .kyc-card {
+        padding: 20px 16px;
+    }
+
+    .kyc-title {
+        font-size: 20px;
+    }
+
+    .otp-digit-input {
+        width: 40px;
+        height: 50px;
+        font-size: 18px;
+    }
+}

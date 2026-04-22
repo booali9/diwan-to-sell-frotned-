@@ -1,0 +1,504 @@
+/* Home Dashboard Styles - Darkex-inspired Design */
+
+.home-container {
+    background-color: #0B0B0F;
+    min-height: 100vh;
+    padding: 20px 16px;
+    padding-bottom: 100px;
+}
+
+/* Promotional Banner */
+.promo-banner {
+    background: linear-gradient(135deg, #1a3a36 0%, #0d1f1d 50%, #0B0B0F 100%);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.promo-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.promo-content {
+    flex: 1;
+    z-index: 1;
+}
+
+.promo-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.promo-subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #10B981;
+    margin-bottom: 8px;
+}
+
+.promo-description {
+    font-size: 12px;
+    color: #71717A;
+    max-width: 200px;
+    line-height: 1.4;
+}
+
+.promo-graphic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.promo-amount {
+    font-size: 48px;
+    font-weight: 800;
+    color: #10B981;
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+}
+
+.promo-currency {
+    font-size: 18px;
+    font-weight: 700;
+    color: #10B981;
+    background: rgba(16, 185, 129, 0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-top: 4px;
+}
+
+/* Quick Actions - Primary */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.quick-action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 4px;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.quick-action-item:hover {
+    transform: translateY(-2px);
+}
+
+.quick-action-item:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+}
+
+.quick-action-icon {
+    width: 48px;
+    height: 48px;
+    background-color: #1A1A24;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #71717A;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.quick-action-item:hover .quick-action-icon {
+    background-color: #252532;
+    color: #ffffff;
+}
+
+.quick-action-label {
+    font-size: 11px;
+    color: #A1A1AA;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Quick Actions - Secondary */
+.secondary-actions-grid {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #1C1C2C;
+}
+
+.secondary-action-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    cursor: pointer;
+}
+
+.secondary-action-icon {
+    width: 36px;
+    height: 36px;
+    background-color: #1A1A24;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #71717A;
+}
+
+.secondary-action-label {
+    font-size: 13px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Crypto Price List */
+.crypto-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.crypto-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 8px;
+}
+
+.crypto-item:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.crypto-item:active {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.crypto-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.crypto-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #1A1A24;
+}
+
+.crypto-name-pair {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.crypto-symbol {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.crypto-pair {
+    font-size: 13px;
+    color: #71717A;
+    font-weight: 500;
+}
+
+.crypto-price-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.crypto-price {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+    min-width: 100px;
+    text-align: right;
+}
+
+.crypto-change {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    min-width: 70px;
+    text-align: center;
+}
+
+.crypto-change.positive {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10B981;
+}
+
+.crypto-change.negative {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #EF4444;
+}
+
+/* View More Link */
+.view-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 16px;
+    margin-top: 16px;
+    color: #71717A;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.view-more:hover {
+    color: #ffffff;
+}
+
+/* Desktop adjustments */
+@media (min-width: 768px) {
+    .home-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 24px;
+    }
+
+    .promo-banner {
+        padding: 32px 40px;
+    }
+
+    .promo-title {
+        font-size: 28px;
+    }
+
+    .promo-subtitle {
+        font-size: 20px;
+    }
+
+    .promo-description {
+        font-size: 14px;
+        max-width: 300px;
+    }
+
+    .promo-amount {
+        font-size: 64px;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        max-width: 600px;
+    }
+
+    .quick-action-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .quick-action-label {
+        font-size: 12px;
+    }
+
+    .crypto-list {
+        max-width: 800px;
+    }
+
+    .crypto-item {
+        padding: 16px 12px;
+    }
+
+    .crypto-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    .crypto-symbol {
+        font-size: 16px;
+    }
+
+    .crypto-price {
+        font-size: 16px;
+        min-width: 120px;
+    }
+
+    .crypto-change {
+        font-size: 14px;
+        min-width: 80px;
+    }
+}
+
+/* Mobile Bottom Nav adjustment */
+@media (max-width: 768px) {
+    .home-container {
+        padding: 16px 12px;
+        padding-bottom: 120px;
+    }
+
+    .promo-banner {
+        padding: 16px;
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .promo-content {
+        order: 2;
+    }
+
+    .promo-title {
+        font-size: 18px;
+    }
+
+    .promo-subtitle {
+        font-size: 14px;
+    }
+
+    .promo-description {
+        font-size: 11px;
+        max-width: 100%;
+    }
+
+    .promo-graphic {
+        order: 1;
+    }
+
+    .promo-amount {
+        font-size: 36px;
+    }
+
+    .promo-currency {
+        font-size: 14px;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 4px;
+    }
+
+    .quick-action-item {
+        padding: 8px 2px;
+    }
+
+    .quick-action-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .quick-action-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .quick-action-label {
+        font-size: 9px;
+        line-height: 1.2;
+    }
+
+    .secondary-actions-grid {
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+    }
+
+    .secondary-action-item {
+        flex: 0 0 auto;
+    }
+
+    .secondary-action-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .secondary-action-label {
+        font-size: 12px;
+    }
+
+    .crypto-item {
+        padding: 12px 0;
+    }
+
+    .crypto-logo {
+        width: 32px;
+        height: 32px;
+    }
+
+    .crypto-symbol {
+        font-size: 14px;
+    }
+
+    .crypto-pair {
+        font-size: 11px;
+    }
+
+    .crypto-price-info {
+        gap: 8px;
+    }
+
+    .crypto-price {
+        font-size: 13px;
+        min-width: 70px;
+    }
+
+    .crypto-change {
+        font-size: 11px;
+        padding: 4px 8px;
+        min-width: 55px;
+    }
+
+    .view-more {
+        padding: 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 380px) {
+    .quick-actions-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .quick-action-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .quick-action-label {
+        font-size: 8px;
+    }
+
+    .crypto-price {
+        font-size: 12px;
+        min-width: 60px;
+    }
+
+    .crypto-change {
+        font-size: 10px;
+        padding: 3px 6px;
+        min-width: 48px;
+    }
+}

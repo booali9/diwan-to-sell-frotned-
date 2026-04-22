@@ -1,0 +1,7 @@
+name: diwanfinanceweb
+static_sites:
+  - name: diwanfinanceweb
+    build_command: npm run build
+    output_dir: /dist
+    catchall_document: index.html
+    environment_slug: node-js

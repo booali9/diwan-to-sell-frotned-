@@ -1,0 +1,261 @@
+/* Bot Order Page Styles */
+
+.bot-order-container {
+    background-color: #0A0A10;
+    min-height: 100vh;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Header */
+.bot-order-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    gap: 12px;
+}
+
+.bot-order-back-btn {
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    cursor: pointer;
+}
+
+.bot-order-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #FFFFFF;
+}
+
+/* Main Tabs */
+.bot-order-main-tabs {
+    display: flex;
+    padding: 0 20px;
+    gap: 24px;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bot-order-main-tab {
+    background: none;
+    border: none;
+    color: #71717A;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 0;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+}
+
+.bot-order-main-tab.active {
+    color: #FFFFFF;
+}
+
+.bot-order-tab-indicator {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background-color: #00C0A3;
+    transition: all 0.3s ease;
+}
+
+.bot-order-tab-indicator.open {
+    left: 20px;
+    width: 75px;
+}
+
+.bot-order-tab-indicator.order-history {
+    left: 119px;
+    width: 85px;
+}
+
+.bot-order-tab-indicator.trade-history {
+    left: 228px;
+    width: 85px;
+}
+
+/* Grid Type Filters */
+.bot-order-grid-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+}
+
+.bot-order-grid-pills {
+    display: flex;
+    gap: 8px;
+}
+
+.bot-order-grid-pill {
+    background-color: transparent;
+    border: none;
+    color: #71717A;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.bot-order-grid-pill.active {
+    background-color: #1E1E28;
+    color: #FFFFFF;
+}
+
+.bot-order-filter-btn {
+    background: none;
+    border: none;
+    color: #71717A;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+/* Empty State */
+.bot-order-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 80px 20px;
+    gap: 16px;
+}
+
+.bot-order-empty-icon {
+    opacity: 0.6;
+}
+
+.bot-order-empty-text {
+    font-size: 14px;
+    color: #71717A;
+}
+
+/* Overlay */
+.bot-order-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+/* Filter Popup */
+.bot-order-filter-popup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #12121A;
+    border-radius: 16px 16px 0 0;
+    padding: 20px;
+    z-index: 101;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.filter-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.filter-popup-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.filter-popup-close {
+    background: none;
+    border: none;
+    color: #71717A;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.filter-popup-content {
+    margin-bottom: 24px;
+}
+
+.filter-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-label {
+    font-size: 12px;
+    color: #71717A;
+}
+
+.filter-select {
+    background-color: #1E1E28;
+    border: 1px solid #2A2A35;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.filter-popup-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-reset-btn {
+    flex: 1;
+    background-color: #1E1E28;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.filter-confirm-btn {
+    flex: 1;
+    background-color: #00C0A3;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Desktop hiding */
+@media (min-width: 769px) {
+    .bot-order-container {
+        display: none;
+    }
+}

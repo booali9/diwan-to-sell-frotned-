@@ -1,0 +1,764 @@
+/* Futures Copy V3 - Exact Clone */
+.futures-hero-v3 {
+    background-color: #08070E;
+    padding: 60px 0;
+}
+
+.hero-content-v3 {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.hero-text-v3 {
+    padding-left: 0;
+}
+
+.hero-title-v3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 8px 0;
+}
+
+.hero-subtitle-v3 {
+    font-size: 14px;
+    color: #9CA3AF;
+    margin: 0 0 20px 0;
+}
+
+.open-contract-btn-v3 {
+    background-color: #00C0A3;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 28px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.open-contract-btn-v3:hover {
+    opacity: 0.9;
+}
+
+.trader-section-v3 {
+    background-color: #0B0B0F;
+    padding: 60px 0 100px 0;
+}
+
+.section-title-v3 {
+    max-width: 1400px;
+    margin: 0 auto 40px auto;
+    padding: 0 40px;
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.trader-controls-v3 {
+    max-width: 1400px;
+    margin: 0 auto 32px auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.trader-tabs-v3 {
+    display: flex;
+    gap: 32px;
+}
+
+.trader-tab-v3 {
+    background: none;
+    border: none;
+    color: #71717A;
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 8px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.trader-tab-v3.active {
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+}
+
+.filter-group-v3 {
+    display: flex;
+    gap: 12px;
+}
+
+.trader-search-v3 {
+    background-color: #111118;
+    border: 1px solid #1C1C2C;
+    border-radius: 6px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 320px;
+}
+
+.search-icon-v3 {
+    color: #52525B;
+}
+
+.search-input-v3 {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+}
+
+.search-input-v3::placeholder {
+    color: #52525B;
+}
+
+.time-select-v3 {
+    background-color: #111118;
+    border: 1px solid #1C1C2C;
+    border-radius: 6px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.chevron-icon-v3 {
+    color: #52525B;
+}
+
+/* Trader Grid V3 */
+.trader-grid-v3 {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.trader-card-v3 {
+    background-color: #111118;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    transition: background-color 0.2s;
+}
+
+.card-header-v3 {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.avatar-circle-v3 {
+    width: 48px;
+    height: 48px;
+    background-color: #1C1C2C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #71717A;
+}
+
+.trader-email-v3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.trader-stats-v3 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #71717A;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.card-body-v3 {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.stat-group-v3 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-label-v3 {
+    font-size: 11px;
+    font-weight: 700;
+    color: #71717A;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.stat-value-main-v3 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.stat-sub-v3 {
+    font-size: 14px;
+    color: #71717A;
+    font-weight: 600;
+}
+
+.stat-grid-v2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-top: 1px solid #1C1C2C;
+}
+
+.stat-item-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.stat-value-v3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.holding-info-v3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid #1C1C2C;
+}
+
+.holding-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2px;
+}
+
+.diamond-icon-v3 {
+    width: 32px;
+    height: 32px;
+    background-color: #1C1C2C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.diamond-v3 {
+    width: 10px;
+    height: 10px;
+    background-color: #71717A;
+    transform: rotate(45deg);
+    border-radius: 1px;
+}
+
+.copy-btn-v3 {
+    width: 100%;
+    background-color: #1A1A24;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.copy-btn-v3:hover {
+    background-color: #272733;
+}
+
+@media (max-width: 1200px) {
+    .trader-grid-v3 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 0 24px;
+    }
+
+    .hero-content-v3,
+    .trader-controls-v3,
+    .section-title-v3 {
+        padding: 0 24px;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero-content-v3 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .trader-grid-v3 {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-title-v3 {
+        font-size: 32px;
+    }
+}
+
+/* Mobile View Styles for Futures Copy (Image 4) - Preserved and refined */
+@media (max-width: 768px) {
+    .futures-copy-mobile-layout {
+        background-color: #0D0D12;
+        min-height: 100vh;
+        color: #FFFFFF;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .fcm-top-bar {
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        gap: 12px;
+        background-color: #0A0A10;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .fcm-back-btn {
+        background: none;
+        border: none;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .fcm-top-title {
+        font-size: 15px;
+        font-weight: 500;
+        color: #FFFFFF;
+    }
+
+    .fcm-scroll-content {
+        flex: 1;
+        padding: 16px 20px;
+        padding-bottom: 40px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .fcm-hero-section {
+        margin-bottom: 24px;
+    }
+
+    .fcm-page-title {
+        font-size: 26px;
+        font-weight: 700;
+        margin: 0 0 6px 0;
+        color: #FFFFFF;
+    }
+
+    .fcm-page-subtitle {
+        font-size: 13px;
+        color: #71717A;
+        margin: 0 0 16px 0;
+    }
+
+    .fcm-open-contract-btn {
+        width: fit-content;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        background-color: #00C0A3;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .fcm-tabs-container {
+        margin-bottom: 20px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .fcm-tabs-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .fcm-tabs-wrapper {
+        display: flex;
+        gap: 10px;
+    }
+
+    .fcm-tab {
+        background: transparent;
+        color: #71717A;
+        border: 1px solid #2A2A35;
+        border-radius: 6px;
+        padding: 8px 14px;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .fcm-tab.active {
+        background-color: #1E1E28;
+        border-color: #3A3A45;
+        color: #FFFFFF;
+    }
+
+    .fcm-traders-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .fcm-trader-card-v2 {
+        background-color: #15151D;
+        border-radius: 16px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-header-v2 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .trader-avatar-v2 {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #2C2C2E;
+        flex-shrink: 0;
+    }
+
+    .trader-avatar-v2 img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .trader-basic-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .trader-email {
+        font-size: 14px;
+        font-weight: 600;
+        color: #FFFFFF;
+    }
+
+    .trader-followers-count {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #71717A;
+        font-size: 12px;
+    }
+
+    .followers-icon {
+        display: flex;
+        align-items: center;
+    }
+
+    .card-pnl-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin-bottom: 16px;
+    }
+
+    .label-text {
+        font-size: 11px;
+        color: #00C0A3;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+
+    .roi-value {
+        font-size: 32px;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 1.1;
+    }
+
+    .pnl-amount {
+        font-size: 14px;
+        color: #71717A;
+    }
+
+    .card-stats-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 14px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .stat-col {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .stat-col.text-right {
+        text-align: right;
+    }
+
+    .stat-val {
+        font-size: 15px;
+        font-weight: 600;
+        color: #FFFFFF;
+    }
+
+    .card-position-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .position-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .position-info-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .info-circle-diamond {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+    }
+
+    .diamond-inner {
+        width: 14px;
+        height: 14px;
+        background-color: #00C0A3;
+        transform: rotate(45deg);
+        border-radius: 3px;
+    }
+
+    .card-copy-btn {
+        width: 100%;
+        background-color: #1E1E28;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 8px;
+        padding: 14px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 12px;
+        cursor: pointer;
+    }
+
+    .fcm-trader-card-v2 {
+        cursor: pointer;
+    }
+
+    /* History View Styles */
+    .fcm-history-view {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: #0A0A10;
+        padding-bottom: 0;
+    }
+
+    .fcm-history-main-tabs {
+        display: flex;
+        gap: 24px;
+        padding: 24px 16px 0;
+        border-bottom: 1px solid #1a1a24;
+    }
+
+    .fcm-history-main-tab {
+        background: transparent;
+        border: none;
+        color: #71717a;
+        font-size: 16px;
+        padding: 0 0 14px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .fcm-history-main-tab.active {
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .fcm-history-main-tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #10b981;
+        border-radius: 2px;
+    }
+
+    .fcm-history-sub-tabs {
+        display: flex;
+        gap: 8px;
+        padding: 20px 16px;
+    }
+
+    .fcm-history-sub-tab {
+        background: transparent;
+        border: none;
+        color: #71717a;
+        font-size: 14px;
+        padding: 10px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .fcm-history-sub-tab.active {
+        background: #1E1E28;
+        color: #ffffff;
+    }
+
+    .fcm-history-list {
+        flex: 1;
+        padding: 0 16px;
+        background: #0A0A10;
+    }
+
+    .fcm-history-trade-item {
+        display: flex;
+        flex-direction: column;
+        padding: 20px 0;
+        border-bottom: 1px solid #1a1a24;
+        background: #0A0A10;
+    }
+
+    .fcm-trade-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .fcm-trade-left {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .fcm-trade-pair-type {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .fcm-trade-pair {
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .fcm-trade-type {
+        color: #71717a;
+        font-size: 14px;
+    }
+
+    .fcm-trade-price {
+        color: #71717a;
+        font-size: 14px;
+    }
+
+    .fcm-trade-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+    }
+
+    .fcm-trade-pnl {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .fcm-trade-pnl.profit {
+        color: #10b981;
+    }
+
+    .fcm-trade-pnl.loss {
+        color: #ef4444;
+    }
+
+    .fcm-trade-percent {
+        font-size: 13px;
+    }
+
+    .fcm-trade-percent.profit {
+        color: #10b981;
+    }
+
+    .fcm-trade-percent.loss {
+        color: #ef4444;
+    }
+
+    .fcm-close-trade-btn {
+        width: 100%;
+        margin-top: 16px;
+        padding: 14px;
+        background: #10b981;
+        border: none;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .fcm-close-trade-btn:active {
+        background: #0d9668;
+    }
+}

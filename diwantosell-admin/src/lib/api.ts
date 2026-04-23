@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://diwantosell-backend.onrender.com'
+const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://diwantosell-backend.onrender.com').replace(/\/$/, '') + '/api'
 
 export async function apiCall(endpoint: string, methodOrOptions: string | RequestInit = 'GET', body?: any) {
   const token = localStorage.getItem('adminToken')

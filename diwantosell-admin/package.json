@@ -1,5 +1,5 @@
 {
-  "name": "diwanfinance",
+  "name": "Bicoin",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -51,3 +51,4 @@
     "vite": "^7.2.4"
   }
 }
+

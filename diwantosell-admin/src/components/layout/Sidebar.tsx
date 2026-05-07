@@ -107,7 +107,7 @@ export function Sidebar({ className, mobileOpen, setMobileOpen }: SidebarProps) 
           )}>
             {!collapsed && (
               <Link to="/dashboard" className="flex items-center gap-2">
-                <img src="/logo.png" alt="Diwan Finance" className="h-6 w-auto" />
+                <img src="/logo.png" alt="Bicoin" className="h-6 w-auto" />
               </Link>
             )}
             {collapsed && (
@@ -157,3 +157,4 @@ export function Sidebar({ className, mobileOpen, setMobileOpen }: SidebarProps) 
     </>
   )
 }
+

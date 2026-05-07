@@ -1,7 +1,8 @@
-name: diwanfinanceadmin
+name: Bicoinadmin
 static_sites:
-  - name: diwanfinanceadmin
+  - name: Bicoinadmin
     build_command: npm run build
     output_dir: /dist
     catchall_document: index.html
     environment_slug: node-js
+

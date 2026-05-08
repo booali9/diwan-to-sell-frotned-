@@ -616,7 +616,7 @@ function Market() {
 
           <div className="market-main-header">
             <h1 className="page-title">Market</h1>
-            <p className="page-subtitle">Transfer your crypto assets into your Diwanfinance wallet</p>
+            <p className="page-subtitle">Transfer your crypto assets into your Bicoin wallet</p>
           </div>
 
           {/* Main Tabs and Search */}
@@ -757,6 +757,7 @@ function Market() {
 }
 
 export default Market
+
 
 
 

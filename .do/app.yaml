@@ -1,7 +1,8 @@
-name: diwanfinanceweb
+name: Bicoinweb
 static_sites:
-  - name: diwanfinanceweb
+  - name: Bicoinweb
     build_command: npm run build
     output_dir: /dist
     catchall_document: index.html
     environment_slug: node-js
+

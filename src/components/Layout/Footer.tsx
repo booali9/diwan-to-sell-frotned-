@@ -8,7 +8,7 @@ function Footer() {
       <div className="footer-content">
         <div className="footer-brand">
           <div className="footer-logo-wrapper" onClick={() => navigate('/dashboard/market')} style={{ cursor: 'pointer' }}>
-            <img src="/logo.png" alt="Diwanfinance" className="footer-logo-img-v2" />
+            <img src="/logo.png" alt="Bicoin" className="footer-logo-img-v2" />
           </div>
 
         </div>
@@ -37,3 +37,4 @@ function Footer() {
 }
 
 export default Footer
+

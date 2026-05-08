@@ -10,7 +10,7 @@ const Fees: React.FC = () => {
                     <Tag size={24} /> Transparent Pricing Structure
                 </h2>
                 <p className="info-text">
-                    Diwan Finance operates on a clear and disclosed pricing model. Fees may vary depending on account type, instrument, and jurisdiction.
+                    Bicoin operates on a clear and disclosed pricing model. Fees may vary depending on account type, instrument, and jurisdiction.
                 </p>
             </section>
 
@@ -73,7 +73,7 @@ const Fees: React.FC = () => {
                     <Info size={24} /> Fee Changes
                 </h2>
                 <p className="info-text">
-                    Diwan Finance reserves the right to amend fees with prior notice in accordance with applicable regulations.
+                    Bicoin reserves the right to amend fees with prior notice in accordance with applicable regulations.
                 </p>
             </section>
         </InfoLayout>
@@ -81,3 +81,4 @@ const Fees: React.FC = () => {
 };
 
 export default Fees;
+

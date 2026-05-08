@@ -170,8 +170,27 @@ export default function Home() {
             <div className="mobile-home-view">
                 <div className="mobile-header-bar">
                     <div className="mobile-header-left">
-                        <img src="/logo.png" alt="Diwanfinance" className="mobile-header-logo" onClick={() => navigate('/home')} style={{ cursor: 'pointer' }} />
+                        <img src="/logo.png" alt="Bicoin" className="mobile-header-logo" onClick={() => navigate('/home')} style={{ cursor: 'pointer' }} />
                     </div>
+...
+                <div className="home-total-value-section">
+                    <div className="total-value-card">
+                        <div className="val-label">Total Assets</div>
+                        <div className="val-amount">$0.00 <span className="val-currency">USDT</span></div>
+                        <div className="val-actions">
+                            <button className="val-btn deposit" onClick={() => navigate('/dashboard/deposit')}>Deposit</button>
+                            <button className="val-btn add-funds" onClick={() => navigate('/dashboard/deposit')}>Add Funds</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="home-news-ticker">
+                    <Megaphone size={16} />
+                    <div className="news-content">
+                        <span>Welcome to Bicoin - The most secure crypto exchange.</span>
+                        <span>Check out our new referral program and earn up to 40% rebate!</span>
+                    </div>
+                </div>
                     <div className="mobile-header-right">
                         <div className="mobile-header-icon">
                             <Search size={22} />
@@ -215,7 +234,7 @@ export default function Home() {
                                 </div>
                             ) : (
                                 <div className="mobile-drawer-guest">
-                                    <h3>Welcome to Diwanfinance</h3>
+                                    <h3>Welcome to Bicoin</h3>
                                     <p>Sign in to start trading</p>
                                     <div className="drawer-auth-btns">
                                         <button className="drawer-signin-btn" onClick={() => navigate('/signin')}>Sign In</button>
@@ -314,6 +333,29 @@ export default function Home() {
             </div>
 
             <div className="desktop-only landing-container">
+                <div className="desktop-home-overview">
+                    <div className="overview-left">
+                        <div className="overview-label">Total Value (USDT)</div>
+                        <div className="overview-amount">0.00 ≈ $0.00</div>
+                        <div className="overview-btns">
+                            <button className="overview-btn deposit" onClick={() => navigate('/dashboard/deposit')}>Deposit</button>
+                            <button className="overview-btn add-funds" onClick={() => navigate('/dashboard/deposit')}>Add Funds</button>
+                        </div>
+                    </div>
+                    <div className="overview-right">
+                        <div className="news-section">
+                            <div className="news-header">
+                                <Megaphone size={18} />
+                                <span>Announcements</span>
+                            </div>
+                            <div className="news-list">
+                                <div className="news-item">Bicoin officially launched with advanced security.</div>
+                                <div className="news-item">New pairs listed: SOL/USDT, AVAX/USDT.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Hero Section */}
                 <section className="hero-section">
                     <div className="hero-content">
@@ -389,7 +431,7 @@ export default function Home() {
                         <h2 className="section-title">More Ways To Access Crypto Markets</h2>
                         <p className="section-subtitle">
                             Explore additional options to buy, manage, and move your assets within your <br />
-                            DiwanFinance account using secure and user-friendly tools.
+                            Bicoin account using secure and user-friendly tools.
                         </p>
                     </div>
                     <div className="ways-grid-v2">
@@ -412,7 +454,7 @@ export default function Home() {
                                 <img src="/9.png" alt="Wallet" />
                             </div>
                             <h3 className="way-title-v2">Direct Wallet Credit</h3>
-                            <p className="way-desc-v2">Purchased crypto is credited directly to your DiwanFinance wallet</p>
+                            <p className="way-desc-v2">Purchased crypto is credited directly to your Bicoin wallet</p>
                         </div>
                     </div>
                 </section>
@@ -423,7 +465,7 @@ export default function Home() {
                         <h2 className="section-title">Built For A Reliable Trading Experience</h2>
                         <p className="section-subtitle">
                             Access essential tools, secure infrastructure, and platform features designed to <br />
-                            support efficient trading and asset management on DiwanFinance.
+                            support efficient trading and asset management on Bicoin.
                         </p>
                     </div>
                     <div className="features-grid-v2">
@@ -476,7 +518,7 @@ export default function Home() {
                 <section className="cta-banner-section">
                     <div className="cta-banner-card">
                         <div className="cta-banner-content">
-                            <h2 className="cta-title">Start Trading On DiwanFinance</h2>
+                            <h2 className="cta-title">Start Trading On Bicoin</h2>
                             <p className="cta-subtitle">
                                 Create an account to access live markets, manage your assets, and <br />
                                 trade across supported products within a secure platform environment.
@@ -489,5 +531,6 @@ export default function Home() {
         </Layout>
     )
 }
+
 
 

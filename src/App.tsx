@@ -208,7 +208,7 @@ function App() {
           <div className="login-left-panel">
             <img
               src="/sigin.png"
-              alt="Diwanfinance Sign In"
+              alt="Bicoin Sign In"
               className="login-image"
             />
           </div>
@@ -423,3 +423,4 @@ function App() {
 }
 
 export default App
+

@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { Copy, ChevronRight, Eye, EyeOff, ChevronDown, Search, ArrowLeft, Menu, X, User, FileText, CheckSquare, Users, Settings, LayoutDashboard, Shield, Lock, Smartphone, Mail, Wallet, Trash2, Monitor, Activity, Gift, UserPlus, Filter, AlertTriangle, Check, Camera } from 'lucide-react'
+import { Copy, ChevronRight, Eye, EyeOff, ChevronDown, ArrowLeft, Menu, X, User, FileText, CheckSquare, Users, Settings, LayoutDashboard, Shield, Lock, Smartphone, Mail, Wallet, Trash2, Monitor, Activity, Gift, UserPlus, Filter, AlertTriangle, Check, Camera, ShieldCheck } from 'lucide-react'
 import Layout from '../../components/Layout/Layout'
 import { useAuth } from '../../context/AuthContext'
 import { getProfile, changePassword, changeEmail, deleteAccountService, updateUserProfile, logoutUser, getNotifications, markNotificationRead } from '../../services/userService'
 import { getBalance, getSpotHoldings } from '../../services/walletService'
+import { useToast } from '../../context/ToastContext'
 import { getMyOpenTrades, getMyClosedTrades } from '../../services/tradeService'
 import '../../styles/dashboard.css'
 import { useNavigate } from 'react-router-dom'
@@ -11,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 export default function ProfileOverview() {
     const navigate = useNavigate()
     const { logout } = useAuth()
+    const { toast } = useToast()
 
     const handleLogout = () => {
         logoutUser()
@@ -39,7 +41,7 @@ export default function ProfileOverview() {
     const [msgsLoading, setMsgsLoading] = useState(false)
 
     // Security modal states
-    const [secModal, setSecModal] = useState<'none' | 'password' | 'email' | 'phone' | 'delete' | 'device' | 'activity' | 'authenticator'>('none')
+    const [secModal, setSecModal] = useState<'none' | 'password' | 'email' | 'phone' | 'delete' | 'device' | 'activity' | 'authenticator' | 'fund-password'>('none')
     const [secLoading, setSecLoading] = useState(false)
     const [secError, setSecError] = useState('')
     const [secSuccess, setSecSuccess] = useState('')
@@ -51,7 +53,7 @@ export default function ProfileOverview() {
         for (let i = 0; i < 16; i++) s += chars[Math.floor(Math.random() * chars.length)]
         return s
     })
-    const [authBound, setAuthBound] = useState(false)
+
 
     const closeSecModal = () => { setSecModal('none'); setSecError(''); setSecSuccess(''); setSecForm({}); setAuthStep(1); }
 
@@ -94,7 +96,58 @@ export default function ProfileOverview() {
         if (savedAvatar) setAvatarPreview(savedAvatar)
     }, [])
 
-    const handleBindAuthenticator = () => {
+
+
+    const handleDisable2FA = async () => {
+        if (!window.confirm('Are you sure you want to unbind Google Authenticator?')) return;
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/2fa/disable`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                toast('Google Authenticator unbound successfully', 'success');
+                getProfile().then(setProfile);
+            } else {
+                toast('Failed to unbind authenticator', 'error');
+            }
+        } catch (error) {
+            toast('Error unbinding authenticator', 'error');
+        }
+    };
+
+    const handleSetFundPassword = async () => {
+        if (!secForm.currentPassword || !secForm.newFundPassword || secForm.newFundPassword !== secForm.confirmFundPassword) {
+            toast('Please fill all fields correctly', 'error');
+            return;
+        }
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/fund-password`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
+                },
+                body: JSON.stringify({
+                    currentPassword: secForm.currentPassword,
+                    newFundPassword: secForm.newFundPassword
+                })
+            });
+            if (res.ok) {
+                toast('Fund password set! 24h withdrawal lock active.', 'success');
+                setSecModal('none');
+            } else {
+                const data = await res.json();
+                toast(data.message || 'Failed to set fund password', 'error');
+            }
+        } catch (error) {
+            toast('Error setting fund password', 'error');
+        }
+    };
+
+    const handleBindAuthenticator = async () => {
         setSecError(''); setSecSuccess(''); setSecLoading(true)
         const code = secForm.otpCode || ''
         if (!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
@@ -102,12 +155,32 @@ export default function ProfileOverview() {
             setSecLoading(false)
             return
         }
-        setTimeout(() => {
+        
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/2fa/enable`, {
+                method: 'POST',
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code }) // Sending the code to verify
+            });
+            
+            if (res.ok) {
+                setSecLoading(false)
+                setSecSuccess('Google Authenticator bound successfully!')
+                getProfile().then(setProfile);
+                setTimeout(closeSecModal, 1500)
+            } else {
+                const data = await res.json();
+                setSecError(data.message || 'Failed to bind authenticator')
+                setSecLoading(false)
+            }
+        } catch (error) {
+            setSecError('Error binding authenticator')
             setSecLoading(false)
-            setSecSuccess('Google Authenticator bound successfully!')
-            setAuthBound(true)
-            setTimeout(closeSecModal, 1500)
-        }, 1200)
+        }
     }
 
     const handleChangePassword = async () => {
@@ -285,7 +358,7 @@ export default function ProfileOverview() {
 
     // Referral code derived from user ID
     const referralCode = profile?._id ? profile._id.substring(0, 10).toUpperCase() : '----------'
-    const referralLink = `https://diwanfinanceweb.vercel.app/register?ref=${referralCode}`
+    const referralLink = `https://Bicoinweb.vercel.app/register?ref=${referralCode}`
 
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text).catch(() => { })
@@ -769,7 +842,7 @@ export default function ProfileOverview() {
                                     <span className="mpv-sec-name">Google Authenticator</span>
                                     <span className="mpv-sec-desc">API Secure verification when withdrawing, retrieving passwords, modifying security settings and managing API</span>
                                 </div>
-                                <button className="mpv-sec-btn" onClick={() => { setSecForm({}); setAuthStep(1); setSecModal('authenticator'); }}>{authBound ? 'Bound' : 'Bind'}</button>
+                                <button className="mpv-sec-btn" onClick={() => { setSecForm({}); setAuthStep(1); setSecModal('authenticator'); }}>{profile?.isGoogleAuthenticatorEnabled ? 'Bound' : 'Bind'}</button>
                             </div>
 
                             <div className="mpv-sec-item">
@@ -973,7 +1046,7 @@ export default function ProfileOverview() {
                                                 <div className="mpv-auth-step">
                                                     <p className="mpv-sec-modal-hint">Step 2: Scan the QR code or enter the secret key manually in the Google Authenticator app.</p>
                                                     <div className="mpv-auth-qr">
-                                                        <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=otpauth://totp/DiwanFinance:${encodeURIComponent(userEmail)}?secret=${authSecret}%26issuer=DiwanFinance`} alt="QR Code" style={{ width: 180, height: 180, borderRadius: 8, background: '#fff', padding: 8 }} />
+                                                        <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=otpauth://totp/Bicoin:${encodeURIComponent(userEmail)}?secret=${authSecret}%26issuer=Bicoin`} alt="QR Code" style={{ width: 180, height: 180, borderRadius: 8, background: '#fff', padding: 8 }} />
                                                     </div>
                                                     <div className="mpv-auth-secret">
                                                         <span className="mpv-auth-secret-label">Secret Key</span>
@@ -1130,7 +1203,7 @@ export default function ProfileOverview() {
 
                         {/* Invite Button */}
                         <button className="mpv-invite-btn" onClick={() => {
-                            if (navigator.share) navigator.share({ title: 'Join Diwan Finance', text: `Use my referral code: ${referralCode}`, url: referralLink }).catch(() => { })
+                            if (navigator.share) navigator.share({ title: 'Join Bicoin', text: `Use my referral code: ${referralCode}`, url: referralLink }).catch(() => { })
                             else copyToClipboard(referralLink)
                         }}>Invite friends</button>
 
@@ -1410,51 +1483,56 @@ export default function ProfileOverview() {
             </div>
 
             {/* Desktop View */}
-            <div className="profile-overview-container desktop-only">
-
-                {/* Profile Tabs */}
-                <div className="profile-desktop-tabs">
+            <div className="profile-page-layout desktop-only">
+                {/* Profile Sidebar */}
+                <div className="profile-sidebar">
                     <button
-                        className={`profile-desktop-tab ${activeProfileTab === 'overview' ? 'active' : ''}`}
+                        className={`sidebar-item ${activeProfileTab === 'overview' ? 'active' : ''}`}
                         onClick={() => setActiveProfileTab('overview')}
                     >
-                        Overview
+                        <User size={20} />
+                        <span>Overview</span>
                     </button>
                     <button
-                        className={`profile-desktop-tab ${activeProfileTab === 'verification' ? 'active' : ''}`}
+                        className={`sidebar-item ${activeProfileTab === 'verification' ? 'active' : ''}`}
                         onClick={() => setActiveProfileTab('verification')}
                     >
-                        Verification
+                        <ShieldCheck size={20} />
+                        <span>Verification</span>
                     </button>
                     <button
-                        className={`profile-desktop-tab ${activeProfileTab === 'security' ? 'active' : ''}`}
+                        className={`sidebar-item ${activeProfileTab === 'security' ? 'active' : ''}`}
                         onClick={() => setActiveProfileTab('security')}
                     >
-                        Security
+                        <Lock size={20} />
+                        <span>Security</span>
                     </button>
                     <button
-                        className={`profile-desktop-tab ${activeProfileTab === 'task' ? 'active' : ''}`}
+                        className={`sidebar-item ${activeProfileTab === 'task' ? 'active' : ''}`}
                         onClick={() => setActiveProfileTab('task')}
                     >
-                        Task center
+                        <FileText size={20} />
+                        <span>Task center</span>
                     </button>
                     <button
-                        className={`profile-desktop-tab ${activeProfileTab === 'invite' ? 'active' : ''}`}
+                        className={`sidebar-item ${activeProfileTab === 'invite' ? 'active' : ''}`}
                         onClick={() => setActiveProfileTab('invite')}
                     >
-                        Invite friends
+                        <UserPlus size={20} />
+                        <span>Invite friends</span>
                     </button>
                     <button
-                        className={`profile-desktop-tab ${activeProfileTab === 'settings' ? 'active' : ''}`}
+                        className={`sidebar-item ${activeProfileTab === 'settings' ? 'active' : ''}`}
                         onClick={() => setActiveProfileTab('settings')}
                     >
-                        Settings
+                        <Settings size={20} />
+                        <span>Settings</span>
                     </button>
                 </div>
 
-                {/* Overview Tab Content */}
-                {activeProfileTab === 'overview' && (
-                    <>
+                <div className="profile-main-content">
+                    {activeProfileTab === 'overview' && (
+                        <>
                         <div className="profile-header-card">
                             <div className="profile-info-left">
                                 <div className="profile-avatar-circle" onClick={handleAvatarClick} style={{ cursor: 'pointer', position: 'relative' }}>
@@ -1473,7 +1551,7 @@ export default function ProfileOverview() {
                                 <div className="info-item">
                                     <span className="info-label">UID</span>
                                     <div className="info-value-container">
-                                        <span>{userId}</span>
+                                        <span>{profile?.uid || profile?._id?.toString().slice(-8)}</span>
                                         <button className="copy-icon-btn">
                                             <Copy size={14} />
                                         </button>
@@ -1525,8 +1603,8 @@ export default function ProfileOverview() {
                                 </div>
                             </div>
                             <div className="balance-actions">
-                                <button className="btn-deposit">Deposit</button>
-                                <button className="btn-withdraw">Withdraw</button>
+                                <button className="btn-deposit" onClick={() => navigate('/dashboard/deposit')}>Deposit</button>
+                                <button className="btn-withdraw" onClick={() => navigate('/dashboard/deposit')}>Withdraw</button>
                             </div>
                         </div>
 
@@ -1565,16 +1643,6 @@ export default function ProfileOverview() {
                                         24h Volume
                                     </button>
                                 </div>
-                                <div className="assets-filters">
-                                    <label className="hide-assets-checkbox">
-                                        <div className="checkbox-custom"></div>
-                                        <span>Hide other assets less than 1 USD</span>
-                                    </label>
-                                    <div className="assets-search-box">
-                                        <Search size={14} className="text-zinc-500" />
-                                        <input type="text" placeholder="Search for currency pairs" />
-                                    </div>
-                                </div>
                             </div>
 
                             <table className="assets-table">
@@ -1582,7 +1650,7 @@ export default function ProfileOverview() {
                                     <tr>
                                         <th>Coin</th>
                                         <th>Total Balance</th>
-                                        <th>Wallet Balance <ChevronDown size={12} className="inline" /></th>
+                                        <th>Wallet Balance</th>
                                         <th>Available</th>
                                         <th>PnL</th>
                                         <th>Operation</th>
@@ -1612,7 +1680,7 @@ export default function ProfileOverview() {
                                             <td>{asset.available}</td>
                                             <td>{asset.pnl}</td>
                                             <td>
-                                                <a href="#" className="trade-link-teal">Trade</a>
+                                                <a href="#" className="trade-link-teal" onClick={(e) => { e.preventDefault(); navigate(`/dashboard/trade?pair=${asset.symbol}/USDT`); }}>Trade</a>
                                             </td>
                                         </tr>
                                     ))}
@@ -1737,7 +1805,15 @@ export default function ProfileOverview() {
                                         <span className="security-item-name">Google Authenticator</span>
                                         <span className="security-item-desc">API Secure verification when withdrawing, retrieving passwords, modifying security settings and managing API</span>
                                     </div>
-                                    <button className="security-btn" onClick={() => { setSecForm({}); setAuthStep(1); setSecModal('authenticator'); }}>{authBound ? 'Bound' : 'Bind'}</button>
+                                    <button className="security-btn" onClick={() => { 
+                                        if (profile?.isGoogleAuthenticatorEnabled) {
+                                            handleDisable2FA();
+                                        } else {
+                                            setSecForm({}); setAuthStep(1); setSecModal('authenticator'); 
+                                        }
+                                    }}>
+                                        {profile?.isGoogleAuthenticatorEnabled ? 'Unbind' : 'Bind'}
+                                    </button>
                                 </div>
                                 <div className="security-item">
                                     <div className="security-item-icon">
@@ -1748,7 +1824,7 @@ export default function ProfileOverview() {
                                         <span className="security-item-desc">Receive verification SMS that is used to withdraw, change the password or security settings</span>
                                     </div>
                                     <span className="security-item-value">{userPhone}</span>
-                                    <button className="security-btn" onClick={() => { setSecForm({ phone: '' }); setSecModal('phone'); }}>{userPhone !== 'Not set' ? 'Change' : 'Bind'}</button>
+                                    <button className="security-btn" onClick={() => { setSecForm({ phone: '' }); setSecModal('phone'); }}>{(profile as any)?.phoneNumber && (profile as any)?.phoneNumber !== 'Not set' ? 'Change' : 'Bind'}</button>
                                 </div>
                                 <div className="security-item">
                                     <div className="security-item-icon">
@@ -1787,6 +1863,16 @@ export default function ProfileOverview() {
                                         <span className="security-item-desc">After setting as a trust address, withdrawals will be exempt from security verification</span>
                                     </div>
                                     <button className="security-btn" onClick={() => navigate('/dashboard/deposit')}>Manage</button>
+                                </div>
+                                <div className="security-item">
+                                    <div className="security-item-icon">
+                                        <ShieldCheck size={18} />
+                                    </div>
+                                    <div className="security-item-info">
+                                        <span className="security-item-name">Fund Password</span>
+                                        <span className="security-item-desc">Set a password for withdrawals to increase fund security</span>
+                                    </div>
+                                    <button className="security-btn" onClick={() => { setSecForm({ currentPassword: '', newFundPassword: '', confirmFundPassword: '' }); setSecModal('fund-password'); }}>Set</button>
                                 </div>
                             </div>
                         </div>
@@ -1922,7 +2008,7 @@ export default function ProfileOverview() {
                                 <div className="invite-code-section">
                                     <span className="invite-label">Invitation code</span>
                                     <div className="invite-code-box">
-                                        <span>{referralCode}</span>
+                                        <span>{profile?.invitationCode || referralCode}</span>
                                         <div className="invite-code-actions">
                                             <button className="invite-edit-btn" onClick={() => copyToClipboard(referralCode)}>📋</button>
                                             <Copy size={14} style={{ cursor: 'pointer' }} onClick={() => copyToClipboard(referralCode)} />
@@ -1938,7 +2024,7 @@ export default function ProfileOverview() {
                                 </div>
                                 <button className="invite-btn" onClick={() => {
                                     if (navigator.share) {
-                                        navigator.share({ title: 'Join Diwan Finance', text: `Use my referral code ${referralCode} to sign up!`, url: referralLink });
+                                        navigator.share({ title: 'Join Bicoin', text: `Use my referral code ${referralCode} to sign up!`, url: referralLink });
                                     } else {
                                         copyToClipboard(referralLink);
                                     }
@@ -1983,6 +2069,39 @@ export default function ProfileOverview() {
                                     <span className="invite-stat-value"><span className="stat-amount">0</span> USDT</span>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Referral List Section */}
+                        <div className="referral-list-card">
+                            <h3 className="referral-list-title">My Invitees</h3>
+                            <table className="referral-table">
+                                <thead>
+                                    <tr>
+                                        <th>UID</th>
+                                        <th>Account</th>
+                                        <th>Registration Time</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {(profile as any)?.referrals?.length > 0 ? (
+                                        (profile as any).referrals.map((ref: any) => (
+                                            <tr key={ref.uid}>
+                                                <td>{ref.uid}</td>
+                                                <td>{ref.email?.replace(/(.{2}).*(@.*)/, "$1***$2")}</td>
+                                                <td>{new Date(ref.createdAt).toLocaleDateString()}</td>
+                                                <td className="status-verified">{ref.kycStatus === 'verified' ? 'Verified' : 'Unverified'}</td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={4} style={{ textAlign: 'center', padding: '40px 0', color: 'rgba(255,255,255,0.4)' }}>
+                                                No invitees yet. Start sharing your link!
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 )}
@@ -2050,6 +2169,7 @@ export default function ProfileOverview() {
                 )}
 
             </div>
+        </div>
 
             {/* Global Security Modal Overlay (for desktop tabs) */}
             {secModal !== 'none' && activeProfileTab !== 'security' && (
@@ -2137,7 +2257,7 @@ export default function ProfileOverview() {
                                     <div className="mpv-auth-step">
                                         <p className="mpv-sec-modal-hint">Step 2: Scan the QR code or enter the secret key manually.</p>
                                         <div className="mpv-auth-qr">
-                                            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=otpauth://totp/DiwanFinance:${encodeURIComponent(userEmail)}?secret=${authSecret}%26issuer=DiwanFinance`} alt="QR Code" style={{ width: 180, height: 180, borderRadius: 8, background: '#fff', padding: 8 }} />
+                                            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=otpauth://totp/Bicoin:${encodeURIComponent(userEmail)}?secret=${authSecret}%26issuer=Bicoin`} alt="QR Code" style={{ width: 180, height: 180, borderRadius: 8, background: '#fff', padding: 8 }} />
                                         </div>
                                         <div className="mpv-auth-secret">
                                             <span className="mpv-auth-secret-label">Secret Key</span>
@@ -2162,6 +2282,16 @@ export default function ProfileOverview() {
                                         </div>
                                     </div>
                                 )}
+                            </>
+                        )}
+                        {secModal === 'fund-password' && (
+                            <>
+                                <h3 className="mpv-sec-modal-title"><ShieldCheck size={18} /> Set Fund Password</h3>
+                                <p className="mpv-sec-modal-hint">Login password verification is required</p>
+                                <div className="mpv-sec-modal-field"><label>Login Password</label><input type="password" placeholder="Enter login password" value={secForm.currentPassword || ''} onChange={e => setSecForm(p => ({ ...p, currentPassword: e.target.value }))} /></div>
+                                <div className="mpv-sec-modal-field"><label>New Fund Password</label><input type="password" placeholder="Enter fund password" value={secForm.newFundPassword || ''} onChange={e => setSecForm(p => ({ ...p, newFundPassword: e.target.value }))} /></div>
+                                <div className="mpv-sec-modal-field"><label>Confirm Fund Password</label><input type="password" placeholder="Confirm fund password" value={secForm.confirmFundPassword || ''} onChange={e => setSecForm(p => ({ ...p, confirmFundPassword: e.target.value }))} /></div>
+                                <button className="mpv-sec-modal-submit" disabled={secLoading} onClick={handleSetFundPassword}>{secLoading ? 'Saving...' : 'Set Fund Password'}</button>
                             </>
                         )}
                         {secError && <p className="mpv-sec-modal-error">{secError}</p>}
@@ -2264,3 +2394,4 @@ export default function ProfileOverview() {
         </Layout>
     )
 }
+

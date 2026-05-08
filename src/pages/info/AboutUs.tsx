@@ -10,7 +10,7 @@ const AboutUs: React.FC = () => {
                     <Rocket size={24} /> Institutional-Grade Market Access
                 </h2>
                 <p className="info-text">
-                    Diwan Finance is a technology-driven trading platform providing access to global financial markets, including equities, digital assets, and commodities.
+                    Bicoin is a technology-driven trading platform providing access to global financial markets, including equities, digital assets, and commodities.
                 </p>
                 <p className="info-text">
                     Our infrastructure is engineered for performance, security, and transparency, serving both active traders and professional market participants.
@@ -74,3 +74,4 @@ const AboutUs: React.FC = () => {
 };
 
 export default AboutUs;
+

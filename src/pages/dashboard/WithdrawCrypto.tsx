@@ -97,7 +97,7 @@ function WithdrawCrypto() {
         </div>
         <div className="withdraw-header">
           <h1 className="withdraw-title">Withdraw crypto</h1>
-          <p className="withdraw-subtitle">Transfer your crypto assets from your Diwanfinance wallet with ease</p>
+          <p className="withdraw-subtitle">Transfer your crypto assets from your Bicoin wallet with ease</p>
         </div>
 
         <div className="withdraw-content">
@@ -284,3 +284,4 @@ function WithdrawCrypto() {
 }
 
 export default WithdrawCrypto
+

@@ -10,7 +10,7 @@ const SupportPolicy: React.FC = () => {
                     <Headset size={24} /> Client Support Framework
                 </h2>
                 <p className="info-text">
-                    Diwan Finance is committed to providing structured, responsive, and secure client support.
+                    Bicoin is committed to providing structured, responsive, and secure client support.
                 </p>
             </section>
 
@@ -88,7 +88,7 @@ const SupportPolicy: React.FC = () => {
                     <li className="info-list-item">Force majeure events</li>
                 </ul>
                 <p className="info-text" style={{ color: '#71717A', fontStyle: 'italic' }}>
-                    Diwan Finance reserves the right to record communications for quality assurance and regulatory compliance.
+                    Bicoin reserves the right to record communications for quality assurance and regulatory compliance.
                 </p>
             </section>
         </InfoLayout>
@@ -96,3 +96,4 @@ const SupportPolicy: React.FC = () => {
 };
 
 export default SupportPolicy;
+

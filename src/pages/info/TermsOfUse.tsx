@@ -10,7 +10,7 @@ const TermsOfUse: React.FC = () => {
                     <UserCheck size={24} /> 1. Acceptance of Terms
                 </h2>
                 <p className="info-text">
-                    By accessing or using the Diwan Finance website and trading platform (“Platform”), you agree to be bound by these Terms of Use, applicable laws, and regulatory requirements. If you do not agree, you must discontinue use immediately.
+                    By accessing or using the Bicoin website and trading platform (“Platform”), you agree to be bound by these Terms of Use, applicable laws, and regulatory requirements. If you do not agree, you must discontinue use immediately.
                 </p>
             </section>
 
@@ -34,7 +34,7 @@ const TermsOfUse: React.FC = () => {
                     <li className="info-list-item">Maintain confidentiality of login credentials</li>
                 </ul>
                 <p className="info-text">
-                    Diwan Finance reserves the right to suspend or terminate accounts for non-compliance or suspicious activity.
+                    Bicoin reserves the right to suspend or terminate accounts for non-compliance or suspicious activity.
                 </p>
             </section>
 
@@ -78,7 +78,7 @@ const TermsOfUse: React.FC = () => {
                     <CreditCard size={24} /> 6. Fees & Charges
                 </h2>
                 <p className="info-text">
-                    All applicable fees, spreads, commissions, and financing charges are disclosed on the Fees page. Diwan Finance may amend fee structures with prior notice.
+                    All applicable fees, spreads, commissions, and financing charges are disclosed on the Fees page. Bicoin may amend fee structures with prior notice.
                 </p>
             </section>
 
@@ -87,7 +87,7 @@ const TermsOfUse: React.FC = () => {
                     <Lock size={24} /> 7. Intellectual Property
                 </h2>
                 <p className="info-text">
-                    All platform technology, content, branding, and materials remain the exclusive property of Diwan Finance. Unauthorized use is prohibited.
+                    All platform technology, content, branding, and materials remain the exclusive property of Bicoin. Unauthorized use is prohibited.
                 </p>
             </section>
 
@@ -95,7 +95,7 @@ const TermsOfUse: React.FC = () => {
                 <h2 className="info-section-title">
                     <Scale size={24} /> 8. Limitation of Liability
                 </h2>
-                <p className="info-text">Diwan Finance shall not be liable for:</p>
+                <p className="info-text">Bicoin shall not be liable for:</p>
                 <ul className="info-list">
                     <li className="info-list-item">Market losses</li>
                     <li className="info-list-item">System interruptions beyond reasonable control</li>
@@ -117,3 +117,4 @@ const TermsOfUse: React.FC = () => {
 };
 
 export default TermsOfUse;
+

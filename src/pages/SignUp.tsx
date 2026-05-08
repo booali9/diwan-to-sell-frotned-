@@ -328,7 +328,7 @@ function SignUp({ onSwitchToSignIn }: SignUpProps) {
       <div className="login-left-panel">
         <img
           src="/sigin.png"
-          alt="Diwanfinance Sign Up"
+          alt="Bicoin Sign Up"
           className="login-image"
         />
       </div>
@@ -477,3 +477,4 @@ function SignUp({ onSwitchToSignIn }: SignUpProps) {
 }
 
 export default SignUp
+

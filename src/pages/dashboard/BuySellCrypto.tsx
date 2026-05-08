@@ -249,7 +249,7 @@ function BuySellCrypto({ defaultTab = 'buy' }: BuySellCryptoProps) {
         <div className="desktop-only">
           <div className="page-header">
             <h1 className="page-title">{activeTab === 'buy' ? 'Buy crypto' : 'Sell crypto'}</h1>
-            <p className="page-subtitle">Transfer your crypto assets into your Diwanfinance wallet</p>
+            <p className="page-subtitle">Transfer your crypto assets into your Bicoin wallet</p>
           </div>
 
           <div className="buysell-main-card">
@@ -410,3 +410,4 @@ function BuySellCrypto({ defaultTab = 'buy' }: BuySellCryptoProps) {
 }
 
 export default BuySellCrypto
+

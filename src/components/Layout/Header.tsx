@@ -63,7 +63,7 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
     <header className={`header ${hideMobile ? 'hide-on-mobile' : ''}`}>
       <div className="header-left">
         <div className="logo" onClick={() => navigate('/home')} style={{ cursor: 'pointer' }}>
-          <img src="/logo.png" alt="Diwanfinance" className="logo-img" />
+          <img src="/logo.png" alt="Bicoin" className="logo-img" />
         </div>
 
         <nav className="nav-menu desktop-only">
@@ -378,8 +378,9 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
             ) : (
               <>
                 {/* Guest Mobile Menu */}
+                <img src="/logo.png" alt="Bicoin" className="logo-img" />
                 <div className="md-guest-header">
-                  <h3 className="md-guest-title">Welcome to Diwanfinance</h3>
+                  <h3 className="md-guest-title">Welcome to Bicoin</h3>
                   <p className="md-guest-subtitle">Sign in to start trading</p>
                 </div>
 

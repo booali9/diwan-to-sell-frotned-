@@ -268,9 +268,10 @@ export default function P2PTrade() {
                         </div>
 
                         <div style={{ display: 'flex', gap: '12px' }}>
-                            <button className="p2p-confirm-btn outline" onClick={() => setSelectedAd(null)}>Cancel</button>
+                            <button className="p2p-confirm-btn outline" style={{ flex: 1 }} onClick={() => setSelectedAd(null)}>Cancel</button>
                             <button 
                                 className={`p2p-confirm-btn ${activeTab === 'buy' ? 'primary' : 'danger'}`}
+                                style={{ flex: 1 }}
                                 onClick={handleCreateOrder}
                                 disabled={orderLoading}
                             >

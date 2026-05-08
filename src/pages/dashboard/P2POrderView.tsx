@@ -19,6 +19,7 @@ export default function P2POrderView() {
 
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
 
     const fetchOrder = async () => {
         try {
@@ -38,7 +39,11 @@ export default function P2POrderView() {
         try {
             const data = await getP2PMessages(id!);
             setMessages(data);
-            setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+            setTimeout(() => {
+                if (chatContainerRef.current) {
+                    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+                }
+            }, 100);
         } catch (err) {}
     };
 
@@ -214,7 +219,7 @@ export default function P2POrderView() {
                     <div className="p2p-chat-header">
                         <div className="p2p-chat-title">{isBuyer ? order.seller.name : order.buyer.name}</div>
                     </div>
-                    <div className="p2p-chat-body">
+                    <div className="p2p-chat-body" ref={chatContainerRef}>
                         <div className="p2p-msg system"><div className="p2p-msg-bubble">Order Created. Do not release crypto before verifying payment receipt.</div></div>
                         
                         {messages.map((msg, i) => {

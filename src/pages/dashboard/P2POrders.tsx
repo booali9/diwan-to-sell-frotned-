@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import { getMyP2POrders } from '../../services/p2pService';
 import { useToast } from '../../context/ToastContext';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ShoppingBag } from 'lucide-react';
 
 export default function P2POrders() {
     const [orders, setOrders] = useState<any[]>([]);
@@ -38,9 +38,26 @@ export default function P2POrders() {
                     </div>
 
                     {loading ? (
-                        <div>Loading...</div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            {[1, 2, 3].map(i => <div key={i} className="p2p-skeleton p2p-skeleton-row" />)}
+                        </div>
                     ) : orders.length === 0 ? (
-                        <div className="p2p-empty">No orders found.</div>
+                        <div className="p2p-empty">
+                            <div className="p2p-empty-icon">
+                                <ShoppingBag size={32} />
+                            </div>
+                            <div className="p2p-empty-title">No Orders Found</div>
+                            <p className="p2p-empty-desc">
+                                You don't have any active or past orders. Visit the P2P market to find trade offers.
+                            </p>
+                            <button 
+                                className="p2p-confirm-btn primary" 
+                                style={{ marginTop: '24px', padding: '12px 32px' }}
+                                onClick={() => navigate('/dashboard/p2p')}
+                            >
+                                Go to Market
+                            </button>
+                        </div>
                     ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                             {orders.map(order => (

@@ -126,14 +126,14 @@
 .p2p-step-desc { font-size: 12px; color: #71717A; margin-top: 2px; }
 
 .p2p-action-buttons { display: flex; gap: 12px; margin-top: 24px; }
-.p2p-confirm-btn { flex: 1; padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all .2s; }
+.p2p-confirm-btn { padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 .p2p-confirm-btn.primary { background: #1CD4A7; color: #0C0C17; }
-.p2p-confirm-btn.primary:hover { background: #15b892; }
+.p2p-confirm-btn.primary:hover { background: #15b892; transform: translateY(-1px); }
 .p2p-confirm-btn.danger { background: #ef4444; color: #fff; }
-.p2p-confirm-btn.danger:hover { background: #dc2626; }
+.p2p-confirm-btn.danger:hover { background: #dc2626; transform: translateY(-1px); }
 .p2p-confirm-btn.outline { background: transparent; border: 1px solid #2a2a3a; color: #a1a1aa; }
 .p2p-confirm-btn.outline:hover { border-color: #71717A; color: #fff; }
-.p2p-confirm-btn:disabled { opacity: .5; cursor: not-allowed; }
+.p2p-confirm-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
 /* ── CHAT ────────────────────────────────────────────────────────────────────── */
 .p2p-chat-header { padding: 16px 20px; border-bottom: 1px solid #1C1C2C; display: flex; justify-content: space-between; align-items: center; }
@@ -197,10 +197,10 @@
 .p2p-skeleton-row { height: 56px; margin-bottom: 8px; }
 
 /* ── EMPTY STATE ─────────────────────────────────────────────────────────────── */
-.p2p-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: #52525B; }
-.p2p-empty-icon { width: 64px; height: 64px; border-radius: 50%; background: #1a1a24; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: #71717A; }
-.p2p-empty-title { font-size: 16px; font-weight: 600; color: #a1a1aa; margin-bottom: 4px; }
-.p2p-empty-desc { font-size: 13px; }
+.p2p-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 20px; color: #71717A; text-align: center; }
+.p2p-empty-icon { width: 80px; height: 80px; border-radius: 50%; background: rgba(28, 212, 167, 0.05); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: #1CD4A7; border: 1px dashed rgba(28, 212, 167, 0.2); }
+.p2p-empty-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.p2p-empty-desc { font-size: 14px; color: #71717A; max-width: 300px; line-height: 1.6; }
 
 /* ── SUCCESS ANIMATION ───────────────────────────────────────────────────────── */
 .p2p-success-anim { animation: p2pBounceIn .5s ease-out; }

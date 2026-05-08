@@ -61,7 +61,28 @@ export default function P2PMyAds() {
                         <button className="p2p-section-tab active">My Ads</button>
                     </div>
 
-                    {loading ? <div>Loading...</div> : ads.length === 0 ? <div className="p2p-empty">No ads created yet.</div> : (
+                    {loading ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            {[1, 2, 3].map(i => <div key={i} className="p2p-skeleton p2p-skeleton-row" />)}
+                        </div>
+                    ) : ads.length === 0 ? (
+                        <div className="p2p-empty">
+                            <div className="p2p-empty-icon">
+                                <Plus size={32} />
+                            </div>
+                            <div className="p2p-empty-title">No Advertisements Found</div>
+                            <p className="p2p-empty-desc">
+                                You haven't posted any P2P ads yet. Create one to start trading with others.
+                            </p>
+                            <button 
+                                className="p2p-confirm-btn primary" 
+                                style={{ marginTop: '24px', padding: '12px 32px' }}
+                                onClick={() => setShowCreate(true)}
+                            >
+                                <Plus size={18} /> Post Your First Ad
+                            </button>
+                        </div>
+                    ) : (
                         <div>
                             {ads.map(ad => (
                                 <div key={ad._id} className="p2p-my-ad-card">

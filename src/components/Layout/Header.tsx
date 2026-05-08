@@ -107,6 +107,7 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
             <span>Trade</span>
             <ChevronDown size={16} />
           </div>
+          <Link to="/dashboard/p2p" className={`nav-link ${activePage === 'p2p' ? 'active' : ''}`}>P2P</Link>
           <div className="nav-item-dropdown-container" ref={futuresDropdownRef}>
             <div
               className={`nav-item dropdown ${activePage === 'futures' ? 'active' : ''}`}

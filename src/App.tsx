@@ -33,6 +33,10 @@ import AdvanceTrade from './pages/dashboard/AdvanceTrade'
 import Staking from './pages/dashboard/Staking'
 import Earn from './pages/dashboard/Earn'
 import TransferCrypto from './pages/dashboard/TransferCrypto'
+import P2PTrade from './pages/dashboard/P2PTrade'
+import P2POrders from './pages/dashboard/P2POrders'
+import P2PMyAds from './pages/dashboard/P2PMyAds'
+import P2POrderView from './pages/dashboard/P2POrderView'
 
 // Informational Pages
 import TermsOfUse from './pages/info/TermsOfUse'
@@ -416,6 +420,10 @@ function App() {
       <Route path="/dashboard/advance-trade" element={<ProtectedDashboard><AdvanceTrade /></ProtectedDashboard>} />
       <Route path="/dashboard/staking" element={<ProtectedDashboard><Staking /></ProtectedDashboard>} />
       <Route path="/dashboard/earn" element={<ProtectedDashboard><Earn /></ProtectedDashboard>} />
+      <Route path="/dashboard/p2p" element={<ProtectedDashboard><P2PTrade /></ProtectedDashboard>} />
+      <Route path="/dashboard/p2p/orders" element={<ProtectedDashboard><P2POrders /></ProtectedDashboard>} />
+      <Route path="/dashboard/p2p/ads" element={<ProtectedDashboard><P2PMyAds /></ProtectedDashboard>} />
+      <Route path="/dashboard/p2p/order/:id" element={<ProtectedDashboard><P2POrderView /></ProtectedDashboard>} />
 
       <Route path="*" element={<Navigate to="/signin" replace />} />
     </Routes>

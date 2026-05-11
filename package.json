@@ -1,10 +1,11 @@
 {
   "name": "diwanfinanceweb",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
-  "packageManager": "pnpm@11.0.9",
+  "packageManager": "pnpm@11.1.0",
   "pnpm": {
+    "strictDepBuilds": false,
     "allowBuilds": {
       "@clerk/shared": true,
       "esbuild": true

@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "packageManager": "pnpm@11.0.9",
+  "pnpm": {
+    "onlyBuiltDependencies": ["@clerk/shared", "esbuild"]
+  },
   "engines": {
     "node": "22.x"
   },

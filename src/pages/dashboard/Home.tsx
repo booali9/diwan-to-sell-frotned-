@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Menu, TrendingUp, Repeat, Wallet, Target, Grid3X3, GraduationCap, Megaphone, ChevronDown, X, ShieldCheck } from 'lucide-react'
+import { Search, Menu, TrendingUp, Repeat, Wallet, Target, Grid3X3, GraduationCap, Megaphone, ChevronDown, X, ShieldCheck, Users } from 'lucide-react'
 import Layout from '../../components/Layout/Layout'
 import { useAuth } from '../../context/AuthContext'
 import { getDetailedMarketData } from '../../services/tradeService'
@@ -14,6 +14,7 @@ const mobileQuickActions: { icon: React.ElementType; label: string; path?: strin
     { icon: Wallet, label: 'Deposit', path: '/dashboard/deposit' },
     { icon: TrendingUp, label: 'Market', path: '/dashboard/market?view=list&tab=spot' },
     { icon: Target, label: 'Earn', path: '/dashboard/earn' },
+    { icon: Users, label: 'P2P', path: '/dashboard/p2p' },
     { icon: Repeat, label: 'Futures', path: '/dashboard/futures' },
     { icon: Grid3X3, label: 'Grid', path: '/dashboard/spot-grid' },
     { icon: GraduationCap, label: 'Academy', path: '/dashboard/academy' },
@@ -172,7 +173,22 @@ export default function Home() {
                     <div className="mobile-header-left">
                         <img src="/logo.png" alt="Bicoin" className="mobile-header-logo" onClick={() => navigate('/home')} style={{ cursor: 'pointer' }} />
                     </div>
-...
+                    <div className="mobile-header-right">
+                        <div className="mobile-header-icon">
+                            <Search size={22} />
+                        </div>
+                        {isLoggedIn && (
+                            <div className="mobile-header-profile" onClick={() => navigate('/dashboard/profile')}>
+                                <div className="mobile-avatar">{user?.name?.charAt(0)?.toUpperCase() || 'U'}</div>
+                                <ChevronDown size={14} className="mobile-avatar-chevron" />
+                            </div>
+                        )}
+                        <div className="mobile-header-icon" onClick={() => setMobileMenuOpen(true)}>
+                            <Menu size={22} />
+                        </div>
+                    </div>
+                </div>
+
                 <div className="home-total-value-section">
                     <div className="total-value-card">
                         <div className="val-label">Total Assets</div>
@@ -189,21 +205,6 @@ export default function Home() {
                     <div className="news-content">
                         <span>Welcome to Bicoin - The most secure crypto exchange.</span>
                         <span>Check out our new referral program and earn up to 40% rebate!</span>
-                    </div>
-                </div>
-                    <div className="mobile-header-right">
-                        <div className="mobile-header-icon">
-                            <Search size={22} />
-                        </div>
-                        {isLoggedIn && (
-                            <div className="mobile-header-profile" onClick={() => navigate('/dashboard/profile')}>
-                                <div className="mobile-avatar">{user?.name?.charAt(0)?.toUpperCase() || 'U'}</div>
-                                <ChevronDown size={14} className="mobile-avatar-chevron" />
-                            </div>
-                        )}
-                        <div className="mobile-header-icon" onClick={() => setMobileMenuOpen(true)}>
-                            <Menu size={22} />
-                        </div>
                     </div>
                 </div>
 

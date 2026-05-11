@@ -1669,6 +1669,11 @@
     .header {
         display: none !important;
     }
+
+    .mobile-home-view .home-total-value-section,
+    .mobile-home-view .home-news-ticker {
+        display: none !important;
+    }
 }
 
 /* Mobile Header */
@@ -1690,7 +1695,7 @@
 }
 
 .mobile-header-logo {
-    height: 28px;
+    height: 38px;
     width: auto;
 }
 

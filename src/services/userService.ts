@@ -2,7 +2,7 @@ import { authFetch, getAuthHeaders } from '../lib/authFetch';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
     ? `${import.meta.env.VITE_API_BASE_URL}/api/users`
-    : 'https://diwantosell-backend.onrender.com/api/users';
+    : 'https://stingray-app-2pifp.ondigitalocean.app/api/users';
 
 export const loginUser = async (emailOrPhone: string, password: string, isEmail: boolean): Promise<any> => {
     const response = await fetch(`${API_URL}/login`, {

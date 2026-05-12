@@ -2,7 +2,7 @@ import { authFetch, getAuthHeaders } from '../lib/authFetch';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
     ? `${import.meta.env.VITE_API_BASE_URL}/api/staking`
-    : 'https://diwantosell-backend.onrender.com/api/staking';
+    : 'https://stingray-app-2pifp.ondigitalocean.app/api/staking';
 
 export interface StakingPool {
     id: string;

@@ -2,7 +2,7 @@ import { authFetch, getAuthHeaders } from '../lib/authFetch';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
     ? `${import.meta.env.VITE_API_BASE_URL}/api/wallet`
-    : 'https://diwantosell-backend.onrender.com/api/wallet';
+    : 'https://stingray-app-2pifp.ondigitalocean.app/api/wallet';
 
 // ---------------------------------------------------------------------------
 // Local balance ledger – persists across page navigations

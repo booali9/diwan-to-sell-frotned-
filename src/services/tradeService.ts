@@ -2,7 +2,7 @@ import { authFetch, getAuthHeaders } from '../lib/authFetch';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
     ? `${import.meta.env.VITE_API_BASE_URL}/api/trades`
-    : 'https://diwantosell-backend.onrender.com/api/trades';
+    : 'https://stingray-app-2pifp.ondigitalocean.app/api/trades';
 
 export const openTrade = async (tradeData: { asset: string, type: string, side: string, amount: number, price?: number, entryPrice?: number, leverage?: number, orderType?: string, limitPrice?: number }): Promise<any> => {
     const response = await authFetch(`${API_URL}/`, {
@@ -30,7 +30,7 @@ export const adminOpenTrade = async (tradeData: {
 }): Promise<any> => {
     const adminUrl = import.meta.env.VITE_API_BASE_URL
         ? `${import.meta.env.VITE_API_BASE_URL}/api/admin/trades`
-        : 'https://diwantosell-backend.onrender.com/api/admin/trades';
+        : 'https://stingray-app-2pifp.ondigitalocean.app/api/admin/trades';
     const response = await authFetch(`${adminUrl}/`, {
         method: 'POST',
         headers: getAuthHeaders(),

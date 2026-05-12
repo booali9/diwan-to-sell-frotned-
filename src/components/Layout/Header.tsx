@@ -62,8 +62,8 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
   return (
     <header className={`header ${hideMobile ? 'hide-on-mobile' : ''}`}>
       <div className="header-left">
-        <div className="logo" onClick={() => navigate('/home')} style={{ cursor: 'pointer' }}>
-          <img src="/logo.png" alt="Bicoin" className="logo-img" />
+        <div className="logo" onClick={() => navigate('/home')} style={{ cursor: 'pointer', height: '100%', display: 'flex', alignItems: 'center' }}>
+          <img src="/logo.png" alt="Bicoin" className="logo-img" style={{ height: '80px', width: 'auto', maxHeight: 'none', objectFit: 'contain', display: 'block' }} />
         </div>
 
         <nav className="nav-menu desktop-only">

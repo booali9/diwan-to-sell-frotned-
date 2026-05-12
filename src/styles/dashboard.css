@@ -95,11 +95,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  max-height: unset;
 }
 
 .logo-img {
-  height: 24px;
-  width: auto;
+  height: auto !important;
+  width: 140px !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain;
 }
 
 .logo-text {

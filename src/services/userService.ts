@@ -19,6 +19,11 @@ export const loginUser = async (emailOrPhone: string, password: string, isEmail:
         throw new Error(error.message || 'Login failed');
     }
 
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+        throw new Error(`Expected JSON but got ${contentType}. Check your VITE_API_BASE_URL.`);
+    }
+
     const data = await response.json();
     localStorage.setItem('userInfo', JSON.stringify(data));
     return data;
@@ -34,6 +39,11 @@ export const registerUser = async (name: string, email: string, phone: string, p
     if (!response.ok) {
         const error = await response.json().catch(() => ({}));
         throw new Error(error.message || 'Registration failed');
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+        throw new Error(`Expected JSON but got ${contentType}. Check your VITE_API_BASE_URL.`);
     }
 
     const data = await response.json();

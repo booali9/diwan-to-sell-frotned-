@@ -21,7 +21,7 @@ export const loginUser = async (emailOrPhone: string, password: string, isEmail:
 
     const contentType = response.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
-        throw new Error(`Expected JSON but got ${contentType}. Check your VITE_API_BASE_URL.`);
+        throw new Error(`Invalid Response! App tried to reach ${API_URL}/login but got HTML. Error Code: ${response.status}`);
     }
 
     const data = await response.json();
@@ -43,7 +43,7 @@ export const registerUser = async (name: string, email: string, phone: string, p
 
     const contentType = response.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
-        throw new Error(`Expected JSON but got ${contentType}. Check your VITE_API_BASE_URL.`);
+        throw new Error(`Invalid Response! App tried to reach ${API_URL}/register but got HTML. Error Code: ${response.status}`);
     }
 
     const data = await response.json();

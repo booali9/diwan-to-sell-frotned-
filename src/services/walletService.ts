@@ -252,6 +252,13 @@ export const getBalance = async (): Promise<{ balance: number; futuresBalance?: 
             const error = await response.json().catch(() => ({}));
             throw new Error(error.message || 'Failed to fetch balance');
         }
+        
+        // Ensure the response is actually JSON before parsing (to avoid HTML "Unexpected token '<'" errors)
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error(`Expected JSON but got ${contentType}. Check your VITE_API_BASE_URL.`);
+        }
+        
         const data = await response.json();
         const backendBal = data.balance || 0;
         // Sync futures balance from DB (authoritative source — replaces localStorage).
@@ -289,8 +296,10 @@ export const getAddress = async (asset: string = 'USDT', network?: string): Prom
     if (!response.ok) {
         const error = await response.json().catch(() => ({}));
         throw new Error(error.message || 'Failed to fetch address');
-    }
-    return response.json();
+    }    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+        throw new Error(`Expected JSON but got ${contentType}. Check your VITE_API_BASE_URL.`);
+    }    return response.json();
 };
 
 export const getTransactions = async (): Promise<any[]> => {

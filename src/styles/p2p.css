@@ -47,11 +47,13 @@
 .p2p-payment-tags { display: flex; gap: 4px; flex-wrap: wrap; }
 .p2p-payment-tag { background: #1a1a24; border: 1px solid #2a2a3a; border-radius: 4px; padding: 3px 8px; font-size: 11px; color: #a1a1aa; white-space: nowrap; }
 
-.p2p-action-btn { padding: 8px 28px; border-radius: 6px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; transition: all .2s; }
-.p2p-buy-btn { background: #1CD4A7; color: #0C0C17; }
-.p2p-buy-btn:hover { background: #15b892; transform: translateY(-1px); }
-.p2p-sell-btn { background: #ef4444; color: #fff; }
-.p2p-sell-btn:hover { background: #dc2626; transform: translateY(-1px); }
+.p2p-action-btn { padding: 8px 18px; border-radius: 6px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; transition: all .2s ease; white-space: nowrap; }
+.p2p-buy-btn { background: #1CD4A7; color: #000; font-weight: 600; }
+.p2p-buy-btn:hover { background: #15b892; opacity: 0.95; }
+.p2p-buy-btn:active { background: #129d7c; }
+.p2p-sell-btn { background: #f6465d; color: #fff; }
+.p2p-sell-btn:hover { background: #e03f54; }
+.p2p-sell-btn:active { background: #c5374a; }
 
 /* ── CREATE AD MODAL ─────────────────────────────────────────────────────────── */
 .p2p-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); animation: p2pFadeIn .2s; }
@@ -80,11 +82,14 @@
 .p2p-chip { padding: 6px 14px; border-radius: 20px; font-size: 12px; border: 1px solid #2a2a3a; background: transparent; color: #a1a1aa; cursor: pointer; transition: all .2s; }
 .p2p-chip.selected { background: rgba(28,212,167,.15); border-color: #1CD4A7; color: #1CD4A7; }
 
-.p2p-submit-btn { width: 100%; padding: 13px; border-radius: 8px; font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: all .2s; margin-top: 8px; }
-.p2p-submit-btn.buy { background: #1CD4A7; color: #0C0C17; }
-.p2p-submit-btn.sell { background: #ef4444; color: #fff; }
-.p2p-submit-btn:hover { opacity: .9; transform: translateY(-1px); }
-.p2p-submit-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.p2p-submit-btn { width: 100%; padding: 14px 24px; border-radius: 6px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all .2s ease; margin-top: 8px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; box-sizing: border-box; }
+.p2p-submit-btn.buy { background: #1CD4A7; color: #000; font-weight: 600; }
+.p2p-submit-btn.buy:hover:not(:disabled) { background: #15b892; opacity: 0.95; }
+.p2p-submit-btn.buy:active:not(:disabled) { background: #129d7c; }
+.p2p-submit-btn.sell { background: #f6465d; color: #fff; }
+.p2p-submit-btn.sell:hover:not(:disabled) { background: #e03f54; }
+.p2p-submit-btn.sell:active:not(:disabled) { background: #c5374a; }
+.p2p-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ── ORDER PAGE ──────────────────────────────────────────────────────────────── */
 .p2p-order-layout { display: grid; grid-template-columns: 1fr 380px; gap: 0; min-height: calc(100vh - 80px); }
@@ -126,14 +131,16 @@
 .p2p-step-desc { font-size: 12px; color: #71717A; margin-top: 2px; }
 
 .p2p-action-buttons { display: flex; gap: 12px; margin-top: 24px; }
-.p2p-confirm-btn { padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-.p2p-confirm-btn.primary { background: #1CD4A7; color: #0C0C17; }
-.p2p-confirm-btn.primary:hover { background: #15b892; transform: translateY(-1px); }
-.p2p-confirm-btn.danger { background: #ef4444; color: #fff; }
-.p2p-confirm-btn.danger:hover { background: #dc2626; transform: translateY(-1px); }
+.p2p-confirm-btn { padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all .2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; box-sizing: border-box; }
+.p2p-confirm-btn.primary { background: #1CD4A7; color: #000; font-weight: 600; }
+.p2p-confirm-btn.primary:hover:not(:disabled) { background: #15b892; opacity: 0.95; }
+.p2p-confirm-btn.primary:active:not(:disabled) { background: #129d7c; }
+.p2p-confirm-btn.danger { background: #f6465d; color: #fff; }
+.p2p-confirm-btn.danger:hover:not(:disabled) { background: #e03f54; }
+.p2p-confirm-btn.danger:active:not(:disabled) { background: #c5374a; }
 .p2p-confirm-btn.outline { background: transparent; border: 1px solid #2a2a3a; color: #a1a1aa; }
-.p2p-confirm-btn.outline:hover { border-color: #71717A; color: #fff; }
-.p2p-confirm-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.p2p-confirm-btn.outline:hover:not(:disabled) { border-color: #1CD4A7; color: #1CD4A7; background: rgba(28, 212, 167, 0.05); }
+.p2p-confirm-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ── CHAT ────────────────────────────────────────────────────────────────────── */
 .p2p-chat-header { padding: 16px 20px; border-bottom: 1px solid #1C1C2C; display: flex; justify-content: space-between; align-items: center; }
@@ -201,6 +208,10 @@
 .p2p-empty-icon { width: 80px; height: 80px; border-radius: 50%; background: rgba(28, 212, 167, 0.05); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: #1CD4A7; border: 1px dashed rgba(28, 212, 167, 0.2); }
 .p2p-empty-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
 .p2p-empty-desc { font-size: 14px; color: #71717A; max-width: 300px; line-height: 1.6; }
+
+/* ── SUCCESS MODAL ───────────────────────────────────────────────────────────── */
+.p2p-success-container { animation: p2pSlideUp .3s ease-out; }
+.p2p-success-icon { margin-bottom: 16px; }
 
 /* ── SUCCESS ANIMATION ───────────────────────────────────────────────────────── */
 .p2p-success-anim { animation: p2pBounceIn .5s ease-out; }

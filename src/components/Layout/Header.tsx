@@ -12,7 +12,7 @@ interface HeaderProps {
 
 function Header({ activePage, hideMobile = false }: HeaderProps) {
   const navigate = useNavigate()
-  const { isLoggedIn, logout } = useAuth()
+  const { isLoggedIn, logout, user } = useAuth()
   const { toast } = useToast()
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -58,6 +58,12 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
     toast('Logged out successfully', 'success')
     navigate('/')
   }
+
+  const userName = user?.name?.trim() || 'User'
+  const userEmail = user?.email?.trim() || 'No email available'
+  const userId = user?._id ? `ID: ${user._id.slice(0, 8)}` : 'ID: --------'
+  const userInitial = (userName || userEmail || 'B').charAt(0).toUpperCase()
+  const userAvatarSeed = encodeURIComponent(user?.name || user?.email || 'Bicoin')
 
   return (
     <header className={`header ${hideMobile ? 'hide-on-mobile' : ''}`}>
@@ -175,17 +181,17 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
                 style={{ cursor: 'pointer' }}
               >
-                <span>B</span>
+                <span>{userInitial}</span>
                 <ChevronDown className="desktop-only" size={14} style={{ transform: isProfileOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
               </div>
 
               {isProfileOpen && (
                 <div className="profile-dropdown-menu">
                   <div className="dropdown-user-info">
-                    <div className="user-avatar-small">B</div>
+                    <div className="user-avatar-small">{userInitial}</div>
                     <div className="user-details">
-                      <div className="user-id">ID: 88463259</div>
-                      <div className="user-email">ajames@gmail.com</div>
+                      <div className="user-id">{userId}</div>
+                      <div className="user-email">{userEmail}</div>
                     </div>
                   </div>
                   <div className="dropdown-divider"></div>
@@ -235,14 +241,14 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
                 <div className="md-user-header">
                   <div className="md-user-info-row">
                     <div className="md-avatar-wrapper">
-                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=James" alt="James Howard" className="md-avatar" />
+                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userAvatarSeed}`} alt={userName} className="md-avatar" />
                       <div className="md-badge">
                         <BadgeCheck size={14} className="text-white fill-emerald-500" />
                       </div>
                     </div>
                     <div className="md-user-meta">
-                      <h3 className="md-user-name">James Howard</h3>
-                      <p className="md-user-email">ajames@gmail.com</p>
+                      <h3 className="md-user-name">{userName}</h3>
+                      <p className="md-user-email">{userEmail}</p>
                     </div>
                     <div className="md-verified-chip">
                       <ShieldCheck size={14} />

@@ -209,6 +209,7 @@ export default function P2PMyAds() {
                                     <option value="USD">USD</option>
                                     <option value="EUR">EUR</option>
                                     <option value="AED">AED</option>
+                                    <option value="KES">KES</option>
                                 </select>
                             </div>
                         </div>

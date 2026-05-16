@@ -114,6 +114,7 @@ export default function P2PTrade() {
                                         <option value="EUR">EUR</option>
                                         <option value="GBP">GBP</option>
                                         <option value="AED">AED</option>
+                                        <option value="KES">KES</option>
                                     </select>
                                 </div>
 

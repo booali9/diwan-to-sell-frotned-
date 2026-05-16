@@ -73,7 +73,7 @@ export default function Home() {
                     ) : (
                         <>
                             <div className="mobile-header-left">
-                                <img src="/logo.png" alt="Diwanfinance" className="mobile-header-logo" />
+                                <img src="/logo.png" alt="BiCoin" className="mobile-header-logo" />
                             </div>
                             <div className="mobile-header-right">
                                 <button className="mobile-auth-btn mobile-signin-btn" onClick={() => navigate('/signin')}>
@@ -149,7 +149,7 @@ export default function Home() {
 
             <div className="desktop-only p-10 text-center">
                 <h1 className="text-3xl font-bold mb-4">Dashboard Home</h1>
-                <p className="text-zinc-500">Welcome back to your DiwanFinance dashboard.</p>
+                <p className="text-zinc-500">Welcome back to your BiCoin dashboard.</p>
             </div>
         </Layout>
     )

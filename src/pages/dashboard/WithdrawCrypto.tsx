@@ -4,6 +4,7 @@ import { Info, ChevronDown, HelpCircle, ArrowLeft } from 'lucide-react'
 import '../../styles/withdraw.css'
 import { useNavigate } from 'react-router-dom'
 import { getBalance, withdrawFunds, getTransactions } from '../../services/walletService'
+import { getProfile } from '../../services/userService'
 import { useToast } from '../../context/ToastContext'
 
 function WithdrawCrypto() {
@@ -14,6 +15,9 @@ function WithdrawCrypto() {
   const [amount, setAmount] = useState('')
   const [loading, setLoading] = useState(false)
   const [transactions, setTransactions] = useState<any[]>([])
+  const [fundPassword, setFundPassword] = useState('')
+  const [google2faCode, setGoogle2faCode] = useState('')
+  const [profile, setProfile] = useState<any>(null)
 
   // Dropdown States
   const [isOpenAsset, setIsOpenAsset] = useState(false)
@@ -48,6 +52,13 @@ function WithdrawCrypto() {
     } catch (error) {
       console.error('Error fetching withdraw data:', error)
     }
+
+    try {
+      const profileData = await getProfile()
+      setProfile(profileData)
+    } catch (err) {
+      console.error('Error fetching profile:', err)
+    }
   }
 
   useEffect(() => {
@@ -71,13 +82,23 @@ function WithdrawCrypto() {
       toast('Insufficient balance', 'error')
       return
     }
+    if (!fundPassword) {
+      toast('Fund password is required for withdrawals', 'warning')
+      return
+    }
+    if (profile?.isGoogleAuthenticatorEnabled && !google2faCode) {
+      toast('Google Authenticator code is required', 'warning')
+      return
+    }
 
     setLoading(true)
     try {
-      await withdrawFunds(Number(amount), address, selectedAsset.symbol, selectedNetwork.name)
+      await withdrawFunds(Number(amount), address, selectedAsset.symbol, selectedNetwork.name, fundPassword, google2faCode)
       toast(`Successfully withdrawn ${amount} ${selectedAsset.symbol}`, 'success')
       setAmount('')
       setAddress('')
+      setFundPassword('')
+      setGoogle2faCode('')
       fetchData() // Refresh balance and history
     } catch (error: any) {
       toast(error.message || 'Withdrawal failed', 'error')
@@ -193,6 +214,47 @@ function WithdrawCrypto() {
                 </div>
               </div>
 
+              {/* Fund Password */}
+              <div className="withdraw-form-group">
+                <label className="withdraw-form-label">Fund Password</label>
+                <div className="withdraw-input-wrapper">
+                  <input
+                    type="password"
+                    className="withdraw-input"
+                    placeholder="Enter your fund password"
+                    value={fundPassword}
+                    onChange={(e) => setFundPassword(e.target.value)}
+                  />
+                </div>
+                {profile && !profile.hasFundPassword && (
+                  <div className="network-warning" style={{ marginTop: 8 }}>
+                    <Info size={18} className="warning-icon-teal" />
+                    <div className="warning-text-small">
+                      You must set a Fund Password in your <a href="/dashboard/profile" style={{ color: '#14b8a6', textDecoration: 'underline' }}>Security Settings</a> before making withdrawals.
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Google 2FA (if enabled) */}
+              {profile?.isGoogleAuthenticatorEnabled && (
+                <div className="withdraw-form-group">
+                  <label className="withdraw-form-label">Google Authenticator Code</label>
+                  <div className="withdraw-input-wrapper">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={6}
+                      className="withdraw-input"
+                      placeholder="Enter 6-digit code"
+                      value={google2faCode}
+                      onChange={(e) => setGoogle2faCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                      style={{ letterSpacing: 6, textAlign: 'center', fontSize: 18, fontWeight: 600 }}
+                    />
+                  </div>
+                </div>
+              )}
+
               {/* Summary Section */}
               <div className="summary-card">
                 <div className="summary-row">
@@ -210,9 +272,9 @@ function WithdrawCrypto() {
               <button
                 className="main-withdraw-btn"
                 onClick={handleWithdraw}
-                disabled={loading}
+                disabled={loading || (profile && !profile.hasFundPassword)}
               >
-                {loading ? 'Processing...' : 'Withdraw Funds'}
+                {loading ? 'Processing...' : (profile && !profile.hasFundPassword) ? 'Set Fund Password First' : 'Withdraw Funds'}
               </button>
             </div>
 

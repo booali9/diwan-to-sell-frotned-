@@ -44,7 +44,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, [])
 
     const logout = useCallback(() => {
+        // Get user ID before clearing userInfo
+        const userId = getUserFromStorage()?._id || '';
+
         localStorage.removeItem('userInfo')
+
+        // Clear user-specific wallet cache
+        if (userId) {
+            const keysToRemove = [
+                `${userId}_dw_local_bal_adj`,
+                `${userId}_dw_cached_balance`,
+                `${userId}_dw_spot_holdings`,
+                `${userId}_dw_futures_balance`,
+                `${userId}_dw_adj_v2_migrated`,
+                `${userId}_dw_spot_timestamps`,
+                `${userId}_dw_cost_basis`,
+            ];
+            keysToRemove.forEach(key => {
+                try { localStorage.removeItem(key); } catch {}
+            });
+        }
+
+        // Also clear legacy (non-prefixed) keys for clean transition
+        try {
+            localStorage.removeItem('dw_local_bal_adj');
+            localStorage.removeItem('dw_cached_balance');
+            localStorage.removeItem('dw_spot_holdings');
+            localStorage.removeItem('dw_futures_balance');
+            localStorage.removeItem('dw_adj_v2_migrated');
+            localStorage.removeItem('dw_spot_timestamps');
+            localStorage.removeItem('dw_cost_basis');
+        } catch {}
+
         setUser(null)
     }, [])
 

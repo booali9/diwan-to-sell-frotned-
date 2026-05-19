@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Copy, ChevronRight, Eye, EyeOff, ChevronDown, ArrowLeft, Menu, X, User, FileText, CheckSquare, Users, Settings, LayoutDashboard, Shield, Lock, Smartphone, Mail, Wallet, Trash2, Monitor, Activity, Gift, UserPlus, Filter, AlertTriangle, Check, Camera, ShieldCheck } from 'lucide-react'
+import { Copy, ChevronRight, Eye, EyeOff, ChevronDown, ArrowLeft, Menu, X, User, FileText, CheckSquare, Users, Settings, LayoutDashboard, Shield, Lock, Smartphone, Mail, Wallet, Trash2, Monitor, Activity, Gift, UserPlus, Filter, AlertTriangle, Check, Camera, ShieldCheck, ShieldOff, RefreshCw } from 'lucide-react'
 import Layout from '../../components/Layout/Layout'
 import { useAuth } from '../../context/AuthContext'
 import { getProfile, changePassword, changeEmail, deleteAccountService, updateUserProfile, logoutUser, getNotifications, markNotificationRead } from '../../services/userService'
@@ -41,19 +41,70 @@ export default function ProfileOverview() {
     const [msgsLoading, setMsgsLoading] = useState(false)
 
     // Security modal states
-    const [secModal, setSecModal] = useState<'none' | 'password' | 'email' | 'phone' | 'delete' | 'device' | 'activity' | 'authenticator' | 'fund-password'>('none')
+    const [secModal, setSecModal] = useState<'none' | 'password' | 'email' | 'phone' | 'delete' | 'device' | 'activity' | 'authenticator' | 'fund-password' | 'disable-2fa' | 'change-2fa'>('none')
     const [secLoading, setSecLoading] = useState(false)
     const [secError, setSecError] = useState('')
     const [secSuccess, setSecSuccess] = useState('')
     const [secForm, setSecForm] = useState<Record<string, string>>({})
     const [authStep, setAuthStep] = useState<1 | 2 | 3>(1)
-    const [authSecret] = useState(() => {
+    const [authSecret, setAuthSecret] = useState('')
+    const generateNewSecret = () => {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
         let s = ''
         for (let i = 0; i < 16; i++) s += chars[Math.floor(Math.random() * chars.length)]
-        return s
-    })
+        setAuthSecret(s)
+    }
 
+    const [deviceSessions, setDeviceSessions] = useState<any[]>([])
+
+    useEffect(() => {
+        generateNewSecret()
+    }, [])
+
+    const fetchDeviceSessions = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/devices`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            if (res.ok) {
+                const data = await res.json()
+                setDeviceSessions(data)
+            }
+        } catch (e) {
+            console.error('Error fetching device sessions', e)
+        } finally {
+        }
+    }
+
+    const handleRevokeDevice = async (sessionId: string) => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/devices/revoke`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ sessionId })
+            })
+            if (res.ok) {
+                toast('Device revoked successfully', 'success')
+                fetchDeviceSessions()
+            } else {
+                const data = await res.json()
+                toast(data.message || 'Failed to revoke device', 'error')
+            }
+        } catch (e) {
+            toast('Error revoking device', 'error')
+        }
+    }
+
+    useEffect(() => {
+        if (secModal === 'device' || secModal === 'activity') {
+            fetchDeviceSessions();
+        }
+    }, [secModal])
 
     const closeSecModal = () => { setSecModal('none'); setSecError(''); setSecSuccess(''); setSecForm({}); setAuthStep(1); }
 
@@ -99,21 +150,35 @@ export default function ProfileOverview() {
 
 
     const handleDisable2FA = async () => {
-        if (!window.confirm('Are you sure you want to unbind Google Authenticator?')) return;
+        const code = secForm.otpCode || ''
+        if (!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
+            setSecError('Please enter a valid 6-digit code')
+            return
+        }
+        setSecLoading(true)
+        setSecError('')
         try {
             const token = localStorage.getItem('token');
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/2fa/disable`, {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code })
             });
             if (res.ok) {
-                toast('Google Authenticator unbound successfully', 'success');
+                setSecSuccess('Google Authenticator disabled successfully')
                 getProfile().then(setProfile);
+                setTimeout(closeSecModal, 1500)
             } else {
-                toast('Failed to unbind authenticator', 'error');
+                const data = await res.json();
+                setSecError(data.message || 'Failed to unbind authenticator');
             }
         } catch (error) {
-            toast('Error unbinding authenticator', 'error');
+            setSecError('Error unbinding authenticator');
+        } finally {
+            setSecLoading(false)
         }
     };
 
@@ -137,6 +202,7 @@ export default function ProfileOverview() {
             });
             if (res.ok) {
                 toast('Fund password set! 24h withdrawal lock active.', 'success');
+                getProfile().then(setProfile);
                 setSecModal('none');
             } else {
                 const data = await res.json();
@@ -164,7 +230,7 @@ export default function ProfileOverview() {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ code }) // Sending the code to verify
+                body: JSON.stringify({ code, secret: authSecret }) // Sending the code and secret to verify
             });
             
             if (res.ok) {
@@ -179,6 +245,47 @@ export default function ProfileOverview() {
             }
         } catch (error) {
             setSecError('Error binding authenticator')
+            setSecLoading(false)
+        }
+    }
+
+    const handleChange2FA = async () => {
+        setSecError(''); setSecSuccess(''); setSecLoading(true)
+        const oldCode = secForm.oldCode || ''
+        const newCode = secForm.otpCode || ''
+        if (!oldCode || oldCode.length !== 6 || !/^\d{6}$/.test(oldCode)) {
+            setSecError('Please enter a valid 6-digit old code')
+            setSecLoading(false)
+            return
+        }
+        if (!newCode || newCode.length !== 6 || !/^\d{6}$/.test(newCode)) {
+            setSecError('Please enter a valid 6-digit new code')
+            setSecLoading(false)
+            return
+        }
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/2fa/change`, {
+                method: 'POST',
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ oldCode, newSecret: authSecret, newCode })
+            });
+            
+            if (res.ok) {
+                setSecLoading(false)
+                setSecSuccess('Google Authenticator changed successfully!')
+                getProfile().then(setProfile);
+                setTimeout(closeSecModal, 1500)
+            } else {
+                const data = await res.json();
+                setSecError(data.message || 'Failed to change authenticator')
+                setSecLoading(false)
+            }
+        } catch (error) {
+            setSecError('Error changing authenticator')
             setSecLoading(false)
         }
     }
@@ -352,12 +459,12 @@ export default function ProfileOverview() {
 
     const userName = profile?.name || 'User'
     const userEmail = profile?.email || ''
-    const userId = profile?._id?.substring(0, 8) || '--------'
+    const userId = profile?.uid || '--------'
     const kycStatus = profile?.kycStatus || 'none'
     const userPhone = profile?.phone || 'Not set'
 
     // Referral code derived from user ID
-    const referralCode = profile?._id ? profile._id.substring(0, 10).toUpperCase() : '----------'
+    const referralCode = profile?.uid || (profile?._id ? profile._id.substring(0, 10).toUpperCase() : '----------')
     const referralLink = `https://Bicoinweb.vercel.app/register?ref=${referralCode}`
 
     const copyToClipboard = (text: string) => {
@@ -842,7 +949,27 @@ export default function ProfileOverview() {
                                     <span className="mpv-sec-name">Google Authenticator</span>
                                     <span className="mpv-sec-desc">API Secure verification when withdrawing, retrieving passwords, modifying security settings and managing API</span>
                                 </div>
-                                <button className="mpv-sec-btn" onClick={() => { setSecForm({}); setAuthStep(1); setSecModal('authenticator'); }}>{profile?.isGoogleAuthenticatorEnabled ? 'Bound' : 'Bind'}</button>
+                                {profile?.isGoogleAuthenticatorEnabled ? (
+                                    <div style={{ display: 'flex', gap: 8 }}>
+                                        <button className="mpv-sec-btn" onClick={() => {
+                                            setSecForm({ otpCode: '' });
+                                            setSecModal('disable-2fa');
+                                        }}>Unbind</button>
+                                        <button className="mpv-sec-btn" onClick={() => {
+                                            setSecForm({ oldCode: '', otpCode: '' });
+                                            setAuthStep(1);
+                                            generateNewSecret();
+                                            setSecModal('change-2fa');
+                                        }}>Change</button>
+                                    </div>
+                                ) : (
+                                    <button className="mpv-sec-btn" onClick={() => {
+                                        setSecForm({});
+                                        setAuthStep(1);
+                                        generateNewSecret();
+                                        setSecModal('authenticator');
+                                    }}>Bind</button>
+                                )}
                             </div>
 
                             <div className="mpv-sec-item">
@@ -881,6 +1008,15 @@ export default function ProfileOverview() {
                                     <span className="mpv-sec-desc">Used to manage your account login password</span>
                                 </div>
                                 <button className="mpv-sec-btn" onClick={() => { setSecForm({ currentPassword: '', newPassword: '', confirmPassword: '' }); setSecModal('password'); }}>Change</button>
+                            </div>
+
+                            <div className="mpv-sec-item">
+                                <div className="mpv-sec-icon"><ShieldCheck size={16} /></div>
+                                <div className="mpv-sec-info">
+                                    <span className="mpv-sec-name">Fund Password</span>
+                                    <span className="mpv-sec-desc">Set a password for withdrawals to increase fund security</span>
+                                </div>
+                                <button className="mpv-sec-btn" onClick={() => { setSecForm({ currentPassword: '', newFundPassword: '', confirmFundPassword: '' }); setSecModal('fund-password'); }}>{profile?.hasFundPassword ? 'Change' : 'Set'}</button>
                             </div>
 
                             <div className="mpv-sec-item">
@@ -997,15 +1133,39 @@ export default function ProfileOverview() {
                                     {secModal === 'device' && (
                                         <>
                                             <h3 className="mpv-sec-modal-title"><Monitor size={18} /> My Devices</h3>
-                                            <div className="mpv-sec-device-list">
-                                                <div className="mpv-sec-device-item active">
-                                                    <Monitor size={20} />
-                                                    <div>
-                                                        <span className="mpv-sec-device-name">{navigator.userAgent.includes('Mobile') ? 'Mobile Browser' : 'Desktop Browser'}</span>
-                                                        <span className="mpv-sec-device-detail">Current session · {navigator.platform}</span>
-                                                    </div>
-                                                    <span className="mpv-sec-device-badge">Active</span>
-                                                </div>
+                                            <div className="mpv-sec-device-list" style={{ maxHeight: 350, overflowY: 'auto' }}>
+                                                {deviceSessions.length > 0 ? (
+                                                    deviceSessions.map((session) => (
+                                                        <div key={session._id} className={`mpv-sec-device-item ${session.isCurrent ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #2a2a3a' }}>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                                                <Monitor size={20} />
+                                                                <div>
+                                                                    <span className="mpv-sec-device-name" style={{ display: 'block', color: '#fff', fontSize: 14, fontWeight: 500 }}>
+                                                                        {session.deviceType || 'Unknown Device'}
+                                                                    </span>
+                                                                    <span className="mpv-sec-device-detail" style={{ display: 'block', color: '#71717A', fontSize: 12, marginTop: 2 }}>
+                                                                        {session.location || 'Unknown Location'} · {session.ipAddress}
+                                                                    </span>
+                                                                    <span style={{ display: 'block', color: '#71717A', fontSize: 11, marginTop: 2 }}>
+                                                                        Last active: {new Date(session.lastActive).toLocaleString()}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            {session.isCurrent ? (
+                                                                <span className="mpv-sec-device-badge" style={{ background: 'rgba(28,212,167,0.1)', color: '#1CD4A7', padding: '2px 8px', borderRadius: 4, fontSize: 12 }}>Active</span>
+                                                            ) : (
+                                                                <button
+                                                                    onClick={() => handleRevokeDevice(session.tokenHash)}
+                                                                    style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '4px 10px', borderRadius: 4, cursor: 'pointer', fontSize: 12 }}
+                                                                >
+                                                                    Logout
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p style={{ color: '#71717A', fontSize: 13, textAlign: 'center', padding: '20px 0' }}>No active devices found</p>
+                                                )}
                                             </div>
                                         </>
                                     )}
@@ -1075,6 +1235,74 @@ export default function ProfileOverview() {
                                                     </div>
                                                 </div>
                                             )}
+                                        </>
+                                    )}
+
+                                    {secModal === 'disable-2fa' && (
+                                        <>
+                                            <h3 className="mpv-sec-modal-title"><ShieldOff size={18} /> Disable 2FA</h3>
+                                            <p className="mpv-sec-modal-hint">Enter your Google Authenticator code to unbind 2FA</p>
+                                            <div className="mpv-sec-modal-field">
+                                                <label>Verification Code</label>
+                                                <input type="text" inputMode="numeric" maxLength={6} placeholder="6-digit code" value={secForm.otpCode || ''} onChange={e => setSecForm(p => ({ ...p, otpCode: e.target.value.replace(/\D/g, '').slice(0, 6) }))} style={{ letterSpacing: 8, textAlign: 'center', fontSize: 20, fontWeight: 600 }} />
+                                            </div>
+                                            <button className="mpv-sec-modal-submit danger" disabled={secLoading} onClick={handleDisable2FA}>{secLoading ? 'Unbinding...' : 'Disable Authenticator'}</button>
+                                        </>
+                                    )}
+
+                                    {secModal === 'change-2fa' && (
+                                        <>
+                                            <h3 className="mpv-sec-modal-title"><RefreshCw size={18} /> Change 2FA</h3>
+                                            {authStep === 1 && (
+                                                <div className="mpv-auth-step">
+                                                    <p className="mpv-sec-modal-hint">Step 1: Enter your current Google Authenticator code.</p>
+                                                    <div className="mpv-sec-modal-field">
+                                                        <label>Current Code</label>
+                                                        <input type="text" inputMode="numeric" maxLength={6} placeholder="6-digit code" value={secForm.oldCode || ''} onChange={e => setSecForm(p => ({ ...p, oldCode: e.target.value.replace(/\D/g, '').slice(0, 6) }))} style={{ letterSpacing: 8, textAlign: 'center', fontSize: 20, fontWeight: 600 }} />
+                                                    </div>
+                                                    <button className="mpv-sec-modal-submit" disabled={!secForm.oldCode || secForm.oldCode.length !== 6} onClick={() => setAuthStep(2)}>Next →</button>
+                                                </div>
+                                            )}
+                                            {authStep === 2 && (
+                                                <div className="mpv-auth-step">
+                                                    <p className="mpv-sec-modal-hint">Step 2: Scan the new QR code or enter the new secret key manually.</p>
+                                                    <div className="mpv-auth-qr">
+                                                        <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=otpauth://totp/Bicoin:${encodeURIComponent(userEmail)}?secret=${authSecret}%26issuer=Bicoin`} alt="QR Code" style={{ width: 180, height: 180, borderRadius: 8, background: '#fff', padding: 8 }} />
+                                                    </div>
+                                                    <div className="mpv-auth-secret">
+                                                        <span className="mpv-auth-secret-label">New Secret Key</span>
+                                                        <div className="mpv-auth-secret-box"><code>{authSecret}</code><Copy size={14} style={{ cursor: 'pointer', flexShrink: 0 }} onClick={() => copyToClipboard(authSecret)} /></div>
+                                                    </div>
+                                                    <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                                                        <button className="mpv-sec-modal-submit" style={{ background: '#27272A', flex: 1 }} onClick={() => setAuthStep(1)}>← Back</button>
+                                                        <button className="mpv-sec-modal-submit" style={{ flex: 1 }} onClick={() => setAuthStep(3)}>Next →</button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {authStep === 3 && (
+                                                <div className="mpv-auth-step">
+                                                    <p className="mpv-sec-modal-hint">Step 3: Enter the new 6-digit code from Google Authenticator.</p>
+                                                    <div className="mpv-sec-modal-field">
+                                                        <label>New Verification Code</label>
+                                                        <input type="text" inputMode="numeric" maxLength={6} placeholder="6-digit code" value={secForm.otpCode || ''} onChange={e => setSecForm(p => ({ ...p, otpCode: e.target.value.replace(/\D/g, '').slice(0, 6) }))} style={{ letterSpacing: 8, textAlign: 'center', fontSize: 20, fontWeight: 600 }} />
+                                                    </div>
+                                                    <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                                                        <button className="mpv-sec-modal-submit" style={{ background: '#27272A', flex: 1 }} onClick={() => setAuthStep(2)}>← Back</button>
+                                                        <button className="mpv-sec-modal-submit" style={{ flex: 1 }} disabled={secLoading} onClick={handleChange2FA}>{secLoading ? 'Verifying...' : 'Change Authenticator'}</button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+
+                                    {secModal === 'fund-password' && (
+                                        <>
+                                            <h3 className="mpv-sec-modal-title"><ShieldCheck size={18} /> {profile?.hasFundPassword ? 'Change' : 'Set'} Fund Password</h3>
+                                            <p className="mpv-sec-modal-hint">Login password verification is required</p>
+                                            <div className="mpv-sec-modal-field"><label>Login Password</label><input type="password" placeholder="Enter login password" value={secForm.currentPassword || ''} onChange={e => setSecForm(p => ({ ...p, currentPassword: e.target.value }))} /></div>
+                                            <div className="mpv-sec-modal-field"><label>New Fund Password</label><input type="password" placeholder="Enter fund password" value={secForm.newFundPassword || ''} onChange={e => setSecForm(p => ({ ...p, newFundPassword: e.target.value }))} /></div>
+                                            <div className="mpv-sec-modal-field"><label>Confirm Fund Password</label><input type="password" placeholder="Confirm fund password" value={secForm.confirmFundPassword || ''} onChange={e => setSecForm(p => ({ ...p, confirmFundPassword: e.target.value }))} /></div>
+                                            <button className="mpv-sec-modal-submit" disabled={secLoading} onClick={handleSetFundPassword}>{secLoading ? 'Saving...' : (profile?.hasFundPassword ? 'Change Fund Password' : 'Set Fund Password')}</button>
                                         </>
                                     )}
 
@@ -1805,15 +2033,27 @@ export default function ProfileOverview() {
                                         <span className="security-item-name">Google Authenticator</span>
                                         <span className="security-item-desc">API Secure verification when withdrawing, retrieving passwords, modifying security settings and managing API</span>
                                     </div>
-                                    <button className="security-btn" onClick={() => { 
-                                        if (profile?.isGoogleAuthenticatorEnabled) {
-                                            handleDisable2FA();
-                                        } else {
-                                            setSecForm({}); setAuthStep(1); setSecModal('authenticator'); 
-                                        }
-                                    }}>
-                                        {profile?.isGoogleAuthenticatorEnabled ? 'Unbind' : 'Bind'}
-                                    </button>
+                                    {profile?.isGoogleAuthenticatorEnabled ? (
+                                        <div style={{ display: 'flex', gap: 8 }}>
+                                            <button className="security-btn" onClick={() => {
+                                                setSecForm({ otpCode: '' });
+                                                setSecModal('disable-2fa');
+                                            }}>Unbind</button>
+                                            <button className="security-btn" onClick={() => {
+                                                setSecForm({ oldCode: '', otpCode: '' });
+                                                setAuthStep(1);
+                                                generateNewSecret();
+                                                setSecModal('change-2fa');
+                                            }}>Change</button>
+                                        </div>
+                                    ) : (
+                                        <button className="security-btn" onClick={() => {
+                                            setSecForm({});
+                                            setAuthStep(1);
+                                            generateNewSecret();
+                                            setSecModal('authenticator');
+                                        }}>Bind</button>
+                                    )}
                                 </div>
                                 <div className="security-item">
                                     <div className="security-item-icon">
@@ -1872,7 +2112,7 @@ export default function ProfileOverview() {
                                         <span className="security-item-name">Fund Password</span>
                                         <span className="security-item-desc">Set a password for withdrawals to increase fund security</span>
                                     </div>
-                                    <button className="security-btn" onClick={() => { setSecForm({ currentPassword: '', newFundPassword: '', confirmFundPassword: '' }); setSecModal('fund-password'); }}>Set</button>
+                                    <button className="security-btn" onClick={() => { setSecForm({ currentPassword: '', newFundPassword: '', confirmFundPassword: '' }); setSecModal('fund-password'); }}>{profile?.hasFundPassword ? 'Change' : 'Set'}</button>
                                 </div>
                             </div>
                         </div>
@@ -2171,8 +2411,8 @@ export default function ProfileOverview() {
             </div>
         </div>
 
-            {/* Global Security Modal Overlay (for desktop tabs) */}
-            {secModal !== 'none' && activeProfileTab !== 'security' && (
+            {/* Global Security Modal Overlay */}
+            {secModal !== 'none' && (
                 <div className="mpv-sec-modal-overlay" onClick={closeSecModal}>
                     <div className="mpv-sec-modal" onClick={e => e.stopPropagation()}>
                         <button className="mpv-sec-modal-close" onClick={closeSecModal}><X size={18} /></button>
@@ -2215,15 +2455,39 @@ export default function ProfileOverview() {
                         {secModal === 'device' && (
                             <>
                                 <h3 className="mpv-sec-modal-title"><Monitor size={18} /> My Devices</h3>
-                                <div className="mpv-sec-device-list">
-                                    <div className="mpv-sec-device-item active">
-                                        <Monitor size={20} />
-                                        <div>
-                                            <span className="mpv-sec-device-name">{navigator.userAgent.includes('Mobile') ? 'Mobile Browser' : 'Desktop Browser'}</span>
-                                            <span className="mpv-sec-device-detail">Current session · {navigator.platform}</span>
-                                        </div>
-                                        <span className="mpv-sec-device-badge">Active</span>
-                                    </div>
+                                <div className="mpv-sec-device-list" style={{ maxHeight: 350, overflowY: 'auto' }}>
+                                    {deviceSessions.length > 0 ? (
+                                        deviceSessions.map((session) => (
+                                            <div key={session._id} className={`mpv-sec-device-item ${session.isCurrent ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #2a2a3a' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                                    <Monitor size={20} />
+                                                    <div>
+                                                        <span className="mpv-sec-device-name" style={{ display: 'block', color: '#fff', fontSize: 14, fontWeight: 500 }}>
+                                                            {session.deviceType || 'Unknown Device'}
+                                                        </span>
+                                                        <span className="mpv-sec-device-detail" style={{ display: 'block', color: '#71717A', fontSize: 12, marginTop: 2 }}>
+                                                            {session.location || 'Unknown Location'} · {session.ipAddress}
+                                                        </span>
+                                                        <span style={{ display: 'block', color: '#71717A', fontSize: 11, marginTop: 2 }}>
+                                                            Last active: {new Date(session.lastActive).toLocaleString()}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                {session.isCurrent ? (
+                                                    <span className="mpv-sec-device-badge" style={{ background: 'rgba(28,212,167,0.1)', color: '#1CD4A7', padding: '2px 8px', borderRadius: 4, fontSize: 12 }}>Active</span>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => handleRevokeDevice(session.tokenHash)}
+                                                        style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '4px 10px', borderRadius: 4, cursor: 'pointer', fontSize: 12 }}
+                                                    >
+                                                        Logout
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p style={{ color: '#71717A', fontSize: 13, textAlign: 'center', padding: '20px 0' }}>No active devices found</p>
+                                    )}
                                 </div>
                             </>
                         )}
@@ -2284,14 +2548,69 @@ export default function ProfileOverview() {
                                 )}
                             </>
                         )}
+                        {secModal === 'disable-2fa' && (
+                            <>
+                                <h3 className="mpv-sec-modal-title"><ShieldOff size={18} /> Disable 2FA</h3>
+                                <p className="mpv-sec-modal-hint">Enter your Google Authenticator code to unbind 2FA</p>
+                                <div className="mpv-sec-modal-field">
+                                    <label>Verification Code</label>
+                                    <input type="text" inputMode="numeric" maxLength={6} placeholder="6-digit code" value={secForm.otpCode || ''} onChange={e => setSecForm(p => ({ ...p, otpCode: e.target.value.replace(/\D/g, '').slice(0, 6) }))} style={{ letterSpacing: 8, textAlign: 'center', fontSize: 20, fontWeight: 600 }} />
+                                </div>
+                                <button className="mpv-sec-modal-submit danger" disabled={secLoading} onClick={handleDisable2FA}>{secLoading ? 'Unbinding...' : 'Disable Authenticator'}</button>
+                            </>
+                        )}
+                        {secModal === 'change-2fa' && (
+                            <>
+                                <h3 className="mpv-sec-modal-title"><RefreshCw size={18} /> Change 2FA</h3>
+                                {authStep === 1 && (
+                                    <div className="mpv-auth-step">
+                                        <p className="mpv-sec-modal-hint">Step 1: Enter your current Google Authenticator code.</p>
+                                        <div className="mpv-sec-modal-field">
+                                            <label>Current Code</label>
+                                            <input type="text" inputMode="numeric" maxLength={6} placeholder="6-digit code" value={secForm.oldCode || ''} onChange={e => setSecForm(p => ({ ...p, oldCode: e.target.value.replace(/\D/g, '').slice(0, 6) }))} style={{ letterSpacing: 8, textAlign: 'center', fontSize: 20, fontWeight: 600 }} />
+                                        </div>
+                                        <button className="mpv-sec-modal-submit" disabled={!secForm.oldCode || secForm.oldCode.length !== 6} onClick={() => setAuthStep(2)}>Next →</button>
+                                    </div>
+                                )}
+                                {authStep === 2 && (
+                                    <div className="mpv-auth-step">
+                                        <p className="mpv-sec-modal-hint">Step 2: Scan the new QR code or enter the new secret key manually.</p>
+                                        <div className="mpv-auth-qr">
+                                            <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=otpauth://totp/Bicoin:${encodeURIComponent(userEmail)}?secret=${authSecret}%26issuer=Bicoin`} alt="QR Code" style={{ width: 180, height: 180, borderRadius: 8, background: '#fff', padding: 8 }} />
+                                        </div>
+                                        <div className="mpv-auth-secret">
+                                            <span className="mpv-auth-secret-label">New Secret Key</span>
+                                            <div className="mpv-auth-secret-box"><code>{authSecret}</code><Copy size={14} style={{ cursor: 'pointer', flexShrink: 0 }} onClick={() => copyToClipboard(authSecret)} /></div>
+                                        </div>
+                                        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                                            <button className="mpv-sec-modal-submit" style={{ background: '#27272A', flex: 1 }} onClick={() => setAuthStep(1)}>← Back</button>
+                                            <button className="mpv-sec-modal-submit" style={{ flex: 1 }} onClick={() => setAuthStep(3)}>Next →</button>
+                                        </div>
+                                    </div>
+                                )}
+                                {authStep === 3 && (
+                                    <div className="mpv-auth-step">
+                                        <p className="mpv-sec-modal-hint">Step 3: Enter the new 6-digit code from Google Authenticator.</p>
+                                        <div className="mpv-sec-modal-field">
+                                            <label>New Verification Code</label>
+                                            <input type="text" inputMode="numeric" maxLength={6} placeholder="6-digit code" value={secForm.otpCode || ''} onChange={e => setSecForm(p => ({ ...p, otpCode: e.target.value.replace(/\D/g, '').slice(0, 6) }))} style={{ letterSpacing: 8, textAlign: 'center', fontSize: 20, fontWeight: 600 }} />
+                                        </div>
+                                        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                                            <button className="mpv-sec-modal-submit" style={{ background: '#27272A', flex: 1 }} onClick={() => setAuthStep(2)}>← Back</button>
+                                            <button className="mpv-sec-modal-submit" style={{ flex: 1 }} disabled={secLoading} onClick={handleChange2FA}>{secLoading ? 'Verifying...' : 'Change Authenticator'}</button>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )}
                         {secModal === 'fund-password' && (
                             <>
-                                <h3 className="mpv-sec-modal-title"><ShieldCheck size={18} /> Set Fund Password</h3>
+                                <h3 className="mpv-sec-modal-title"><ShieldCheck size={18} /> {profile?.hasFundPassword ? 'Change' : 'Set'} Fund Password</h3>
                                 <p className="mpv-sec-modal-hint">Login password verification is required</p>
                                 <div className="mpv-sec-modal-field"><label>Login Password</label><input type="password" placeholder="Enter login password" value={secForm.currentPassword || ''} onChange={e => setSecForm(p => ({ ...p, currentPassword: e.target.value }))} /></div>
                                 <div className="mpv-sec-modal-field"><label>New Fund Password</label><input type="password" placeholder="Enter fund password" value={secForm.newFundPassword || ''} onChange={e => setSecForm(p => ({ ...p, newFundPassword: e.target.value }))} /></div>
                                 <div className="mpv-sec-modal-field"><label>Confirm Fund Password</label><input type="password" placeholder="Confirm fund password" value={secForm.confirmFundPassword || ''} onChange={e => setSecForm(p => ({ ...p, confirmFundPassword: e.target.value }))} /></div>
-                                <button className="mpv-sec-modal-submit" disabled={secLoading} onClick={handleSetFundPassword}>{secLoading ? 'Saving...' : 'Set Fund Password'}</button>
+                                <button className="mpv-sec-modal-submit" disabled={secLoading} onClick={handleSetFundPassword}>{secLoading ? 'Saving...' : (profile?.hasFundPassword ? 'Change Fund Password' : 'Set Fund Password')}</button>
                             </>
                         )}
                         {secError && <p className="mpv-sec-modal-error">{secError}</p>}

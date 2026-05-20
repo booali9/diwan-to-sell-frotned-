@@ -92,7 +92,7 @@ export default function Staking() {
         <Layout activePage="staking">
             <div className="staking-page-container">
                 <div className="staking-header">
-                    <h1 className="staking-title">Diwan <span className="highlight-text">Earn</span></h1>
+                    <h1 className="staking-title">Bicoin <span className="highlight-text">Earn</span></h1>
                     <p className="staking-subtitle">Simple & Secure. Stake your crypto and earn daily rewards.</p>
                 </div>
 

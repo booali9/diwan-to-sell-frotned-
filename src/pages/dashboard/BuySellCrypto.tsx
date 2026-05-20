@@ -132,7 +132,7 @@ function BuySellCrypto({ defaultTab = 'buy' }: BuySellCryptoProps) {
     }
     const btcHeld = getSpotHolding('BTC')
     if (btcHeld <= 0) {
-      toast('No BTC in your spot account to sell', 'error')
+      toast('No BTC to sell', 'error')
       return
     }
     setIsLoading(true)

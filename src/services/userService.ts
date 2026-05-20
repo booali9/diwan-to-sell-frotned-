@@ -203,7 +203,22 @@ export const getUnreadNotificationCount = async (): Promise<number> => {
     const data = await response.json();
     return data.count;
 };
-export const updateUserProfile = async (profileData: { name?: string, phone?: string, country?: string }): Promise<any> => {
+
+export const getReferralStats = async (): Promise<any[]> => {
+    const response = await authFetch(`${API_URL}/referrals`, {
+        method: 'GET',
+        headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Failed to get referral stats');
+    }
+
+    return response.json();
+};
+
+export const updateUserProfile = async (profileData: { name?: string, phone?: string, country?: string, notificationPreferences?: any }): Promise<any> => {
     const response = await authFetch(`${API_URL}/profile`, {
         method: 'PUT',
         headers: getAuthHeaders(),
@@ -271,5 +286,20 @@ export const deleteAccountService = async (password: string): Promise<any> => {
     }
 
     localStorage.removeItem('userInfo');
+    return response.json();
+};
+
+export const setFundPasswordService = async (currentPassword: string, newFundPassword: string): Promise<any> => {
+    const response = await authFetch(`${API_URL}/fund-password`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ currentPassword, newFundPassword }),
+    });
+
+    if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Failed to set fund password');
+    }
+
     return response.json();
 };

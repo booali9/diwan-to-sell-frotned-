@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Copy, ChevronRight, Eye, EyeOff, ChevronDown, ArrowLeft, Menu, X, User, FileText, CheckSquare, Users, Settings, LayoutDashboard, Shield, Lock, Smartphone, Mail, Wallet, Trash2, Monitor, Activity, Gift, UserPlus, Filter, AlertTriangle, Check, Camera, ShieldCheck, ShieldOff, RefreshCw } from 'lucide-react'
 import Layout from '../../components/Layout/Layout'
 import { useAuth } from '../../context/AuthContext'
-import { getProfile, changePassword, changeEmail, deleteAccountService, updateUserProfile, logoutUser, getNotifications, markNotificationRead } from '../../services/userService'
+import { getProfile, changePassword, changeEmail, deleteAccountService, updateUserProfile, logoutUser, getNotifications, markNotificationRead, getReferralStats } from '../../services/userService'
 import { getBalance, getSpotHoldings } from '../../services/walletService'
 import { useToast } from '../../context/ToastContext'
 import { getMyOpenTrades, getMyClosedTrades } from '../../services/tradeService'
@@ -40,6 +40,9 @@ export default function ProfileOverview() {
     const [selectedMsgs, setSelectedMsgs] = useState<Set<string>>(new Set())
     const [msgsLoading, setMsgsLoading] = useState(false)
 
+    // Referral state
+    const [referralStats, setReferralStats] = useState<any[]>([])
+
     // Security modal states
     const [secModal, setSecModal] = useState<'none' | 'password' | 'email' | 'phone' | 'delete' | 'device' | 'activity' | 'authenticator' | 'fund-password' | 'disable-2fa' | 'change-2fa'>('none')
     const [secLoading, setSecLoading] = useState(false)
@@ -63,8 +66,9 @@ export default function ProfileOverview() {
 
     const fetchDeviceSessions = async () => {
         try {
-            const token = localStorage.getItem('token')
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/devices`, {
+            const userInfo = localStorage.getItem('userInfo');
+            const token = userInfo ? JSON.parse(userInfo).token : null;
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL}/api/users/devices`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
             if (res.ok) {
@@ -79,8 +83,9 @@ export default function ProfileOverview() {
 
     const handleRevokeDevice = async (sessionId: string) => {
         try {
-            const token = localStorage.getItem('token')
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/devices/revoke`, {
+            const userInfo = localStorage.getItem('userInfo');
+            const token = userInfo ? JSON.parse(userInfo).token : null;
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL}/api/users/devices/revoke`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -158,8 +163,9 @@ export default function ProfileOverview() {
         setSecLoading(true)
         setSecError('')
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/2fa/disable`, {
+            const userInfo = localStorage.getItem('userInfo');
+            const token = userInfo ? JSON.parse(userInfo).token : null;
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL}/api/users/2fa/disable`, {
                 method: 'POST',
                 headers: { 
                     'Authorization': `Bearer ${token}`,
@@ -188,8 +194,9 @@ export default function ProfileOverview() {
             return;
         }
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/fund-password`, {
+            const userInfo = localStorage.getItem('userInfo');
+            const token = userInfo ? JSON.parse(userInfo).token : null;
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL}/api/users/fund-password`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -223,8 +230,9 @@ export default function ProfileOverview() {
         }
         
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/2fa/enable`, {
+            const userInfo = localStorage.getItem('userInfo');
+            const token = userInfo ? JSON.parse(userInfo).token : null;
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL}/api/users/2fa/enable`, {
                 method: 'POST',
                 headers: { 
                     'Authorization': `Bearer ${token}`,
@@ -264,8 +272,9 @@ export default function ProfileOverview() {
             return
         }
         try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/2fa/change`, {
+            const userInfo = localStorage.getItem('userInfo');
+            const token = userInfo ? JSON.parse(userInfo).token : null;
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL}/api/users/2fa/change`, {
                 method: 'POST',
                 headers: { 
                     'Authorization': `Bearer ${token}`,
@@ -350,6 +359,13 @@ export default function ProfileOverview() {
         if (activeProfileTab === 'message') {
             setMsgsLoading(true)
             getNotifications().then(setNotifications).catch(() => { }).finally(() => setMsgsLoading(false))
+        }
+    }, [activeProfileTab])
+
+    // Fetch referral stats when invite tab is active
+    useEffect(() => {
+        if (activeProfileTab === 'invite') {
+            getReferralStats().then(setReferralStats).catch(() => { })
         }
     }, [activeProfileTab])
 
@@ -2314,34 +2330,40 @@ export default function ProfileOverview() {
                         {/* Referral List Section */}
                         <div className="referral-list-card">
                             <h3 className="referral-list-title">My Invitees</h3>
-                            <table className="referral-table">
-                                <thead>
-                                    <tr>
-                                        <th>UID</th>
-                                        <th>Account</th>
-                                        <th>Registration Time</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {(profile as any)?.referrals?.length > 0 ? (
-                                        (profile as any).referrals.map((ref: any) => (
-                                            <tr key={ref.uid}>
-                                                <td>{ref.uid}</td>
-                                                <td>{ref.email?.replace(/(.{2}).*(@.*)/, "$1***$2")}</td>
-                                                <td>{new Date(ref.createdAt).toLocaleDateString()}</td>
-                                                <td className="status-verified">{ref.kycStatus === 'verified' ? 'Verified' : 'Unverified'}</td>
-                                            </tr>
-                                        ))
-                                    ) : (
+                            <div style={{ overflowX: 'auto' }}>
+                                <table className="referral-table" style={{ minWidth: '800px' }}>
+                                    <thead>
                                         <tr>
-                                            <td colSpan={4} style={{ textAlign: 'center', padding: '40px 0', color: 'rgba(255,255,255,0.4)' }}>
-                                                No invitees yet. Start sharing your link!
-                                            </td>
+                                            <th>Invitee UID</th>
+                                            <th>Activation Date</th>
+                                            <th>Transaction Amount</th>
+                                            <th>Transaction Fee</th>
+                                            <th>Rebate Ratio</th>
+                                            <th>Rebate Amount</th>
                                         </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {referralStats?.length > 0 ? (
+                                            referralStats.map((ref: any, idx: number) => (
+                                                <tr key={idx}>
+                                                    <td>{ref.uid}</td>
+                                                    <td>{new Date(ref.activationDate).toLocaleDateString()}</td>
+                                                    <td>${Number(ref.transactionAmount).toFixed(2)}</td>
+                                                    <td>${Number(ref.transactionFee).toFixed(2)}</td>
+                                                    <td>{ref.rebateRatio}%</td>
+                                                    <td style={{ color: '#1CD4A7', fontWeight: 'bold' }}>${Number(ref.rebateAmount).toFixed(2)}</td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan={6} style={{ textAlign: 'center', padding: '40px 0', color: 'rgba(255,255,255,0.4)' }}>
+                                                    No invitees yet. Start sharing your link!
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 )}

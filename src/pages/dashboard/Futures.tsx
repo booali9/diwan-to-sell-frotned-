@@ -1242,7 +1242,7 @@ export default function Futures() {
               <div className="futures-balance-options-v2">
                 <div className="futures-balance-option-v2" onClick={() => navigate('/dashboard/deposit')}>
                   <span className="futures-balance-title-v2">Deposit crypto</span>
-                  <span className="futures-balance-sub-v2">Send to spot account</span>
+                  <span className="futures-balance-sub-v2">Send to spot</span>
                 </div>
                 <div className="futures-balance-option-v2" onClick={() => navigate('/dashboard/buy-sell')}>
                   <span className="futures-balance-title-v2">Express</span>
@@ -1250,7 +1250,7 @@ export default function Futures() {
                 </div>
                 <div className="futures-balance-option-v2" onClick={() => setShowBalanceTransfer(true)}>
                   <span className="futures-balance-title-v2">Transfer</span>
-                  <span className="futures-balance-sub-v2">Transfer to spot account</span>
+                  <span className="futures-balance-sub-v2">Transfer to spot</span>
                 </div>
               </div>
             </div>
@@ -1271,7 +1271,7 @@ export default function Futures() {
                   <div className="ft-field-row-v2">
                     <History size={18} color="#E4E4E7" onClick={() => navigate('/dashboard/history')} style={{ cursor: 'pointer' }} />
                     <span className="ft-label">From</span>
-                    <span className="ft-value">{transferDirection === 'spot-to-futures' ? 'Spot account' : 'Futures account'}</span>
+                    <span className="ft-value">{transferDirection === 'spot-to-futures' ? 'Spot' : 'Future'}</span>
                   </div>
 
                   <div className="ft-connector-v2">
@@ -1284,7 +1284,7 @@ export default function Futures() {
                   <div className="ft-field-row-v2">
                     <Sliders size={18} color="#E4E4E7" />
                     <span className="ft-label">To</span>
-                    <span className="ft-value">{transferDirection === 'spot-to-futures' ? 'Futures account' : 'Spot account'}</span>
+                    <span className="ft-value">{transferDirection === 'spot-to-futures' ? 'Future' : 'Spot'}</span>
                   </div>
                 </div>
 

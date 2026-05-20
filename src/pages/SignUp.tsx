@@ -280,6 +280,14 @@ function SignUp({ onSwitchToSignIn }: SignUpProps) {
     c.dialCode.includes(countrySearch)
   )
 
+  const rules = {
+    length: password.length >= 9 && password.length <= 10,
+    lowercase: /[a-z]/.test(password),
+    uppercase: /[A-Z]/.test(password),
+    number: /\d/.test(password),
+    special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+  }
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -301,12 +309,31 @@ function SignUp({ onSwitchToSignIn }: SignUpProps) {
       setError('Please enter your password')
       return
     }
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters')
+    
+    // Check strong password requirements (9-10 chars, upper, lower, digit, special symbol)
+    const isStrong = rules.length && rules.lowercase && rules.uppercase && rules.number && rules.special;
+    if (!isStrong) {
+      setError('Password does not meet all security requirements below.')
       return
     }
 
-    const phone = `${selectedCountry.dialCode}${phoneNumber}`
+    // Kenyan phone number format handler (clean spaces, prefixes, automatically select)
+    let cleanPhoneInput = phoneNumber.trim().replace(/\s+/g, '');
+    if (selectedCountry.dialCode === '+254') {
+      if (cleanPhoneInput.startsWith('0')) {
+        cleanPhoneInput = cleanPhoneInput.slice(1);
+      } else if (cleanPhoneInput.startsWith('254')) {
+        cleanPhoneInput = cleanPhoneInput.slice(3);
+      }
+      
+      // Validate length (9 digits) and correct prefix (starts with 7 or 1)
+      if (!/^[17]\d{8}$/.test(cleanPhoneInput)) {
+        setError('Invalid Kenyan phone number. Must start with 7 or 1 and have exactly 9 digits (excluding leading 0 or 254).')
+        return
+      }
+    }
+
+    const phone = `${selectedCountry.dialCode}${cleanPhoneInput}`
     setLoading(true)
     try {
       await registerUser(name, email, phone, password)
@@ -450,6 +477,36 @@ function SignUp({ onSwitchToSignIn }: SignUpProps) {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
+
+              {/* Password Strength Checklist with Ticks and Crosses */}
+              {password && (
+                <div className="password-requirements" style={{
+                  marginTop: '0.75rem',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  borderRadius: '8px'
+                }}>
+                  <p style={{ fontSize: '12px', fontWeight: '600', color: '#888', marginBottom: '0.5rem' }}>Password Checklist:</p>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: rules.length ? '#10b981' : '#f43f5e', transition: 'color 0.2s' }}>
+                      <span style={{ fontWeight: 'bold' }}>{rules.length ? '✓' : '✗'}</span> 9-10 Characters
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: rules.lowercase ? '#10b981' : '#f43f5e', transition: 'color 0.2s' }}>
+                      <span style={{ fontWeight: 'bold' }}>{rules.lowercase ? '✓' : '✗'}</span> 1 Lowercase letter
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: rules.uppercase ? '#10b981' : '#f43f5e', transition: 'color 0.2s' }}>
+                      <span style={{ fontWeight: 'bold' }}>{rules.uppercase ? '✓' : '✗'}</span> 1 Uppercase letter
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: rules.number ? '#10b981' : '#f43f5e', transition: 'color 0.2s' }}>
+                      <span style={{ fontWeight: 'bold' }}>{rules.number ? '✓' : '✗'}</span> 1 Number
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: rules.special ? '#10b981' : '#f43f5e', transition: 'color 0.2s' }}>
+                      <span style={{ fontWeight: 'bold' }}>{rules.special ? '✓' : '✗'}</span> 1 Special symbol
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Error Message */}

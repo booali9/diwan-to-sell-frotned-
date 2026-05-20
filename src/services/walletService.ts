@@ -404,11 +404,43 @@ export const getDepositStatus = async (transactionId: string): Promise<any> => {
     return response.json();
 };
 
-export const withdrawFunds = async (amount: number, address: string, asset: string = 'USDT', network: string = 'BNB Smart Chain (BEP20)', fundPassword?: string, google2faCode?: string): Promise<any> => {
+export const getWithdrawalFee = async (): Promise<{ fee: number }> => {
+    const response = await authFetch(`${API_URL}/fee`, {
+        method: 'GET',
+        headers: getAuthHeaders(),
+    });
+    if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Failed to fetch withdrawal fee');
+    }
+    return response.json();
+};
+
+export const sendWithdrawalOTP = async (): Promise<{ message: string }> => {
+    const response = await authFetch(`${API_URL}/withdraw/send-otp`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+    });
+    if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Failed to send OTP');
+    }
+    return response.json();
+};
+
+export const withdrawFunds = async (
+    amount: number, 
+    address: string, 
+    asset: string = 'USDT', 
+    network: string = 'BNB Smart Chain (BEP20)', 
+    fundPassword?: string, 
+    google2faCode?: string,
+    emailOtpCode?: string
+): Promise<any> => {
     const response = await authFetch(`${API_URL}/withdraw`, {
         method: 'POST',
         headers: getAuthHeaders(),
-        body: JSON.stringify({ amount, address, asset, network, fundPassword, google2faCode }),
+        body: JSON.stringify({ amount, address, asset, network, fundPassword, google2faCode, emailOtpCode }),
     });
     if (!response.ok) {
         const error = await response.json().catch(() => ({}));
@@ -449,39 +481,25 @@ export const recordInternalTransfer = async (amount: number, fromAccount: string
     };
 };
 
-export const transferFunds = async (recipientId: string, amount: number, asset: string = 'USDT', network: string = 'Internal Ledger'): Promise<any> => {
-    const simulatedSuccess = () => {
-        // Persist the deduction so balance stays correct on re-fetch
-        applyLocalBalanceChange(-amount);
-        return {
-            status: 'success',
-            transactionId: `TXN${Date.now()}`,
-            message: 'Transfer completed successfully',
-            amount,
-            asset,
-            network,
-            recipient: recipientId,
-            timestamp: new Date().toISOString(),
-        };
-    };
-    try {
-        const response = await authFetch(`${API_URL}/transfer`, {
-            method: 'POST',
-            headers: getAuthHeaders(),
-            body: JSON.stringify({ recipientId, amount, asset, network }),
-        });
-        // If endpoint not yet deployed, simulate success locally
-        if (response.status === 404) return simulatedSuccess();
-        if (!response.ok) {
-            const error = await response.json().catch(() => ({}));
-            throw new Error(error.message || 'Failed to transfer funds');
-        }
-        // Real backend success — record deduction too so local state stays in sync
-        applyLocalBalanceChange(-amount);
-        return response.json();
-    } catch (err: any) {
-        // Network/CORS error - simulate success so UI doesn't break
-        if (err?.message?.includes('Failed to transfer funds')) throw err;
-        return simulatedSuccess();
+export const transferFunds = async (
+    recipientId: string, 
+    amount: number, 
+    asset: string = 'USDT', 
+    network: string = 'Internal Ledger',
+    fundPassword?: string,
+    google2faCode?: string,
+    emailOtpCode?: string
+): Promise<any> => {
+    const response = await authFetch(`${API_URL}/transfer`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ recipientId, amount, asset, network, fundPassword, google2faCode, emailOtpCode }),
+    });
+    if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.message || 'Failed to transfer funds');
     }
+    // Real backend success — record deduction too so local state stays in sync
+    applyLocalBalanceChange(-amount);
+    return response.json();
 };

@@ -64,7 +64,7 @@ export default function OTPVerification({ email, phone, mode = 'reset', onVerify
                         : `Enter the one-time code sent to ${contactInfo}`}
                 </p>
 
-                <div className="otp-container">
+                <div className="otp-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
                     <InputOTP
                         maxLength={6}
                         value={value}
@@ -79,6 +79,39 @@ export default function OTPVerification({ email, phone, mode = 'reset', onVerify
                             <InputOTPSlot index={5} className="otp-slot" />
                         </InputOTPGroup>
                     </InputOTP>
+
+                    <button 
+                        type="button" 
+                        onClick={async () => {
+                            try {
+                                const text = await navigator.clipboard.readText();
+                                const digits = text.replace(/\D/g, '').substring(0, 6);
+                                if (digits) {
+                                    setValue(digits);
+                                    setError('');
+                                } else {
+                                    setError('No numbers found in clipboard');
+                                }
+                            } catch (err) {
+                                setError('Failed to read from clipboard. Please paste manually.');
+                            }
+                        }}
+                        style={{
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            borderRadius: '8px',
+                            color: '#ccc',
+                            padding: '6px 12px',
+                            fontSize: '12px',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            transition: 'all 0.2s',
+                        }}
+                    >
+                        Paste OTP
+                    </button>
                 </div>
 
                 {error && <p style={{ color: '#ef4444', fontSize: '14px', marginBottom: '16px', textAlign: 'center' }}>{error}</p>}

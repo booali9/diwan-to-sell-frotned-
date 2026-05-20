@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { Eye, EyeOff, ChevronDown, Search, ArrowLeft, X, Filter, MoreHorizontal, Star } from 'lucide-react'
-import { getBalance, getCachedBalance, setCachedBalance, getSpotHoldings, getSpotTimestamps, getFuturesBalance, getSpotCostBasis, getLastKnownPrices, saveLastKnownPrices, getLocalBalanceAdjustment, resetLocalBalanceAdjustment, syncSpotHoldingsFromBackend } from '../../services/walletService'
+import { getBalance, getCachedBalance, setCachedBalance, getSpotHoldings, getSpotTimestamps, getFuturesBalance, getSpotCostBasis, getLastKnownPrices, saveLastKnownPrices, getLocalBalanceAdjustment, resetLocalBalanceAdjustment, syncSpotHoldingsFromBackend, deductSpotHolding, applyLocalBalanceChange } from '../../services/walletService'
 import { getMarketPrices, getMyClosedTrades, getMyOpenTrades } from '../../services/tradeService'
 import { STOCK_PAIRS, COMMODITY_PAIRS } from './Trade'
 import Layout from '../../components/Layout/Layout'
@@ -113,11 +113,11 @@ const CoinLogo = ({ coin, size = 36 }: { coin: { symbol: string; icon: string; c
 }
 
 const TAB_PARAM_MAP: Record<string, string> = {
-    'Assets Overview': 'overview',
-    'Spot account': 'spot',
-    'Futures account': 'futures',
-    'Bot account': 'bot',
-    'P2P account': 'p2p',
+    'Overview': 'overview',
+    'Spot': 'spot',
+    'Future': 'future',
+    'Bot': 'bot',
+    'Funding': 'funding',
 }
 const PARAM_TAB_MAP: Record<string, string> = Object.fromEntries(
     Object.entries(TAB_PARAM_MAP).map(([k, v]) => [v, k])
@@ -129,7 +129,7 @@ export default function Assets() {
     const [mobileAction] = useState<'deposit' | 'transfer' | 'withdraw'>('deposit')
     const [activeTab, setActiveTabRaw] = useState(() => {
         const param = searchParams.get('tab')
-        return (param && PARAM_TAB_MAP[param]) || 'Assets Overview'
+        return (param && PARAM_TAB_MAP[param]) || 'Overview'
     })
     const setActiveTab = (tab: string) => {
         setActiveTabRaw(tab)
@@ -171,6 +171,72 @@ export default function Assets() {
     // Tracks whether the first open-trades API response has arrived.
     // Used to prevent a flash of artificially low portfolio value during initial load.
     const [openTradesLoaded, setOpenTradesLoaded] = useState(false)
+
+    // State variables for BTC conversion
+    const [showConvertModal, setShowConvertModal] = useState(false)
+    const [convertFromCoin, setConvertFromCoin] = useState('BTC')
+    const [convertAmount, setConvertAmount] = useState('')
+    const [convertPrice, setConvertPrice] = useState(65000)
+    const [isConverting, setIsConverting] = useState(false)
+    const [convertSuccessData, setConvertSuccessData] = useState<any>(null)
+    const [convertError, setConvertError] = useState('')
+
+    const handleOpenConvertModal = (coinSymbol: string) => {
+        setConvertFromCoin(coinSymbol)
+        setConvertAmount('')
+        setConvertSuccessData(null)
+        setConvertError('')
+        const price = marketPrices[coinSymbol + 'USDT'] || 65000
+        setConvertPrice(price)
+        setShowConvertModal(true)
+    }
+
+    const handleConvertExecute = async () => {
+        setConvertError('')
+        const amt = parseFloat(convertAmount)
+        if (!amt || isNaN(amt) || amt <= 0) {
+            setConvertError('Please enter a valid amount to convert')
+            return
+        }
+        const held = spotHoldings[convertFromCoin] || 0
+        if (amt > held) {
+            setConvertError(`Insufficient ${convertFromCoin} balance`)
+            return
+        }
+        setIsConverting(true)
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1500))
+            const usdtReceived = amt * convertPrice
+            // Deduct BTC spot holding
+            deductSpotHolding(convertFromCoin, amt)
+            // Add USDT cash balance
+            applyLocalBalanceChange(usdtReceived)
+            
+            // Update local state
+            const updatedHoldings = { ...spotHoldings }
+            updatedHoldings[convertFromCoin] = Math.max(0, parseFloat(((spotHoldings[convertFromCoin] || 0) - amt).toFixed(8)))
+            setSpotHoldings(updatedHoldings)
+            
+            const updatedBalance = parseFloat((balance + usdtReceived).toFixed(2))
+            setBalance(updatedBalance)
+            setCachedBalance(updatedBalance)
+            
+            setConvertSuccessData({
+                fromAmount: amt,
+                fromCoin: convertFromCoin,
+                toAmount: usdtReceived,
+                toCoin: 'USDT',
+                rate: convertPrice,
+                txId: `CONV${Date.now().toString(16).toUpperCase()}`,
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString(),
+            })
+        } catch (e: any) {
+            setConvertError(e.message || 'Conversion failed')
+        } finally {
+            setIsConverting(false)
+        }
+    }
 
     const PNL_PERIODS: Array<{ key: 'Today' | '7 Days' | '30 Days' | 'All Time', label: string }> = [
         { key: 'Today', label: 'Today' },
@@ -533,7 +599,7 @@ export default function Assets() {
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
                                         </div>
                                     </div>
-                                    <span className="account-name">Spot Account</span>
+                                    <span className="account-name">Spot</span>
                                 </div>
                                 <div className="account-ratio">--</div>
                                 <div className="account-balance text-right">
@@ -549,7 +615,7 @@ export default function Assets() {
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                                         </div>
                                     </div>
-                                    <span className="account-name">Futures Account</span>
+                                    <span className="account-name">Future</span>
                                 </div>
                                 <div className="account-ratio">--</div>
                                 <div className="account-balance text-right">
@@ -565,7 +631,7 @@ export default function Assets() {
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>
                                         </div>
                                     </div>
-                                    <span className="account-name">Bot Account</span>
+                                    <span className="account-name">Bot</span>
                                 </div>
                                 <div className="account-ratio">--</div>
                                 <div className="account-balance text-right">
@@ -674,7 +740,7 @@ export default function Assets() {
                                 <div className="m-acc-icon-box">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
                                 </div>
-                                <span className="m-acc-name">Spot Account</span>
+                                <span className="m-acc-name">Spot</span>
                             </div>
                             <div className="m-acc-right">
                                 <div className="m-acc-val">{balanceHidden ? maskedValue : spotTotalUsd.toFixed(2) + ' USDT'}</div>
@@ -687,7 +753,7 @@ export default function Assets() {
                                 <div className="m-acc-icon-box">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                                 </div>
-                                <span className="m-acc-name">Futures Account</span>
+                                <span className="m-acc-name">Future</span>
                             </div>
                             <div className="m-acc-right">
                                 <div className="m-acc-val">{balanceHidden ? maskedValue : futuresEquity.toFixed(2) + ' USDT'}</div>
@@ -700,7 +766,7 @@ export default function Assets() {
                                 <div className="m-acc-icon-box">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>
                                 </div>
-                                <span className="m-acc-name">Bot Account</span>
+                                <span className="m-acc-name">Bot</span>
                             </div>
                             <div className="m-acc-right">
                                 <div className="m-acc-val">{balanceHidden ? maskedValue : '0.00 USDT'}</div>
@@ -831,7 +897,11 @@ export default function Assets() {
                                         <div className="st-actions">
                                             <button className="st-action-btn" onClick={() => navigate('/dashboard/deposit')}>Deposit</button>
                                             <button className="st-action-btn" onClick={() => navigate('/dashboard/withdraw')}>Withdraw</button>
-                                            <button className="st-action-btn" onClick={() => navigate('/dashboard/trade')}>Trade</button>
+                                            {coin.symbol === 'BTC' ? (
+                                                <button className="st-action-btn highlighted-convert-btn" style={{ background: '#00b8a3', color: '#fff', padding: '3px 10px', borderRadius: '6px', fontWeight: 600 }} onClick={() => handleOpenConvertModal(coin.symbol)}>Convert</button>
+                                            ) : (
+                                                <button className="st-action-btn" onClick={() => navigate('/dashboard/trade')}>Trade</button>
+                                            )}
                                         </div>
                                     </td>
                                 </tr>
@@ -939,7 +1009,11 @@ export default function Assets() {
                           : activeSpotCategory === 'stock' ? stockFilteredCoins
                           : commodityFilteredCoins
                         ).map((coin) => (
-                            <div key={coin.symbol} className="ms-coin-item">
+                            <div key={coin.symbol} className="ms-coin-item" style={{ cursor: coin.symbol === 'BTC' ? 'pointer' : undefined }} onClick={() => {
+                                if (coin.symbol === 'BTC') {
+                                    handleOpenConvertModal(coin.symbol);
+                                }
+                            }}>
                                 <div className="ms-coin-left">
                                     <CoinLogo coin={coin} size={36} />
                                     <div className="ms-coin-info">
@@ -1859,10 +1933,11 @@ export default function Assets() {
     )
 
     // Determine if footer should be shown
-    const shouldShowFooter = activeTab === 'Futures account' || activeTab === 'Bot account' || activeTab === 'P2P account';
+    const shouldShowFooter = activeTab === 'Future' || activeTab === 'Bot' || activeTab === 'Funding';
 
     return (
-        <Layout activePage="assets" hideFooter={!shouldShowFooter} hideFooterMobile={true}>
+        <>
+            <Layout activePage="assets" hideFooter={!shouldShowFooter} hideFooterMobile={true}>
             <div className="assets-page-container">
                 <div className="assets-inner-wrapper">
                     <div className="desktop-only">
@@ -1871,7 +1946,7 @@ export default function Assets() {
                         {/* Modified Header with Buttons */}
                         <div className="assets-tabs-container">
                             <div className="assets-tabs-scroll">
-                                {['Assets Overview', 'Spot account', 'Futures account', 'Bot account', 'P2P account'].map(tab => (
+                                {['Overview', 'Spot', 'Future', 'Bot', 'Funding'].map(tab => (
                                     <button
                                         key={tab}
                                         className={`assets-tab-v2 ${activeTab === tab ? 'active' : ''}`}
@@ -1882,12 +1957,12 @@ export default function Assets() {
                                 ))}
                             </div>
                             <div className="assets-header-actions">
-                                {activeTab === 'Bot account' ? (
+                                {activeTab === 'Bot' ? (
                                     <>
                                         <button className="btn-emerald" onClick={() => navigate('/dashboard/spot-grid')}>Create</button>
                                         <button className="btn-dark" onClick={() => navigate('/dashboard/history')}>Trade history</button>
                                     </>
-                                ) : activeTab === 'P2P account' ? (
+                                ) : activeTab === 'Funding' ? (
                                     <>
                                         <button className="btn-emerald" onClick={() => navigate('/dashboard/buy')}>Buy</button>
                                         <button className="btn-dark" onClick={() => navigate('/dashboard/sell')}>Sell</button>
@@ -1913,11 +1988,11 @@ export default function Assets() {
                         </div>
                         <div className="mobile-assets-tabs">
                             <div className="mobile-tabs-scroll">
-                                {['Assets overview', 'Spot account', 'Futures account', 'Bot account', 'P2P account'].map(tab => (
+                                {['Overview', 'Spot', 'Future', 'Bot', 'Funding'].map(tab => (
                                     <div
                                         key={tab}
-                                        className={`mobile-tab-item ${activeTab === tab || (activeTab === 'Assets Overview' && tab === 'Assets overview') ? 'active' : ''}`}
-                                        onClick={() => setActiveTab(tab === 'Assets overview' ? 'Assets Overview' : tab)}
+                                        className={`mobile-tab-item ${activeTab === tab ? 'active' : ''}`}
+                                        onClick={() => setActiveTab(tab)}
                                     >
                                         {tab}
                                     </div>
@@ -1927,14 +2002,148 @@ export default function Assets() {
                     </div>
 
                     <div className="assets-content-area w-full">
-                        {activeTab === 'Assets Overview' && renderOverview()}
-                        {activeTab === 'Spot account' && renderSpot()}
-                        {activeTab === 'Futures account' && renderFuturesTab()}
-                        {activeTab === 'Bot account' && renderBotTab()}
-                        {activeTab === 'P2P account' && renderP2PTab()}
+                        {activeTab === 'Overview' && renderOverview()}
+                        {activeTab === 'Spot' && renderSpot()}
+                        {activeTab === 'Future' && renderFuturesTab()}
+                        {activeTab === 'Bot' && renderBotTab()}
+                        {activeTab === 'Funding' && renderP2PTab()}
                     </div>
                 </div>
             </div>
         </Layout>
+
+        {/* Premium Cryptocurrecy Conversion Modal */}
+        {showConvertModal && (
+            <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+                <div style={{ background: '#ffffff', color: '#18181b', borderRadius: '20px', width: '100%', maxWidth: '420px', padding: '24px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)', border: '1px solid #e4e4e7', position: 'relative', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                        <h3 style={{ fontSize: '18px', fontWeight: 700, margin: 0, color: '#0f172a' }}>Convert Crypto</h3>
+                        <X size={20} style={{ cursor: 'pointer', color: '#71717a' }} onClick={() => setShowConvertModal(false)} />
+                    </div>
+
+                    {convertError && (
+                        <div style={{ background: '#fef2f2', border: '1px solid #fee2e2', color: '#ef4444', borderRadius: '8px', padding: '10px 12px', fontSize: '12px', marginBottom: '16px', fontWeight: 500 }}>
+                            ⚠️ {convertError}
+                        </div>
+                    )}
+
+                    {!convertSuccessData ? (
+                        <div>
+                            {/* Conversion Direction Visualizer */}
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: '#f4f4f5', borderRadius: '16px', marginBottom: '20px', border: '1px solid #e4e4e7' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ background: '#f97316', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold', fontSize: '14px' }}>₿</div>
+                                    <div>
+                                        <div style={{ fontSize: '14px', fontWeight: 700 }}>BTC</div>
+                                        <div style={{ fontSize: '11px', color: '#71717a' }}>Bitcoin</div>
+                                    </div>
+                                </div>
+                                <div style={{ color: '#00b8a3', fontWeight: 'bold', fontSize: '18px' }}>➔</div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ background: '#10b981', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold', fontSize: '14px' }}>₮</div>
+                                    <div>
+                                        <div style={{ fontSize: '14px', fontWeight: 700 }}>USDT</div>
+                                        <div style={{ fontSize: '11px', color: '#71717a' }}>Tether USD</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Input Amount */}
+                            <div style={{ marginBottom: '16px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#71717a', marginBottom: '6px' }}>
+                                    <span>Amount to convert</span>
+                                    <span>Available: <strong style={{ color: '#0f172a' }}>{(spotHoldings[convertFromCoin] || 0).toFixed(8)} BTC</strong></span>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', background: '#f4f4f5', border: '1px solid #e4e4e7', borderRadius: '12px', padding: '4px 12px' }}>
+                                    <input
+                                        type="text"
+                                        inputMode="decimal"
+                                        placeholder="0.00"
+                                        value={convertAmount}
+                                        onChange={(e) => {
+                                            const val = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '').replace(/(\..*)\./, '$1');
+                                            setConvertAmount(val);
+                                        }}
+                                        style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', padding: '10px 0', fontSize: '16px', fontWeight: 600, color: '#0f172a' }}
+                                    />
+                                    <button
+                                        style={{ background: 'rgba(0,184,163,0.12)', color: '#00b8a3', border: 'none', borderRadius: '6px', padding: '4px 10px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', marginLeft: '8px' }}
+                                        onClick={() => setConvertAmount((spotHoldings[convertFromCoin] || 0).toString())}
+                                    >
+                                        MAX
+                                    </button>
+                                </div>
+                                {parseFloat(convertAmount) > (spotHoldings[convertFromCoin] || 0) && (
+                                    <div style={{ color: '#ef4444', fontSize: '11px', marginTop: '6px', fontWeight: 500 }}>⚠️ Amount exceeds your available balance</div>
+                                )}
+                            </div>
+
+                            {/* Live price block */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#71717a', padding: '8px 0', borderBottom: '1px solid #f4f4f5', marginBottom: '12px' }}>
+                                <span>Price rate</span>
+                                <span style={{ color: '#0f172a', fontWeight: 600 }}>1 BTC ≈ {convertPrice.toFixed(2)} USDT</span>
+                            </div>
+
+                            {/* Receive estimate */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#71717a', padding: '8px 0', borderBottom: '1px solid #f4f4f5', marginBottom: '24px' }}>
+                                <span>You will receive</span>
+                                <span style={{ color: '#10b981', fontWeight: 700, fontSize: '15px' }}>
+                                    {Number(convertAmount) > 0 ? (Number(convertAmount) * convertPrice).toFixed(2) : '0.00'} USDT
+                                </span>
+                            </div>
+
+                            <button
+                                style={{ width: '100%', background: 'linear-gradient(135deg, #00b8a3, #009684)', color: '#fff', border: 'none', borderRadius: '12px', padding: '14px', fontSize: '15px', fontWeight: 700, cursor: 'pointer', transition: 'opacity 0.2s', opacity: isConverting || !convertAmount || parseFloat(convertAmount) <= 0 || parseFloat(convertAmount) > (spotHoldings[convertFromCoin] || 0) ? 0.6 : 1 }}
+                                onClick={handleConvertExecute}
+                                disabled={isConverting || !convertAmount || parseFloat(convertAmount) <= 0 || parseFloat(convertAmount) > (spotHoldings[convertFromCoin] || 0)}
+                            >
+                                {isConverting ? 'Processing Conversion...' : 'Convert Now'}
+                            </button>
+                        </div>
+                    ) : (
+                        <div style={{ textAlign: 'center' }}>
+                            <div style={{ width: '64px', height: '64px', background: 'rgba(16,185,129,0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <h4 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 4px', color: '#0f172a' }}>Conversion Completed</h4>
+                            <p style={{ fontSize: '13px', color: '#71717a', margin: '0 0 20px' }}>Your assets have been converted successfully.</p>
+
+                            <div style={{ background: '#f4f4f5', borderRadius: '12px', padding: '16px', marginBottom: '24px', textAlign: 'left', border: '1px solid #e4e4e7' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '13px' }}>
+                                    <span style={{ color: '#71717a' }}>Converted amount</span>
+                                    <span style={{ fontWeight: 600, color: '#0f172a' }}>{convertSuccessData.fromAmount.toFixed(8)} {convertSuccessData.fromCoin}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '13px' }}>
+                                    <span style={{ color: '#71717a' }}>Credited amount</span>
+                                    <span style={{ fontWeight: 700, color: '#10b981' }}>+{convertSuccessData.toAmount.toFixed(2)} {convertSuccessData.toCoin}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '13px' }}>
+                                    <span style={{ color: '#71717a' }}>Exchange Rate</span>
+                                    <span style={{ color: '#0f172a' }}>1 {convertSuccessData.fromCoin} = {convertSuccessData.rate.toFixed(2)} {convertSuccessData.toCoin}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '13px' }}>
+                                    <span style={{ color: '#71717a' }}>Transaction ID</span>
+                                    <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#71717a' }}>{convertSuccessData.txId}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                                    <span style={{ color: '#71717a' }}>Date & Time</span>
+                                    <span style={{ color: '#0f172a' }}>{convertSuccessData.date} {convertSuccessData.time}</span>
+                                </div>
+                            </div>
+
+                            <button
+                                style={{ width: '100%', background: '#0f172a', color: '#fff', border: 'none', borderRadius: '12px', padding: '14px', fontSize: '15px', fontWeight: 700, cursor: 'pointer' }}
+                                onClick={() => setShowConvertModal(false)}
+                            >
+                                Done
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        )}
+        </>
     )
 }

@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "node init && vite",
+    "build": "node init && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "npx serve -s dist -l 8080"
+    "start": "node init && npx serve -s dist -l 8080"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
@@ -51,4 +51,3 @@
     "vite": "^7.2.4"
   }
 }
-

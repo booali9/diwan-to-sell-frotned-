@@ -106,6 +106,18 @@
   object-fit: contain;
 }
 
+@media (max-width: 768px) {
+  .logo-img {
+    width: 200px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    width: 180px !important;
+  }
+}
+
 .logo-text {
   display: none;
 }
@@ -7208,4 +7220,14 @@
   letter-spacing: 2px;
   font-weight: 600;
   word-break: break-all;
+}
+
+/* Centered Guest Mobile Drawer Logo */
+.md-guest-logo {
+  height: 48px !important;
+  width: auto !important;
+  margin: 20px auto 10px auto !important;
+  display: block !important;
+  max-height: none !important;
+  object-fit: contain;
 }

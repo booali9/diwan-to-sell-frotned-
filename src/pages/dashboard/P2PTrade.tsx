@@ -147,7 +147,7 @@ export default function P2PTrade() {
                                         <div className="p2p-empty-desc">Try adjusting your filters</div>
                                     </div>
                                 ) : (
-                                    <table className="p2p-table desktop-only">
+                                    <table className="p2p-table">
                                         <thead>
                                             <tr>
                                                 <th>Advertiser (Completion Rate)</th>

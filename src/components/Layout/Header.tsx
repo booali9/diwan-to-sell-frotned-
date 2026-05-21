@@ -69,7 +69,7 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
     <header className={`header ${hideMobile ? 'hide-on-mobile' : ''}`}>
       <div className="header-left">
         <div className="logo" onClick={() => navigate('/home')} style={{ cursor: 'pointer', height: '100%', display: 'flex', alignItems: 'center' }}>
-          <img src="/logo.png" alt="Bicoin" className="logo-img" style={{ height: '80px', width: 'auto', maxHeight: 'none', objectFit: 'contain', display: 'block' }} />
+          <img src="/logo.png" alt="Bicoin" className="logo-img" />
         </div>
 
         <nav className="nav-menu desktop-only">
@@ -279,6 +279,17 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
                     </div>
                     <span>Trade</span>
                   </div>
+                  <div className="md-menu-item" onClick={() => { navigate('/dashboard/p2p'); setIsMobileMenuOpen(false); }}>
+                    <div className="md-icon-box">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      </svg>
+                    </div>
+                    <span>P2P</span>
+                  </div>
                   <div className="md-menu-item" onClick={() => { navigate('/dashboard/futures'); setIsMobileMenuOpen(false); }}>
                     <div className="md-icon-box">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -385,7 +396,7 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
             ) : (
               <>
                 {/* Guest Mobile Menu */}
-                <img src="/logo.png" alt="Bicoin" className="logo-img" />
+                <img src="/logo.png" alt="Bicoin" className="logo-img md-guest-logo" />
                 <div className="md-guest-header">
                   <h3 className="md-guest-title">Welcome to Bicoin</h3>
                   <p className="md-guest-subtitle">Sign in to start trading</p>
@@ -412,6 +423,17 @@ function Header({ activePage, hideMobile = false }: HeaderProps) {
                       </svg>
                     </div>
                     <span>Home</span>
+                  </div>
+                  <div className="md-menu-item" onClick={() => { navigate('/dashboard/p2p'); setIsMobileMenuOpen(false); }}>
+                    <div className="md-icon-box">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      </svg>
+                    </div>
+                    <span>P2P</span>
                   </div>
                   <div className="md-menu-item" onClick={() => { navigate('/dashboard/academy'); setIsMobileMenuOpen(false); }}>
                     <div className="md-icon-box">

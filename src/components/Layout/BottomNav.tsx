@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Home, Settings2, RefreshCw, LayoutGrid, Wallet } from 'lucide-react'
+import { Home, Settings2, RefreshCw, LayoutGrid, Wallet, Users } from 'lucide-react'
 
 interface BottomNavProps {
     activePage: string
@@ -14,6 +14,7 @@ function BottomNav({ activePage, hideMobile = false }: BottomNavProps) {
         { id: 'home', label: 'Home', icon: Home, path: '/dashboard/home' },
         { id: 'market', label: 'Market', icon: Settings2, path: '/dashboard/market?view=list&tab=spot' },
         { id: 'trade', label: 'Trade', icon: RefreshCw, path: '/dashboard/trade' },
+        { id: 'p2p', label: 'P2P', icon: Users, path: '/dashboard/p2p' },
         { id: 'futures', label: 'Futures', icon: LayoutGrid, path: '/dashboard/futures' },
         { id: 'assets', label: 'Assets', icon: Wallet, path: '/dashboard/assets' },
     ]

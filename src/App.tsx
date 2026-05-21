@@ -220,6 +220,9 @@ function App() {
           <div className="login-right-panel">
             <div className="login-form-container">
               <div className="login-header">
+                <div className="mobile-logo">
+                  <img src="/logo.png" alt="Bicoin" className="mobile-logo-img" />
+                </div>
                 <h2 className="login-title">Welcome back</h2>
                 <p className="login-subtitle">Enter your personal data to create your account</p>
               </div>
